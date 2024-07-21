@@ -5,7 +5,7 @@ function Main() {
   return (
     <>
       <div>Main Page</div>;
-      <Link to="/Emoji">
+      <Link to="/emoji">
         <button>게임 시작</button>
       </Link>
     </>
