@@ -67,6 +67,18 @@ const ProfileSection = styled.div`
   align-items: center;
   margin-bottom: 20px;
 `;
+const RefreshButton = styled.button`
+  background: url("refresh_icon.png") no-repeat center center;
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px;
+  position: relative;
+  top: 60px;
+  right: 20px;
+`;
 
 const RightSection = styled.div`
   flex: 1;
@@ -116,14 +128,13 @@ function Home() {
                 <img
                   src={currentProfile}
                   alt="Profile"
-                  style={{ width: "50px", height: "50px", marginRight: "10px" }}
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    marginRight: "10px",
+                  }}
                 />
-                <button
-                  onClick={handleProfileRefresh}
-                  style={{ marginRight: "20px" }}
-                >
-                  Refresh Profile
-                </button>
+                <RefreshButton onClick={handleProfileRefresh} />
                 <label>
                   Nickname:
                   <input
