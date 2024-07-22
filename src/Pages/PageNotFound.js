@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "../Header";
-import Footer from "./Footer";
+import Header from "./Header";
+import Footer from "./Footer/Footer";
 
 const Container = styled.div`
   display: flex;
@@ -14,19 +14,20 @@ const Main = styled.main`
   max-width: 800px;
   margin: 0 auto;
   flex: 1;
+  text-align: center;
 `;
 
-const Privacy = () => {
+const PageNotFound = () => {
   return (
     <Container>
       <Header />
       <Main>
-        <h1>개인정보 처리방침</h1>
-        <p>여기에 개인정보 처리방침 내용을 작성합니다.</p>
+        <h1>404 - Page Not Found</h1>
+        <p>Sorry, the page you are looking for does not exist.</p>
       </Main>
       <Footer />
     </Container>
   );
 };
 
-export default Privacy;
+export default PageNotFound;

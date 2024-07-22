@@ -1,21 +1,26 @@
 import React from "react";
+import styled from "styled-components";
 import Header from "../Header";
 import Footer from "./Footer";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const Main = styled.main`
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  flex: 1;
+`;
+
 const Terms = () => {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-    >
+    <Container>
       <Header />
-      <main
-        style={{
-          padding: "20px",
-          maxWidth: "800px",
-          margin: "0 auto",
-          flex: "1",
-        }}
-      >
+      <Main>
         <h1>서비스 약관</h1>
         <p>
           본 서비스 약관은 사용자가 본 웹사이트를 이용함에 있어 지켜야 할 규칙과
@@ -50,9 +55,9 @@ const Terms = () => {
           변경되는 경우, 변경된 약관은 웹사이트에 게시되며, 게시된 시점부터
           효력이 발생합니다.
         </p>
-      </main>
+      </Main>
       <Footer />
-    </div>
+    </Container>
   );
 };
 
