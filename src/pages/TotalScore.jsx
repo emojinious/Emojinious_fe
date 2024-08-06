@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Container from "../components/Container";
 import GroupComponent from "../components/GroupComponent";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 
 const Child = styled.img`
   align-self: stretch;
@@ -1001,29 +1002,15 @@ const DivRoot = styled.div`
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) 0px var(--padding-58xl);
+  padding: var(--padding-43xl) 0px var(--padding-58xl);
   box-sizing: border-box;
   gap: var(--gap-6xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-6xl);
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px var(--padding-58xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
+  height: 832px;
 `;
 
-const Frame15 = () => {
+const TotalScore = () => {
   const navigate = useNavigate();
 
   const onBackgroundClick = useCallback(() => {
@@ -1036,7 +1023,7 @@ const Frame15 = () => {
 
   return (
     <DivRoot>
-      <Child alt="" src="/group-138.svg" />
+      <Header/>
       <Main1>
         <Content>
           <Container />
@@ -1152,4 +1139,4 @@ const Frame15 = () => {
   );
 };
 
-export default Frame15;
+export default TotalScore;

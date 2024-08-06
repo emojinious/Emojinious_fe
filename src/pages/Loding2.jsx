@@ -262,12 +262,12 @@ const Loding2 = () => {
         <FrameWrapper>
           <FrameGroup>
             <FrameContainer>
-              <FrameChild loading="lazy" alt="" src="/group-237.svg" />
+              <FrameChild loading="lazy" alt="" src="/loding1_회전화살표.svg" />
             </FrameContainer>
-            <FrameItem loading="lazy" alt="" src="/group-299@2x.png" />
+            <FrameItem loading="lazy" alt="" src="/loding2_유레카모지.png" />
           </FrameGroup>
         </FrameWrapper>
-        <Moji>Moji 그림 생성 완료!</Moji>
+        <Moji>MOJI가<br/>그림 생성 중...</Moji>
       </FrameParent>
     </DivRoot>
   );

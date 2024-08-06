@@ -142,7 +142,7 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame12 = () => {
+const Gamep4 = () => {
   return (
     <DivRoot>
       <EllipseParent>
@@ -150,7 +150,7 @@ const Frame12 = () => {
         <FrameItem />
       </EllipseParent>
       <FrameComponent5
-        group138="/group-138.svg"
+        group138="/헤더.svg"
         spanBorder="3px solid #ffcd1c"
         frameDivLeft="115px"
         prop="이것 뭐예요~?"
@@ -172,4 +172,4 @@ const Frame12 = () => {
   );
 };
 
-export default Frame12;
+export default Gamep4;

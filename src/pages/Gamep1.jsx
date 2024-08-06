@@ -2,6 +2,7 @@ import styled from "styled-components";
 import FrameComponent11 from "../components/FrameComponent11";
 import FrameComponent from "../components/FrameComponent";
 import FrameComponent10 from "../components/FrameComponent10";
+import Header from "../components/Header";
 
 const FrameChild = styled.div`
   position: absolute;
@@ -149,33 +150,19 @@ const Child = styled.section`
 `;
 const DivRoot = styled.div`
   width: 1280px;
-  height: 832px;
   position: relative;
   background-color: var(--color-darkslategray-100);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) 0px var(--padding-66xl);
+  padding: var(--padding-43xl) 0px;
   box-sizing: border-box;
-  gap: var(--gap-27xl);
+  gap: var(--gap-18xl);
   line-height: normal;
   letter-spacing: normal;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: 832px;
-    flex-direction: column;
-    gap: var(--gap-27xl);
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px var(--padding-66xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
+  height: 832px;
   @media screen and (max-width: 1050px) {
     height: auto;
   }
@@ -184,9 +171,10 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame9 = () => {
+const Gamep1 = () => {
   return (
     <DivRoot>
+      <Header/>
       <Inner>
         <EllipseParent>
           <FrameChild />
@@ -204,4 +192,4 @@ const Frame9 = () => {
   );
 };
 
-export default Frame9;
+export default Gamep1;

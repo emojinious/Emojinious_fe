@@ -3,6 +3,7 @@ import Frame8 from "../components/Frame8";
 import PortalPopup from "../components/PortalPopup";
 import styled from "styled-components";
 import FrameComponent9 from "../components/FrameComponent9";
+import Header from "../components/Header";
 
 const FrameChild = styled.div`
   position: absolute;
@@ -1629,26 +1630,12 @@ const DivRoot = styled.div`
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) 0px;
+  padding: var(--padding-43xl) 0px;
   box-sizing: border-box;
-  gap: var(--gap-base);
+  gap: var(--gap-18xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-base);
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px;
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
+  height: 832px;
 `;
 
 const Game = () => {
@@ -1670,7 +1657,7 @@ const Game = () => {
           <FrameItem />
         </EllipseParent>
         <Inner>
-          <FrameInner alt="" src="/group-138.svg" />
+          <Header/>
         </Inner>
         <FrameComponent9 />
         <Child>
@@ -1727,7 +1714,7 @@ const Game = () => {
                       <FrameParent2>
                         <FrameChild3
                           loading="lazy"
-                          alt=""
+                          alt="" 
                           src="/group-175.svg"
                         />
                         <B3>4.7</B3>

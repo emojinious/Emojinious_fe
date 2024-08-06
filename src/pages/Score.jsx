@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FrameComponent6 from "../components/FrameComponent6";
+import Header from "../components/Header";
 
 const Child = styled.img`
   align-self: stretch;
@@ -166,7 +167,7 @@ const Player = styled.a`
     height: auto;
   }
 `;
-const Score = styled.b`
+const Score1 = styled.b`
   width: 107px;
   position: relative;
   display: flex;
@@ -1376,30 +1377,16 @@ const DivRoot = styled.div`
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) 0px var(--padding-43xl);
+  padding: var(--padding-43xl) 0px var(--padding-43xl);
   box-sizing: border-box;
   gap: var(--gap-11xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
+  height: 832px;
   cursor: pointer;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-11xl);
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px var(--padding-43xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
 `;
 
-const Frame14 = () => {
+const Score = () => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
@@ -1408,7 +1395,7 @@ const Frame14 = () => {
 
   return (
     <DivRoot onClick={onContainerClick}>
-      <Child alt="" src="/group-138.svg" />
+      <Header/>
       <Inner>
         <FrameParent3>
           <FrameGroup>
@@ -1424,7 +1411,7 @@ const Frame14 = () => {
                     <Rank>rank</Rank>
                   </RankWrapper>
                   <Player>player</Player>
-                  <Score>score</Score>
+                  <Score1>score</Score1>
                 </ScoreContainer>
                 <FrameWrapper3>
                   <FrameContainer>
@@ -1537,4 +1524,4 @@ const Frame14 = () => {
   );
 };
 
-export default Frame14;
+export default Score;

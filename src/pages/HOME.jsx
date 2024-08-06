@@ -810,7 +810,7 @@ const Home = () => {
           <Shapes6 />
           <FrameChild />
           <Shapes7 />
-          <FrameItem loading="lazy" alt="" src="/group-99@2x.png" />
+          <FrameItem loading="lazy" alt="" src="/home_우는파랭이.png" />
           <RectangleParent>
             <FrameInner />
             <EllipseDiv />
@@ -820,7 +820,7 @@ const Home = () => {
           <Shapes9 />
           <Shapes10 />
           <FrameParent>
-            <GroupIcon alt="" src="/group-124.svg" />
+            <GroupIcon alt="" src="/home_메인스케치북.svg" />
             <FrameChild2 />
             <FrameChild3 />
           </FrameParent>
@@ -829,17 +829,17 @@ const Home = () => {
             <MixedShapesChild />
             <MixedShapesItem />
           </MixedShapes>
-          <VectorIcon loading="lazy" alt="" src="/vector2.svg" />
+          <VectorIcon loading="lazy" alt="" src="/home_주황하트.svg" />
           <RectangleGroup>
             <RectangleDiv />
-            <RectangleIcon alt="" src="/rectangle-94.svg" />
-            <FrameChild4 alt="" src="/rectangle-95.svg" />
-            <FrameChild5 alt="" src="/rectangle-97.svg" />
-            <VectorIcon1 loading="lazy" alt="" src="/vector-1.svg" />
+            <RectangleIcon alt="" src="/home_지우개몸통.svg" />
+            <FrameChild4 alt="" src="/home_지우개파랑.svg" />
+            <FrameChild5 alt="" src="/home_지우개주황.svg" />
+            <VectorIcon1 loading="lazy" alt="" src="/home_분홍하트.svg" />
           </RectangleGroup>
           <FrameComponent7 />
-          <FrameChild6 alt="" src="/group-95@2x.png" />
-          <FrameChild7 loading="lazy" alt="" src="/group-97@2x.png" />
+          <FrameChild6 alt="" src="/home_웃는노랭이.png" />
+          <FrameChild7 loading="lazy" alt="" src="/home_놀라는보라.png" />
           <Parent>
             <Icon1
               loading="lazy"
@@ -849,10 +849,10 @@ const Home = () => {
             />
             <FrameChild8 />
             <FrameChild9 />
-            <FrameChild10 alt="" src="/group-269@2x.png" />
+            <FrameChild10 alt="" src="/home_파란물음표.svg" />
           </Parent>
-          <UnionIcon alt="" src="/union1.svg" />
-          <Icon2 alt="게임시작 버튼" src="/-1.svg" onClick={onNodeClick} />
+          <UnionIcon alt="" src="/home_모지그림자.svg" />
+          <Icon2 alt="게임시작 버튼" src="/home_게임시작버튼.svg" onClick={onNodeClick} />
         </ShapesParent>
       </HomeRoot>
       {isFrameOpen && (

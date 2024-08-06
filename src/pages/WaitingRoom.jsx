@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import InnerInvitation from "../components/InnerInvitation";
+import Header from "../components/Header"
 
 const FrameChild = styled.img`
   position: absolute;
@@ -16,48 +17,15 @@ const FrameChild = styled.img`
     height: 100%;
   }
 `;
-const FrameItem = styled.img`
+const HeaderBack = styled.img`
   position: absolute;
-  height: 58px;
-  top: 13px;
-  bottom: 14px;
-  left: 41px;
-  max-height: 100%;
+  top: 80px;
+  left: 42px;
   width: 58px;
+  height: 58px;
   display: flex;
   cursor: pointer;
   z-index: 1;
-  &:hover {
-    display: flex;
-    width: 58px;
-    height: 58px;
-  }
-`;
-const FrameParent = styled.header`
-  align-self: stretch;
-  height: 85px;
-  position: sticky;
-  top: 0;
-  z-index: 99;
-  display: flex;
-  width: auto;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    align-self: stretch;
-    width: auto;
-    height: 85px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    top: 0;
-    z-index: 99;
-    position: sticky;
-  }
 `;
 const UnionIcon = styled.img`
   align-self: stretch;
@@ -1526,11 +1494,14 @@ const RectangleDiv = styled.div`
   display: flex;
   cursor: pointer;
   &:hover {
-    background-color: var(--color-gold-100);
+    background-color: var(--color-gold-200);
     display: flex;
     width: 100%;
     height: 100%;
     border-radius: var(--br-xs);
+  }
+  &:active {
+    background-color: var(--color-gold-100);
   }
 `;
 const B10 = styled.b`
@@ -1720,26 +1691,12 @@ const DivRoot = styled.div`
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) 0px var(--padding-66xl);
+  padding: var(--padding-43xl) 0px var(--padding-84xl);
   box-sizing: border-box;
-  gap: var(--gap-18xl);
+  gap: var(--gap-20xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-18xl);
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px var(--padding-66xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
+  height: 832px;
   @media screen and (max-width: 675px) {
     gap: var(--gap-lg);
   }
@@ -1758,15 +1715,13 @@ function WaitingRoom() {
 
   return (
     <DivRoot>
-      <FrameParent>
-        <FrameChild alt="" src="/group-138.svg" />
-        <FrameItem
+      <Header/>
+      <HeaderBack
           loading="lazy"
           alt=""
-          src="/group-129.svg"
+          src="/뒤로가기.svg"
           onClick={onGroupClick}
-        />
-      </FrameParent>
+      />
       <Inner>
         <FrameGroup>
           <FrameWrapper>
@@ -1909,8 +1864,9 @@ function WaitingRoom() {
                   <B9>초대</B9>
                 </Container1>
                 <RectangleParent>
-                  <RectangleDiv onClick={onRectangleClick} />
+                  <RectangleDiv onClick={onRectangleClick}>
                   <B10>시작</B10>
+                  </RectangleDiv>
                 </RectangleParent>
               </FrameParent5>
             </FrameParent6>

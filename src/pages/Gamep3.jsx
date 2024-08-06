@@ -125,24 +125,10 @@ const DivRoot = styled.div`
   gap: var(--gap-10xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-10xl);
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) 0px var(--padding-66xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
+  height: 832px;
 `;
 
-const Frame11 = () => {
+const Gamep3 = () => {
   return (
     <DivRoot>
       <EllipseParent>
@@ -150,7 +136,7 @@ const Frame11 = () => {
         <FrameItem />
       </EllipseParent>
       <FrameComponent5
-        group138="/group-138.svg"
+        group138="/헤더.svg"
         prop="모르면 나가라"
         group250="/group-250.svg"
       />
@@ -168,4 +154,4 @@ const Frame11 = () => {
   );
 };
 
-export default Frame11;
+export default Gamep3;

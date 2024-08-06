@@ -325,7 +325,6 @@ const FrameComponent13 = ({ className = "" }) => {
         </FrameContainer>
       </FrameWrapper>
       <FrameGroup>
-        <FrameChild alt="" src="/group-138.svg" />
         <FrameDiv>
           <UnionParent>
             <UnionIcon

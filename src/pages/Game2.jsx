@@ -2,23 +2,8 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import GroupComponent1 from "../components/GroupComponent1";
+import Header from "../components/Header";
 
-const Child = styled.img`
-  margin-left: -277px;
-  margin-bottom: 7px;
-  width: 1280px;
-  position: relative;
-  max-height: 100%;
-  max-width: 128%;
-  flex-shrink: 0;
-  display: flex;
-  &:hover {
-    display: flex;
-    width: 1280px;
-    max-width: 128%;
-    flex-shrink: 0;
-  }
-`;
 const ShapesChild = styled.div`
   position: absolute;
   top: 0px;
@@ -298,35 +283,21 @@ const Content = styled.div`
 `;
 const DivRoot = styled.div`
   width: 1280px;
-  height: 832px;
   position: relative;
   background-color: var(--color-darkslategray-100);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) var(--padding-12xs) var(--padding-66xl)
-    var(--padding-257xl);
+  padding: var(--padding-43xl) 0px var(--padding-66xl);
   box-sizing: border-box;
-  gap: var(--gap-11xl);
+  gap: var(--gap-18xl);
   line-height: normal;
   letter-spacing: normal;
-  cursor: pointer;
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: 832px;
-    flex-direction: column;
-    gap: var(--gap-11xl);
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) var(--padding-12xs) var(--padding-66xl)
-      var(--padding-257xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
+  height: 832px;
+  @media screen and (max-width: 675px) {
+    gap: var(--gap-lg);
   }
   @media screen and (max-width: 1200px) {
     padding-left: 138px;
@@ -352,7 +323,7 @@ const Game2 = () => {
 
   return (
     <DivRoot onClick={onContainerClick}>
-      <Child alt="" src="/group-138.svg" />
+      <Header/>
       <Shapes>
         <ShapesChild />
         <ShapesItem />

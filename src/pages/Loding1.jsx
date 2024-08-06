@@ -149,6 +149,7 @@ const Moji = styled.b`
     width: auto;
     align-self: unset;
     height: auto;
+    white-space: pre-wrap;
   }
 `;
 const FrameGroup = styled.div`
@@ -257,13 +258,13 @@ const Loding1 = () => {
       </Main>
       <FrameParent>
         <FrameWrapper>
-          <FrameChild loading="lazy" alt="" src="/group-237.svg" />
+          <FrameChild loading="lazy" alt="" src="/loding1_회전화살표.svg" />
         </FrameWrapper>
         <FrameGroup>
           <FrameContainer>
-            <FrameItem loading="lazy" alt="" src="/group-297@2x.png" />
+            <FrameItem loading="lazy" alt="" src="loding1_생각하는모지.png" />
           </FrameContainer>
-          <Moji>MOJI가 그림 생성 중...</Moji>
+          <Moji>MOJI가 <br/>그림 생성 중...</Moji>
         </FrameGroup>
       </FrameParent>
     </DivRoot>

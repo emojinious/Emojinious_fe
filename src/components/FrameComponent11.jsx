@@ -286,7 +286,6 @@ const FrameComponent11 = ({ className = "" }) => {
 
   return (
     <FrameParentRoot className={className}>
-      <FrameChild alt="" src="/group-138.svg" />
       <FrameWrapper1>
         <FrameGroup>
           <FrameContainer>

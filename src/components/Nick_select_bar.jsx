@@ -75,7 +75,7 @@ const PlaceholderWrapper = styled.div`
     box-sizing: border-box;
   }
 `;
-const ButtonBackground = styled.div`
+const Icon = styled.img`
   position: absolute;
   top: 0px;
   left: 0px;
@@ -92,20 +92,6 @@ const ButtonBackground = styled.div`
     width: 100%;
     height: 100%;
     border-radius: var(--br-3xs);
-  }
-`;
-const Icon = styled.img`
-  position: absolute;
-  top: 17.9px;
-  left: 15px;
-  width: 50.5px;
-  height: 27.7px;
-  display: flex;
-  z-index: 3;
-  &:hover {
-    display: flex;
-    width: 50.5px;
-    height: 27.7px;
   }
 `;
 const ConfirmationButton = styled.div`
@@ -217,7 +203,7 @@ const Home2dInnerRoot = styled.section`
   }
 `;
 
-const FrameComponent8 = ({ className = "" }) => {
+const Nick_select_bar = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onButtonBackgroundClick = useCallback(() => {
@@ -233,8 +219,7 @@ const FrameComponent8 = ({ className = "" }) => {
             <Placeholder>(0/7)</Placeholder>
           </PlaceholderWrapper>
           <ConfirmationButton>
-            <ButtonBackground onClick={onButtonBackgroundClick} />
-            <Icon alt="" src="/1.svg" />
+            <Icon alt="" src="/setup_결정버튼.svg" onClick={onButtonBackgroundClick} />
           </ConfirmationButton>
         </FrameParent>
       </DividerParent>
@@ -242,8 +227,8 @@ const FrameComponent8 = ({ className = "" }) => {
   );
 };
 
-FrameComponent8.propTypes = {
+Nick_select_bar.propTypes = {
   className: PropTypes.string,
 };
 
-export default FrameComponent8;
+export default Nick_select_bar;

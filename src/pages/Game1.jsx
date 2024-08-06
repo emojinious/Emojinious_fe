@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Frame3 from "../components/Frame3";
 import PortalPopup from "../components/PortalPopup";
 import styled from "styled-components";
+import Header from "../components/Header"
 
 const MainContainerChild = styled.img`
   height: 297px;
@@ -1498,34 +1499,18 @@ const DivRoot = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-start;
-  padding: var(--padding-45xl) var(--padding-12xs) var(--padding-45xl)
-    var(--padding-89xl);
+  padding: var(--padding-43xl) 0px var(--padding-84xl);
   box-sizing: border-box;
-  gap: var(--gap-11xl);
+  gap: var(--gap-20xl);
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
+  height: 832px;
   text-align: center;
   font-size: var(--font-size-11xl);
   color: var(--color-darkslategray-100);
   font-family: var(--font-inter);
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-11xl);
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: var(--padding-45xl) var(--padding-12xs) var(--padding-45xl)
-      var(--padding-89xl);
-    box-sizing: border-box;
-    line-height: normal;
-    letter-spacing: normal;
-  }
   @media screen and (max-width: 1200px) {
     padding-left: var(--padding-35xl);
     box-sizing: border-box;
@@ -1551,11 +1536,11 @@ function Game1() {
   return (
     <>
       <DivRoot>
+        <Header/>
         <MainContainer>
           <MainContainerChild alt="" src="/rectangle-21.svg" />
           <MainContainerItem loading="lazy" alt="" src="/rectangle-22.svg" />
         </MainContainer>
-        <Child alt="" src="/group-138.svg" />
         <EllipseParent>
           <FrameChild />
           <FrameItem />

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import Header from "./Header";
 
 const FrameChild = styled.img`
   align-self: stretch;
@@ -322,7 +323,7 @@ const FrameComponent17 = ({ className = "" }) => {
 
   return (
     <FrameParentRoot className={className}>
-      <FrameChild alt="" src="/group-138.svg" />
+      <Header/>
       <FrameWrapper>
         <FrameGroup>
           <UnionWrapper>
