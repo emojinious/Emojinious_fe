@@ -5,21 +5,21 @@ import {
   useNavigationType,
   useLocation,
 } from "react-router-dom";
-import Frame2 from "./pages/Frame2";
-import Frame13 from "./pages/Frame13";
-import Frame6 from "./pages/Frame6";
-import Frame5 from "./pages/Frame5";
-import HOME from "./pages/HOME";
-import Frame7 from "./pages/Frame7";
-import Frame14 from "./pages/Frame14";
-import Frame9 from "./pages/Frame9";
-import Frame11 from "./pages/Frame11";
-import Frame15 from "./pages/Frame15";
-import Frame12 from "./pages/Frame12";
-import Frame10 from "./pages/Frame10";
-import Frame from "./pages/Frame";
-import Frame4 from "./pages/Frame4";
-import HOME2D from "./pages/HOME2D";
+import Game1 from "./pages/Game1";
+import Frame13 from "./pages/Gamep5";
+import Game2 from "./pages/Game2";
+import Loding2 from "./pages/Loding2";
+import Home from "./pages/Home";
+import Game from "./pages/Game";
+import Frame14 from "./pages/Score";
+import Frame9 from "./pages/Gamep1";
+import Frame11 from "./pages/Gamep3";
+import Frame15 from "./pages/TotalScore";
+import Frame12 from "./pages/Gamep4";
+import Frame10 from "./pages/Gamep2";
+import WaitingRoom from "./pages/WaitingRoom";
+import Loding1 from "./pages/Loding1";
+import PlayerSetup from "./pages/PlayerSetup";
 
 function App() {
   const action = useNavigationType();
@@ -41,19 +41,51 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/-5":
+      case "/game2":
         title = "";
         metaDescription = "";
         break;
-      case "/1":
+      case "/loding1":
         title = "";
         metaDescription = "";
         break;
-      case "/-21":
+      case "/loding2":
         title = "";
         metaDescription = "";
         break;
-      case "/home-1":
+      case "/game2":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/7":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/p1":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/p2":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/p3":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/p4":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/p5":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/score":
+        title = "";
+        metaDescription = "";
+        break;
+      case "/totalscore":
         title = "";
         metaDescription = "";
         break;
@@ -61,39 +93,7 @@ function App() {
         title = "";
         metaDescription = "";
         break;
-      case "/-1":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/-11":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/-3":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/2":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/-4":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/-2":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/3":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/-22":
-        title = "";
-        metaDescription = "";
-        break;
-      case "/home-2d":
+      case "/setup":
         title = "";
         metaDescription = "";
         break;
@@ -105,7 +105,7 @@ function App() {
 
     if (metaDescription) {
       const metaDescriptionTag = document.querySelector(
-        'head > meta[name="description"]',
+        'head > meta[name="description"]'
       );
       if (metaDescriptionTag) {
         metaDescriptionTag.content = metaDescription;
@@ -115,21 +115,21 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Frame2 />} />
-      <Route path="/-5" element={<Frame13 />} />
-      <Route path="/1" element={<Frame6 />} />
-      <Route path="/-21" element={<Frame5 />} />
-      <Route path="/home-1" element={<HOME />} />
-      <Route path="/" element={<Frame7 />} />
-      <Route path="/-1" element={<Frame14 />} />
-      <Route path="/-11" element={<Frame9 />} />
-      <Route path="/-3" element={<Frame11 />} />
-      <Route path="/2" element={<Frame15 />} />
-      <Route path="/-4" element={<Frame12 />} />
-      <Route path="/-2" element={<Frame10 />} />
-      <Route path="/3" element={<Frame />} />
-      <Route path="/-22" element={<Frame4 />} />
-      <Route path="/home-2d" element={<HOME2D />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/setup" element={<PlayerSetup />} />
+      <Route path="/room" element={<WaitingRoom />} />
+      <Route path="/game1" element={<Game1 />} />
+      <Route path="/loding1" element={<Loding1 />} />
+      <Route path="/loding2" element={<Loding2 />} />
+      <Route path="/game2" element={<Game2 />} />
+      <Route path="/game" element={<Game />} />
+      <Route path="/p1" element={<Frame9 />} />
+      <Route path="/p2" element={<Frame10 />} />
+      <Route path="/p3" element={<Frame11 />} />
+      <Route path="/p4" element={<Frame12 />} />
+      <Route path="/p5" element={<Frame13 />} />
+      <Route path="/score" element={<Frame14 />} />
+      <Route path="/totalscore" element={<Frame15 />} />
     </Routes>
   );
 }

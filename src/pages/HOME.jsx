@@ -781,7 +781,7 @@ const HomeRoot = styled.div`
   }
 `;
 
-const HOME = () => {
+const Home = () => {
   const [isFrameOpen, setFrameOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -794,7 +794,7 @@ const HOME = () => {
   }, []);
 
   const onNodeClick = useCallback(() => {
-    navigate("/home-2d");
+    navigate("/setup");
   }, [navigate]);
 
   return (
@@ -841,13 +841,18 @@ const HOME = () => {
           <FrameChild6 alt="" src="/group-95@2x.png" />
           <FrameChild7 loading="lazy" alt="" src="/group-97@2x.png" />
           <Parent>
-            <Icon1 loading="lazy" alt="" src="/.svg" onClick={openFrame} />
+            <Icon1
+              loading="lazy"
+              alt="물음표"
+              src="/.svg"
+              onClick={openFrame}
+            />
             <FrameChild8 />
             <FrameChild9 />
             <FrameChild10 alt="" src="/group-269@2x.png" />
           </Parent>
           <UnionIcon alt="" src="/union1.svg" />
-          <Icon2 alt="" src="/-1.svg" onClick={onNodeClick} />
+          <Icon2 alt="게임시작버튼" src="/-1.svg" onClick={onNodeClick} />
         </ShapesParent>
       </HomeRoot>
       {isFrameOpen && (
@@ -863,4 +868,4 @@ const HOME = () => {
   );
 };
 
-export default HOME;
+export default Home;

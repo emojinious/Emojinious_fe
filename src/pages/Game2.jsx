@@ -343,11 +343,11 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame6 = () => {
+const Game2 = () => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
-    navigate("/");
+    navigate("/game");
   }, [navigate]);
 
   return (
@@ -377,4 +377,4 @@ const Frame6 = () => {
   );
 };
 
-export default Frame6;
+export default Game2;

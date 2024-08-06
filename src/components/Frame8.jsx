@@ -84,7 +84,7 @@ const Frame8 = ({ className = "", onClose }) => {
   const navigate = useNavigate();
 
   const onGroupSectionClick = useCallback(() => {
-    navigate("/-11");
+    navigate("/p1");
   }, [navigate]);
 
   return (

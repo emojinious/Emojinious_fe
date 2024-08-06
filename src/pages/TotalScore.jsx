@@ -1027,11 +1027,11 @@ const Frame15 = () => {
   const navigate = useNavigate();
 
   const onBackgroundClick = useCallback(() => {
-    navigate("/3");
+    navigate("/room");
   }, [navigate]);
 
   const onRectangleClick = useCallback(() => {
-    navigate("/home-1");
+    navigate("/");
   }, [navigate]);
 
   return (

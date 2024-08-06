@@ -1651,7 +1651,7 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame7 = () => {
+const Game = () => {
   const [isFrameOpen, setFrameOpen] = useState(false);
 
   const openFrame = useCallback(() => {
@@ -1851,4 +1851,4 @@ const Frame7 = () => {
   );
 };
 
-export default Frame7;
+export default Game;

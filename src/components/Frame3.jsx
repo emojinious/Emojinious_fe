@@ -75,7 +75,7 @@ const Frame3 = ({ className = "", onClose }) => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
-    navigate("/-22");
+    navigate("/loding1");
   }, [navigate]);
 
   return (

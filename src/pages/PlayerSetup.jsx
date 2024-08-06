@@ -834,11 +834,11 @@ const Home2dRoot = styled.div`
   }
 `;
 
-const HOME2D = () => {
+const PlayerSetup = () => {
   const navigate = useNavigate();
 
   const onGroupClick = useCallback(() => {
-    navigate("/home-1");
+    navigate("/");
   }, [navigate]);
 
   return (
@@ -909,4 +909,4 @@ const HOME2D = () => {
   );
 };
 
-export default HOME2D;
+export default PlayerSetup;

@@ -1745,15 +1745,15 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame = () => {
+function WaitingRoom() {
   const navigate = useNavigate();
 
   const onGroupClick = useCallback(() => {
-    navigate("/home-2d");
+    navigate("/setup");
   }, [navigate]);
 
   const onRectangleClick = useCallback(() => {
-    navigate("/");
+    navigate("/game1");
   }, [navigate]);
 
   return (
@@ -1919,6 +1919,6 @@ const Frame = () => {
       </Inner>
     </DivRoot>
   );
-};
+}
 
-export default Frame;
+export default WaitingRoom;

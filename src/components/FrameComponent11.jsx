@@ -281,7 +281,7 @@ const FrameComponent11 = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onUnionImageClick = useCallback(() => {
-    navigate("/-2");
+    navigate("/p2");
   }, [navigate]);
 
   return (

@@ -285,11 +285,11 @@ const FrameComponent5 = ({
   const navigate = useNavigate();
 
   const onUnionClick = useCallback(() => {
-    navigate("/-2");
+    navigate("/p2");
   }, [navigate]);
 
   const onUnionImageClick = useCallback(() => {
-    navigate("/-4");
+    navigate("/p5");
   }, [navigate]);
 
   return (

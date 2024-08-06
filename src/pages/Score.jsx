@@ -1403,7 +1403,7 @@ const Frame14 = () => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
-    navigate("/2");
+    navigate("/totalscore");
   }, [navigate]);
 
   return (

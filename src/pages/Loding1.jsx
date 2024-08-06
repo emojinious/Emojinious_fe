@@ -242,11 +242,11 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame4 = () => {
+const Loding1 = () => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
-    navigate("/-21");
+    navigate("/Loding2");
   }, [navigate]);
 
   return (
@@ -270,4 +270,4 @@ const Frame4 = () => {
   );
 };
 
-export default Frame4;
+export default Loding1;

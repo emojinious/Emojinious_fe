@@ -245,11 +245,11 @@ const DivRoot = styled.div`
   }
 `;
 
-const Frame5 = () => {
+const Loding2 = () => {
   const navigate = useNavigate();
 
   const onContainerClick = useCallback(() => {
-    navigate("/1");
+    navigate("/game2");
   }, [navigate]);
 
   return (
@@ -267,10 +267,10 @@ const Frame5 = () => {
             <FrameItem loading="lazy" alt="" src="/group-299@2x.png" />
           </FrameGroup>
         </FrameWrapper>
-        <Moji>MOJI가 그림 생성 중...</Moji>
+        <Moji>Moji 그림 생성 완료!</Moji>
       </FrameParent>
     </DivRoot>
   );
 };
 
-export default Frame5;
+export default Loding2;

@@ -221,7 +221,7 @@ const FrameComponent8 = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onButtonBackgroundClick = useCallback(() => {
-    navigate("/3");
+    navigate("/room");
   }, [navigate]);
 
   return (

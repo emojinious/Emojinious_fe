@@ -313,11 +313,11 @@ const FrameComponent17 = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onUnionClick = useCallback(() => {
-    navigate("/-4");
+    navigate("/p4");
   }, [navigate]);
 
   const onShapeClick = useCallback(() => {
-    navigate("/-1");
+    navigate("/score");
   }, [navigate]);
 
   return (
