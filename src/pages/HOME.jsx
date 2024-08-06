@@ -852,7 +852,7 @@ const Home = () => {
             <FrameChild10 alt="" src="/group-269@2x.png" />
           </Parent>
           <UnionIcon alt="" src="/union1.svg" />
-          <Icon2 alt="게임시작버튼" src="/-1.svg" onClick={onNodeClick} />
+          <Icon2 alt="게임시작 버튼" src="/-1.svg" onClick={onNodeClick} />
         </ShapesParent>
       </HomeRoot>
       {isFrameOpen && (
