@@ -289,6 +289,8 @@ const PlayerSetup = () => {
             <CardGrid>
               <RightArrow alt="" src="/setup_오른쪽캐릭터화살표.png" />
               <LeftArrow alt="" src="/setup_왼쪽캐릭터화살표.png" />
+              {/*
+              */} 
               <ChooseCard alt="" src="/setup_E캐릭터카드.svg" />
               <RightCard1 alt="" src="/setup_I캐릭터카드.svg"/>
               <RightCard2 alt="" src="/setup_M캐릭터카드.svg" />

@@ -615,20 +615,14 @@ const FrameChild7 = styled.img`
 `;
 const Icon1 = styled.img`
   position: absolute;
-  top: 361.7px;
-  left: 464.8px;
-  width: 25.9px;
-  height: 38.9px;
-  background-color: var(--color-deepskyblue-100);
+  top: 150.7px;
+  left: 200.8px;
+  width: 200.9px;
+  height: 2100.9px;
+  background-color: black;
   display: flex;
   cursor: pointer;
-  z-index: 5;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 25.9px;
-    height: 38.9px;
-  }
+  z-index: 15;
 `;
 const FrameChild8 = styled.div`
   position: absolute;
@@ -664,20 +658,15 @@ const FrameChild9 = styled.div`
     height: 37px;
   }
 `;
-const FrameChild10 = styled.img`
+const ManualIcon = styled.img`
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 507.1px;
-  height: 591.9px;
+  top: 749px;
+  left: 1193.5px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   display: flex;
   z-index: 9;
-  &:hover {
-    display: flex;
-    width: 507.1px;
-    height: 591.9px;
-  }
 `;
 const Parent = styled.div`
   position: absolute;
@@ -742,17 +731,7 @@ const ShapesParent = styled.main`
   gap: var(--gap-0);
   align-items: flex-start;
   justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    flex: 1;
-    height: 832px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    max-width: 100%;
-  }
+  transform: rotate(0deg); 
 `;
 const HomeRoot = styled.div`
   width: 1280px;
@@ -765,7 +744,7 @@ const HomeRoot = styled.div`
   justify-content: flex-start;
   line-height: normal;
   letter-spacing: normal;
-  height: auto;
+  height: 832px;
   gap: var(--gap-0);
   &:hover {
     background-color: var(--color-darkslategray-100);
@@ -840,26 +819,29 @@ const Home = () => {
           <FrameComponent7 />
           <FrameChild6 alt="" src="/home_웃는노랭이.png" />
           <FrameChild7 loading="lazy" alt="" src="/home_놀라는보라.png" />
+            {/*
+      */}  
           <Parent>
-            <Icon1
+            <Icon1 
               loading="lazy"
               alt="물음표"
-              src="/.svg"
+              src="home_로봇팔.svg"
               onClick={openFrame}
-            />
+              /> {/*
+              */}  
             <FrameChild8 />
             <FrameChild9 />
-            <FrameChild10 alt="" src="/home_파란물음표.svg" />
           </Parent>
+            <ManualIcon alt="" src="/home_설명서물음표.svg" />
           <UnionIcon alt="" src="/home_모지그림자.svg" />
           <Icon2 alt="게임시작 버튼" src="/home_게임시작버튼.svg" onClick={onNodeClick} />
         </ShapesParent>
       </HomeRoot>
       {isFrameOpen && (
         <PortalPopup
-          overlayColor="rgba(113, 113, 113, 0.3)"
-          placement="Centered"
-          onOutsideClick={closeFrame}
+        overlayColor="rgba(113, 113, 113, 0.3)"
+        placement="Centered"
+        onOutsideClick={closeFrame}
         >
           <Frame1 onClose={closeFrame} />
         </PortalPopup>

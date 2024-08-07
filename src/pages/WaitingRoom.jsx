@@ -82,18 +82,7 @@ const B = styled.b`
   align-self: unset;
   height: auto;
   z-index: 2;
-  &:hover {
-    font-weight: 700;
-    font-family: var(--font-inter);
-    font-size: var(--font-size-11xl);
-    text-align: left;
-    color: var(--color-mediumpurple-200);
-    display: flex;
-    width: auto;
-    align-self: unset;
-    height: auto;
-    min-width: 60;
-  }
+
   @media screen and (max-width: 800px) {
     font-size: var(--font-size-5xl);
   }
@@ -118,22 +107,6 @@ const Wrapper = styled.button`
   gap: var(--gap-0);
   transform: rotate(0deg);
   z-index: 1;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    flex: 1;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: center;
-    transform: rotate(0deg);
-    border-radius: var(--br-mini);
-    padding: var(--padding-5xs) var(--padding-xl);
-    box-sizing: border-box;
-    border: 3px solid var(--color-deepskyblue-100);
-    max-width: 100%;
-  }
   &:active {
     background-color: var(--color-lightgray);
     border: 3px solid var(--color-steelblue);
@@ -155,22 +128,6 @@ const FrameDiv = styled.div`
   height: auto;
   gap: var(--gap-0);
   transform: rotate(0deg);
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    flex: 1;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    border-radius: var(--br-mini);
-    padding: var(--padding-8xs);
-    box-sizing: border-box;
-    min-width: 290;
-    max-width: 100%;
-  }
 `;
 const UnionIcon1 = styled.img`
   align-self: stretch;
@@ -202,18 +159,6 @@ const FrameContainer = styled.div`
   max-width: 100%;
   height: auto;
   transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 659.4px;
-    height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32.15px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    max-width: 100%;
-  }
   @media screen and (max-width: 675px) {
     gap: var(--gap-base);
   }
@@ -230,19 +175,6 @@ const FrameWrapper = styled.div`
   height: auto;
   gap: var(--gap-0);
   transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 940.3px;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: center;
-    transform: rotate(0deg);
-    padding: 0px var(--padding-xl);
-    box-sizing: border-box;
-    max-width: 100%;
-  }
 `;
 const B1 = styled.b`
   position: relative;
@@ -1859,13 +1791,13 @@ function WaitingRoom() {
                 </DifficultyContainerParent>
                 <FrameChild4 loading="lazy" alt="" src="/group-151@2x.png" />
               </FrameParent4>
-              <FrameParent5>
+              <FrameParent5>   
                 <Container1>
                   <B9>초대</B9>
                 </Container1>
                 <RectangleParent>
                   <RectangleDiv onClick={onRectangleClick}>
-                  <B10>시작</B10>
+                  <B10>시작</B10> 
                   </RectangleDiv>
                 </RectangleParent>
               </FrameParent5>
