@@ -1,234 +1,88 @@
-import { useCallback } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 
-const Divider = styled.div`
-  height: 100%;
-  width: 100%;
+// 보라색 그림자 스타일
+const PurpleShadow = styled.div`
+  width: 745px;
+  height: 110px;
+  background-color: #8A2BE2;  // 보라색 배경
   position: absolute;
-  margin: 0 !important;
-  right: -7px;
-  bottom: -7px;
-  border-radius: var(--br-xs);
-  background-color: var(--color-mediumpurple-200);
-  display: flex;
-  &:hover {
-    background-color: var(--color-mediumpurple-200);
-    display: flex;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--br-xs);
-  }
-`;
-const Placeholder = styled.b`
-  position: relative;
-  display: flex;
-  min-width: 75;
-  font-weight: 700;
-  width: auto;
-  align-self: unset;
-  height: auto;
-  z-index: 2;
-  &:hover {
-    font-weight: 700;
-    font-family: var(--font-inter);
-    font-size: var(--font-size-11xl);
-    text-align: left;
-    color: var(--color-mediumpurple-200);
-    display: flex;
-    width: auto;
-    align-self: unset;
-    height: auto;
-    min-width: 75;
-  }
-  @media screen and (max-width: 750px) {
-    font-size: var(--font-size-5xl);
-  }
-  @media screen and (max-width: 450px) {
-    font-size: var(--font-size-lg);
-  }
-`;
-const PlaceholderWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: var(--padding-sm) 0px 0px;
-  box-sizing: border-box;
-  width: auto;
-  align-self: unset;
-  height: auto;
-  gap: var(--gap-0);
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: auto;
-    align-self: unset;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    padding: var(--padding-sm) 0px 0px;
-    box-sizing: border-box;
-  }
-`;
-const Icon = styled.img`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  border-radius: var(--br-3xs);
-  background-color: var(--color-deepskyblue-100);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  cursor: pointer;
-  z-index: 2;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 100%;
-    height: 100%;
-    border-radius: var(--br-3xs);
-  }
-`;
-const ConfirmationButton = styled.div`
-  height: 64px;
-  width: 81px;
-  position: relative;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 81px;
-    height: 64px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const FrameParent = styled.div`
-  flex: 1;
-  border-radius: var(--br-xs);
-  background-color: var(--color-gold-100);
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: var(--padding-3xs) var(--padding-xs) var(--padding-2xs);
-  box-sizing: border-box;
-  gap: var(--gap-3xs);
-  max-width: 100%;
-  height: auto;
-  transform: rotate(0deg);
+  top: 10px;
+  left: 10px;
+  border-radius: 10px;
   z-index: 1;
-  &:hover {
-    background-color: var(--color-gold-100);
-    display: flex;
-    flex: 1;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-3xs);
-    align-items: flex-start;
-    justify-content: flex-end;
-    transform: rotate(0deg);
-    border-radius: var(--br-xs);
-    padding: var(--padding-3xs) var(--padding-xs) var(--padding-2xs);
-    box-sizing: border-box;
-    max-width: 100%;
-  }
-  @media screen and (max-width: 450px) {
-    flex-wrap: wrap;
-  }
-`;
-const DividerParent = styled.div`
-  width: 520px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: relative;
-  max-width: 100%;
-  height: auto;
-  gap: var(--gap-0);
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 520px;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    max-width: 100%;
-  }
-`;
-const Home2dInnerRoot = styled.section`
-  align-self: stretch;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0px var(--padding-xl);
-  box-sizing: border-box;
-  max-width: 100%;
-  width: auto;
-  height: auto;
-  gap: var(--gap-0);
-  transform: rotate(0deg);
-  text-align: left;
-  font-size: var(--font-size-11xl);
-  color: var(--color-mediumpurple-200);
-  font-family: var(--font-inter);
-  &:hover {
-    display: flex;
-    align-self: stretch;
-    width: auto;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: center;
-    transform: rotate(0deg);
-    padding: 0px var(--padding-xl);
-    box-sizing: border-box;
-    max-width: 100%;
-  }
 `;
 
-const Nick_select_bar = ({ className = "" }) => {
+// 노란색 닉네임 바 스타일
+const YellowBar = styled.div`
+  width: 700px;
+  height: 110px;
+  background-color: #FFD700;  // 노란색 배경
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: relative;
+  border-radius: 10px;
+  z-index: 2;  // 그림자보다 위에 위치
+`;
+
+// 닉네임 입력 필드
+const NicknameInput = styled.input`
+  height: 100%;
+  border: none;
+  background:none;
+  font-size: 40px;
+  padding: 0 10px;
+  outline: none;
+`;
+
+// 결정 버튼 스타일
+const ConfirmButton = styled.img`
+  position: absolute;
+  right: 5%;
+  width: 15%;
+  cursor: pointer;
+`;
+
+const NickSelectBar = () => {
+  const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
 
-  const onButtonBackgroundClick = useCallback(() => {
-    navigate("/room");
-  }, [navigate]);
+  const handleNicknameChange = (e) => {
+    if (e.target.value.length <= 7) {
+      setNickname(e.target.value);
+    }
+  };
 
+  const handleDecisionClick = () => {
+    // 여기에서 백엔드로 닉네임 전송 로직을 구현
+    console.log("닉네임 전송: ", nickname);
+
+    // 페이지 이동
+    navigate("/room");
+  };
+  
   return (
-    <Home2dInnerRoot className={className}>
-      <DividerParent>
-        <Divider />
-        <FrameParent>
-          <PlaceholderWrapper>
-            <Placeholder>(0/7)</Placeholder>
-          </PlaceholderWrapper>
-          <ConfirmationButton>
-            <Icon alt="" src="/setup_결정버튼.svg" onClick={onButtonBackgroundClick} />
-          </ConfirmationButton>
-        </FrameParent>
-      </DividerParent>
-    </Home2dInnerRoot>
+    <div style={{ position: "relative", marginTop: "20px" }}>
+      <PurpleShadow />
+      <YellowBar>
+        <NicknameInput
+          type="text"
+          placeholder="닉네임을 입력하세요"
+          value={nickname}
+          onChange={handleNicknameChange}
+          maxLength={7}
+        />
+        <ConfirmButton 
+          src="/setup_결정버튼.svg"
+          alt="결정"
+          onClick={handleDecisionClick}
+        />
+      </YellowBar>
+    </div>
   );
 };
 
-Nick_select_bar.propTypes = {
-  className: PropTypes.string,
-};
-
-export default Nick_select_bar;
+export default NickSelectBar;

@@ -2,48 +2,44 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const HeaderLine = styled.img`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 1280px;
-  height: 85px;
-  display: flex;
-`;
-const HeaderMark = styled.img`
-  position: absolute;
-  top: 0px;
-  left: 500px;
-  width: 280px;
-  height: 85px;
-  display: flex;
-  cursor: pointer;
-  -webkit-transform: rotate(0) scale(1);
-	transform: rotate(0) scale(1);
-	-webkit-transition: .5s ease-in-out;
-	transition: .5s ease-in-out;
-  &:hover {
-    -webkit-transform: rotate(15deg) scale(0.5);
-    transform: rotate(15deg) scale(0.5);
-    -webkit-transition: .5s ease-in-out;
-    transition: .5s ease-in-out;
-  }
-`;
+// HeaderParent는 항상 창의 너비를 따라갑니다.
 const HeaderParent = styled.header`
-  align-self: stretch;
-  height: 92px;
+  width: 100vw; /* 창의 너비에 맞춤 */
+  height: 15vh;
   position: relative;
   display: flex;
-  width: auto;
-  gap: var(--gap-0);
   align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  padding: 0px 0px var(--padding-6xs);
+  justify-content: center; /* HeaderMark를 중앙에 배치 */
+  align-items:center;
+  text-align:center;
   box-sizing: border-box;
+  padding: 0;
 `;
 
+// HeaderLine은 HeaderParent의 너비를 따릅니다.
+const HeaderLine = styled.img`
+  position: absolute;
+  width: 100%; /* 부모의 너비를 따라감 */
+  height: 40%;
+  background-repeat: repeat-x; /* 가로로 반복 */
+  background-size: contain; /* 이미지 크기를 고정하여 배경이 반복되도록 함 */
+  top: 50%;
+  transform: translateY(-50%); /* 수직 중앙에 배치 */
+`;
 
+// HeaderMark는 중앙에 위치하도록 설정
+const HeaderMark = styled.img`
+  height: 70%;
+  display: flex;
+  cursor: pointer;
+  transform: rotate(0) scale(1);
+  transition: 0.5s ease-in-out;
+
+  &:hover {
+    transform: rotate(15deg) scale(0.5);
+    transition: 0.5s ease-in-out;
+  }
+`;
 
 const Header = () => {
   const navigate = useNavigate();
@@ -54,8 +50,8 @@ const Header = () => {
 
   return (
     <HeaderParent>
-      <HeaderLine alt="" src="/헤더줄.svg" />
-      <HeaderMark alt="" src="/헤더마크.svg" onClick={onGroupClick}/>
+      <HeaderLine alt="헤더줄" src="/헤더줄.png"/>
+      <HeaderMark alt="헤더마크" src="/헤더마크.svg" onClick={onGroupClick} />
     </HeaderParent>
   );
 };

@@ -1,852 +1,213 @@
-import { useState, useCallback } from "react";
-import Frame1 from "../components/Frame1";
-import PortalPopup from "../components/PortalPopup";
-import styled from "styled-components";
-import FrameComponent7 from "../components/FrameComponent7";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 
-const Shapes = styled.div`
-  position: absolute;
-  top: 394.65px;
-  left: 678px;
-  background-color: var(--color-linen-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-44.52deg);
-  transform-origin: 0 0;
-  display: flex;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-44.52deg);
+// 흔들리는 애니메이션을 정의
+const shakeAnimation = keyframes`
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+`;
+
+const lotate = keyframes`
+  0% {
+    transform : rotate(0deg)
+  }
+  80% {
+    transform : rotate(180deg)
+  }
+  100% {
+    transform : rotate(360deg)
   }
 `;
-const Shapes1 = styled.div`
-  position: absolute;
-  top: -272.99px;
-  left: 910.17px;
-  background-color: var(--color-lightpink-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(18.08deg);
-  transform-origin: 0 0;
+
+// Styled-component for the home container
+const HomeContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/home_배경화면.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
-  z-index: 2;
-  &:hover {
-    background-color: var(--color-lightpink-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(18.08deg);
-  }
-`;
-const Shapes2 = styled.div`
-  position: absolute;
-  top: 506.43px;
-  left: 680px;
-  background-color: var(--color-deepskyblue-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-7.32deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 2;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-7.32deg);
-  }
-`;
-const Shapes3 = styled.div`
-  position: absolute;
-  top: 297.17px;
-  left: -412px;
-  background-color: var(--color-linen-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-4.27deg);
-  transform-origin: 0 0;
-  display: flex;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-4.27deg);
-  }
-`;
-const Shapes4 = styled.div`
-  position: absolute;
-  top: 796.35px;
-  left: -221px;
-  background-color: var(--color-gold-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-31.53deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 2;
-  &:hover {
-    background-color: var(--color-gold-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-31.53deg);
-  }
-`;
-const Shapes5 = styled.div`
-  position: absolute;
-  top: 59.31px;
-  left: 47px;
-  background-color: var(--color-tomato-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-17.57deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 2;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-17.57deg);
-  }
-`;
-const Shapes6 = styled.div`
-  position: absolute;
-  top: 495.43px;
-  left: 689px;
-  background-color: var(--color-gold-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-7.32deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 3;
-  &:hover {
-    background-color: var(--color-gold-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-7.32deg);
-  }
-`;
-const FrameChild = styled.div`
-  position: absolute;
-  top: 741px;
-  left: 1185.7px;
-  border-radius: var(--br-3xs);
-  background-color: var(--color-linen-100);
-  width: 64.2px;
-  height: 64.2px;
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    width: 64.2px;
-    height: 64.2px;
-    border-radius: var(--br-3xs);
-  }
-`;
-const Shapes7 = styled.div`
-  position: absolute;
-  top: -279.99px;
-  left: 922.17px;
-  background-color: var(--color-tomato-100);
-  width: 647px;
-  height: 355px;
-  transform: rotate(18.08deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 3;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(18.08deg);
-  }
-`;
-const FrameItem = styled.img`
-  position: absolute;
-  top: 464px;
-  left: 858px;
-  width: 234.3px;
-  height: 234.3px;
-  object-fit: contain;
-  display: flex;
-  z-index: 7;
-  &:hover {
-    display: flex;
-    width: 234.3px;
-    height: 234.3px;
-  }
-`;
-const FrameInner = styled.div`
-  position: absolute;
-  top: 46.01px;
-  left: -390px;
-  border: 5px solid var(--color-tomato-100);
-  box-sizing: border-box;
-  width: 618px;
-  height: 339.1px;
-  transform: rotate(-4.27deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 1;
-  &:hover {
-    display: flex;
-    width: 618px;
-    height: 339.1px;
-    transform: rotate(-4.27deg);
-    border: 5px solid var(--color-tomato-100);
-    box-sizing: border-box;
-  }
-`;
-const EllipseDiv = styled.div`
-  position: absolute;
-  top: 114.8px;
-  left: 22px;
-  border-radius: 50%;
-  background-color: var(--color-lightpink-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-lightpink-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const FrameChild1 = styled.div`
-  position: absolute;
-  top: 234.8px;
-  left: 97px;
-  border-radius: 50%;
-  background-color: var(--color-deepskyblue-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const RectangleParent = styled.div`
-  position: absolute;
-  top: 257.2px;
-  left: 0px;
-  width: 251.5px;
-  height: 384.1px;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 251.5px;
-    height: 384.1px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const Shapes8 = styled.div`
-  position: absolute;
-  top: 667px;
-  left: 362px;
-  border-radius: 50%;
-  background-color: var(--color-mediumseagreen);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 7;
-  &:hover {
-    background-color: var(--color-mediumseagreen);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const Shapes9 = styled.div`
-  position: absolute;
-  top: 686px;
-  left: 339px;
-  border-radius: 50%;
-  background-color: var(--color-gold-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 8;
-  &:hover {
-    background-color: var(--color-gold-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const Shapes10 = styled.div`
-  position: absolute;
-  top: 711px;
-  left: 397px;
-  border-radius: 50%;
-  background-color: var(--color-tomato-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 7;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const GroupIcon = styled.img`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  &:hover {
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-`;
-const FrameChild2 = styled.div`
-  position: absolute;
-  top: 90.7px;
-  left: 120.3px;
-  border-radius: 50%;
-  background-color: var(--color-tomato-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 7;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const FrameChild3 = styled.div`
-  position: absolute;
-  top: 110.7px;
-  left: 139.3px;
-  border-radius: 50%;
-  background-color: var(--color-mediumpurple-200);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 8;
-  &:hover {
-    background-color: var(--color-mediumpurple-200);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const FrameParent = styled.section`
-  position: absolute;
-  top: 80.3px;
-  left: 232.7px;
-  width: 852.6px;
-  height: 631px;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 852.6px;
-    height: 631px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const Shapes11 = styled.div`
-  position: absolute;
-  top: 540px;
-  left: 853px;
-  border-radius: 50%;
-  background-color: var(--color-gold-200);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 8;
-  &:hover {
-    background-color: var(--color-gold-200);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const MixedShapesChild = styled.div`
-  position: absolute;
-  top: 355.93px;
-  left: 0px;
-  border: 5px solid var(--color-mediumpurple-200);
-  box-sizing: border-box;
-  width: 612.6px;
-  height: 334.5px;
-  transform: rotate(-44.52deg);
-  transform-origin: 0 0;
-  display: flex;
-  z-index: 1;
-  &:hover {
-    display: flex;
-    width: 612.6px;
-    height: 334.5px;
-    transform: rotate(-44.52deg);
-    border: 5px solid var(--color-mediumpurple-200);
-    box-sizing: border-box;
-  }
-`;
-const MixedShapesItem = styled.div`
-  position: absolute;
-  top: 213px;
-  left: 449.1px;
-  border-radius: 50%;
-  background-color: var(--color-mediumseagreen);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-mediumseagreen);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const MixedShapes = styled.div`
-  position: absolute;
-  top: 0px;
-  left: 731.9px;
-  width: 548.1px;
-  height: 594.4px;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 548.1px;
-    height: 594.4px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const VectorIcon = styled.img`
-  position: absolute;
-  top: 736.9px;
-  left: 812.2px;
-  width: 52.5px;
-  height: 49.7px;
-  object-fit: contain;
-  background-color: var(--color-tomato-100);
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 52.5px;
-    height: 49.7px;
-  }
-`;
-const RectangleDiv = styled.div`
-  position: absolute;
-  top: 338.35px;
-  left: 0px;
-  background-color: var(--color-mediumpurple-200);
-  width: 647px;
-  height: 355px;
-  transform: rotate(-31.53deg);
-  transform-origin: 0 0;
-  display: flex;
-  &:hover {
-    background-color: var(--color-mediumpurple-200);
-    display: flex;
-    width: 647px;
-    height: 355px;
-    transform: rotate(-31.53deg);
-  }
-`;
-const RectangleIcon = styled.img`
-  position: absolute;
-  top: 173px;
-  left: 382.7px;
-  width: 147.3px;
-  height: 179px;
-  object-fit: contain;
-  background-color: var(--color-linen-100);
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    width: 147.3px;
-    height: 179px;
-  }
-`;
-const FrameChild4 = styled.img`
-  position: absolute;
-  top: 233.5px;
-  left: 389.7px;
-  width: 115.3px;
-  height: 101.7px;
-  object-fit: contain;
-  background-color: var(--color-deepskyblue-100);
-  display: flex;
-  z-index: 5;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 115.3px;
-    height: 101.7px;
-  }
-`;
-const FrameChild5 = styled.img`
-  position: absolute;
-  top: 298.6px;
-  left: 385.1px;
-  width: 92.9px;
-  height: 47.6px;
-  object-fit: contain;
-  background-color: var(--color-tomato-100);
-  display: flex;
-  z-index: 6;
-  &:hover {
-    background-color: var(--color-tomato-100);
-    display: flex;
-    width: 92.9px;
-    height: 47.6px;
-  }
-`;
-const VectorIcon1 = styled.img`
-  position: absolute;
-  top: 191.4px;
-  left: 284.5px;
-  width: 47.5px;
-  height: 50.8px;
-  object-fit: contain;
-  background-color: var(--color-lightpink-100);
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-lightpink-100);
-    display: flex;
-    width: 47.5px;
-    height: 50.8px;
-  }
-`;
-const RectangleGroup = styled.div`
-  position: absolute;
-  top: 454px;
-  left: -235px;
-  width: 737.1px;
-  height: 640.9px;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 737.1px;
-    height: 640.9px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const FrameChild6 = styled.img`
-  position: absolute;
-  top: 200px;
-  left: 197px;
-  width: 168.8px;
-  height: 168.8px;
-  object-fit: contain;
-  display: flex;
-  z-index: 8;
-  &:hover {
-    display: flex;
-    width: 168.8px;
-    height: 168.8px;
-  }
-`;
-const FrameChild7 = styled.img`
-  position: absolute;
-  top: 46px;
-  left: 996px;
-  width: 190.6px;
-  height: 190.6px;
-  object-fit: contain;
-  display: flex;
-  z-index: 7;
-  &:hover {
-    display: flex;
-    width: 190.6px;
-    height: 190.6px;
-  }
-`;
-const Icon1 = styled.img`
-  position: absolute;
-  top: 150.7px;
-  left: 200.8px;
-  width: 200.9px;
-  height: 2100.9px;
-  background-color: black;
-  display: flex;
-  cursor: pointer;
-  z-index: 15;
-`;
-const FrameChild8 = styled.div`
-  position: absolute;
-  top: 272px;
-  left: 424px;
-  border-radius: 50%;
-  background-color: var(--color-mediumseagreen);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 4;
-  &:hover {
-    background-color: var(--color-mediumseagreen);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const FrameChild9 = styled.div`
-  position: absolute;
-  top: 290px;
-  left: 406px;
-  border-radius: 50%;
-  background-color: var(--color-deepskyblue-100);
-  width: 37px;
-  height: 37px;
-  display: flex;
-  z-index: 5;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    width: 37px;
-    height: 37px;
-  }
-`;
-const ManualIcon = styled.img`
-  position: absolute;
-  top: 749px;
-  left: 1193.5px;
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  display: flex;
-  z-index: 9;
-`;
-const Parent = styled.div`
-  position: absolute;
-  top: 392px;
-  left: 740px;
-  width: 507.1px;
-  height: 440px;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 507.1px;
-    height: 440px;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-  }
-`;
-const UnionIcon = styled.img`
-  position: absolute;
-  top: 424px;
-  left: 184px;
-  width: 934.7px;
-  height: 776px;
-  mix-blend-mode: multiply;
-  background-color: var(--color-darkslategray-500);
-  display: flex;
-  z-index: 10;
-  &:hover {
-    mix-blend-mode: multiply;
-    background-color: var(--color-darkslategray-500);
-    display: flex;
-    width: 934.7px;
-    height: 776px;
-  }
-`;
-const Icon2 = styled.img`
-  position: absolute;
-  top: 623px;
-  left: 514px;
-  width: 250.7px;
-  height: 89px;
-  display: flex;
-  cursor: pointer;
-  z-index: 11;
-  &:hover {
-    display: flex;
-    width: 250.7px;
-    height: 89px;
-  }
-`;
-const ShapesParent = styled.main`
-  height: 832px;
-  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  max-width: 100%;
-  display: flex;
-  gap: var(--gap-0);
-  align-items: flex-start;
-  justify-content: flex-start;
-  transform: rotate(0deg); 
-`;
-const HomeRoot = styled.div`
-  width: 1280px;
-  position: relative;
-  background-color: var(--color-darkslategray-100);
   overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  line-height: normal;
-  letter-spacing: normal;
-  height: 832px;
-  gap: var(--gap-0);
-  &:hover {
-    background-color: var(--color-darkslategray-100);
-    display: flex;
-    width: 1280px;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    line-height: normal;
-    letter-spacing: normal;
-  }
 `;
+
+// Styled-component for the Sketchbook (스케치북)
+const Sketchbook = styled.img`
+  width: 55%; /* 스케치북 크기 조절 */
+  z-index: 1;
+`;
+
+// Styled-component for the Robot Arm (로봇팔)
+const RobotArm = styled.img`
+  position: absolute;
+  width: 30%; /* 로봇팔 크기 조절 */
+  right: 12%;
+  top: 47%;
+  z-index: 2;
+  /* 애니메이션 적용 */
+  ${({ animate }) =>
+    animate &&
+    css`
+      animation: ${shakeAnimation} 3s ease-in-out;
+      transform-origin: center;
+    `}
+`;
+
+// Styled-component for the Shadow (그림자)
+const Shadow = styled.img`
+  position: absolute;
+  bottom: -40%;
+  width: 50%; /* 그림자 크기 조절 */
+  z-index: 1; /* 스케치북보다 뒤에 배치 */
+`;
+
+const Emoji1 = styled.img`
+  position: absolute;
+  width: 10%;
+  left: 20%;
+  top: 20%;
+  z-index: 2;
+  animation: ${lotate} 5s ease-in-out infinite;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+`;
+const Emoji2 = styled.img`
+  position: absolute;
+  width: 12%;
+  right: 25%;
+  top: 60%;
+  z-index: 2;
+  animation: ${lotate} 8.5s ease-in-out infinite;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+`;
+const Emoji3 = styled.img`
+  position: absolute;
+  width: 11%;
+  right: 10%;
+  top: 10%;
+  z-index: 2;
+  animation: ${lotate} 7s ease-in-out infinite;
+  animation-delay: 3.5s;
+  animation-iteration-count: infinite;
+  transform-origin: center;
+`;
+
+// Styled-component for the Start Button (게임 시작 버튼)
+const StartButton = styled.img`
+  position: absolute;
+  width: 20%; /* 버튼 크기 조절 */
+  bottom: 10%; /* 컨테이너의 중앙에서 살짝 아래로 배치 */
+  z-index: 3; /* 다른 요소들 위에 배치 */
+  cursor: pointer;
+`;
+
+// 도움말 버튼 스타일
+const HelpButton = styled.img`
+  position: absolute;
+  right: 2%;
+  bottom: 2%;
+  width: 10vh;
+  height: 10vh;
+  cursor: pointer;
+`;
+
+const CloseButton = styled.img`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
+Modal.setAppElement('#root');
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '60vw',
+    height: '60vh',
+    borderRadius: '10px',
+    padding: '20px',
+  },
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1000, // 모달이 다른 요소들 위에 나타나도록
+  },
+};
 
 const Home = () => {
-  const [isFrameOpen, setFrameOpen] = useState(false);
+  const [animate, setAnimate] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const navigate = useNavigate();
 
-  const openFrame = useCallback(() => {
-    setFrameOpen(true);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 3000); // 3초 애니메이션
+    }, 5000); // 5초 간격으로 애니메이션 반복
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 제거
   }, []);
 
-  const closeFrame = useCallback(() => {
-    setFrameOpen(false);
-  }, []);
+  const handleStartClick = () => {
+    navigate('/setup'); // 버튼 클릭 시 /setup으로 이동
+  };
 
-  const onNodeClick = useCallback(() => {
-    navigate("/setup");
-  }, [navigate]);
+  const handleHelpClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
 
   return (
-    <>
-      <HomeRoot>
-        <ShapesParent>
-          <Shapes />
-          <Shapes1 />
-          <Shapes2 />
-          <Shapes3 />
-          <Shapes4 />
-          <Shapes5 />
-          <Shapes6 />
-          <FrameChild />
-          <Shapes7 />
-          <FrameItem loading="lazy" alt="" src="/home_우는파랭이.png" />
-          <RectangleParent>
-            <FrameInner />
-            <EllipseDiv />
-            <FrameChild1 />
-          </RectangleParent>
-          <Shapes8 />
-          <Shapes9 />
-          <Shapes10 />
-          <FrameParent>
-            <GroupIcon alt="" src="/home_메인스케치북.svg" />
-            <FrameChild2 />
-            <FrameChild3 />
-          </FrameParent>
-          <Shapes11 />
-          <MixedShapes>
-            <MixedShapesChild />
-            <MixedShapesItem />
-          </MixedShapes>
-          <VectorIcon loading="lazy" alt="" src="/home_주황하트.svg" />
-          <RectangleGroup>
-            <RectangleDiv />
-            <RectangleIcon alt="" src="/home_지우개몸통.svg" />
-            <FrameChild4 alt="" src="/home_지우개파랑.svg" />
-            <FrameChild5 alt="" src="/home_지우개주황.svg" />
-            <VectorIcon1 loading="lazy" alt="" src="/home_분홍하트.svg" />
-          </RectangleGroup>
-          <FrameComponent7 />
-          <FrameChild6 alt="" src="/home_웃는노랭이.png" />
-          <FrameChild7 loading="lazy" alt="" src="/home_놀라는보라.png" />
-            {/*
-      */}  
-          <Parent>
-            <Icon1 
-              loading="lazy"
-              alt="물음표"
-              src="home_로봇팔.svg"
-              onClick={openFrame}
-              /> {/*
-              */}  
-            <FrameChild8 />
-            <FrameChild9 />
-          </Parent>
-            <ManualIcon alt="" src="/home_설명서물음표.svg" />
-          <UnionIcon alt="" src="/home_모지그림자.svg" />
-          <Icon2 alt="게임시작 버튼" src="/home_게임시작버튼.svg" onClick={onNodeClick} />
-        </ShapesParent>
-      </HomeRoot>
-      {isFrameOpen && (
-        <PortalPopup
-        overlayColor="rgba(113, 113, 113, 0.3)"
-        placement="Centered"
-        onOutsideClick={closeFrame}
-        >
-          <Frame1 onClose={closeFrame} />
-        </PortalPopup>
-      )}
-    </>
+    <HomeContainer>
+      <Sketchbook src="/home_메인스케치북.svg" alt="Sketchbook" />
+      <RobotArm src="/home_로봇팔.png" alt="Robot Arm" animate={animate} />
+      <Shadow src="/home_모지그림자.svg" alt="Shadow" />
+      <Emoji1 src="/home_웃는노랭이.svg" alt="웃는노랭이" />
+      <Emoji2 src="/home_우는파랭이.svg" alt="우는파랭이" />
+      <Emoji3 src="/home_놀라는보라.svg" alt="놀라는보라" />
+      <StartButton
+        src="/home_게임시작버튼.svg"
+        alt="Start Button"
+        onClick={handleStartClick}
+      />
+      <HelpButton
+      src="/home_설명서물음표.svg"
+      alt="Help Button"
+      onClick={handleHelpClick}
+      />
+      <Modal
+        isOpen={isModalVisible}
+        onRequestClose={handleCloseModal}
+        style={customStyles}
+        contentLabel="Explanation Modal"
+      >
+        <h2>설명서</h2>
+        <p>설명서 내용 여기에 표시됩니다.</p>
+        <CloseButton src="/home_설명서나가기버튼.png" alt="설명서나가기" onClick={handleCloseModal}/>
+      </Modal>
+    </HomeContainer>
   );
 };
 
