@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 // 흔들리는 애니메이션을 정의
 const shakeAnimation = keyframes`
   0% { transform: rotate(0deg)  }
-  15% { transform: rotate(10deg) translateY(-10px); }
+  15% { transform: rotate(5deg) translateY(-10px); }
   30% { transform: rotate(0deg); translateY(0px);}
   45% { transform: rotate(-15deg) translateY(-10px);; }
   60% { transform: rotate(0deg); }
@@ -87,6 +87,7 @@ const HomeContainer = styled.div`
   justify-content: center;
   position: relative;
   overflow: hidden;
+  user-select: none;
 `;
 
 // Styled-component for the Sketchbook (스케치북)

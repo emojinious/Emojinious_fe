@@ -17,6 +17,7 @@ const HomeContainer = styled.div`
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
+  user-select: none;
 `;
 
 const BackButton = styled.img`
@@ -26,6 +27,7 @@ const BackButton = styled.img`
   width: 8vh;
   height: 8vh;
   cursor: pointer;
+  user-select: none;
 `;
 
 const InstructionText = styled.div`
@@ -66,6 +68,7 @@ const CharacterCard = styled.img`
   opacity: ${({ isCenter }) => (isCenter ? 1 : 0.5)};
   z-index: ${({ isCenter }) => (isCenter ? 2 : 1)};
   transform: ${({ offset }) => `translateX(${offset}px)`};
+  user-select: none;
 `;
 
 
@@ -118,7 +121,7 @@ const PlayerSetup = () => {
         <CharacterCardWrap>
         {characters.map((character, index) => {
             const isCenter = index === currentIndex;
-            const offset = (index - currentIndex) * 500;
+            const offset = (index - currentIndex) * 300;
             return (
               <CharacterCard
                 key={character}

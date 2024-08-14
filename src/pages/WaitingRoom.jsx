@@ -28,6 +28,7 @@ const BackButton = styled.img`
   width: 8vh;
   height: 8vh;
   cursor: pointer;
+  user-select: none;
 `;
 
 const BoxesContainer = styled.div`

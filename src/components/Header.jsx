@@ -25,6 +25,7 @@ const HeaderLine = styled.img`
   background-size: contain; /* 이미지 크기를 고정하여 배경이 반복되도록 함 */
   top: 50%;
   transform: translateY(-50%); /* 수직 중앙에 배치 */
+  user-select: none;
 `;
 
 // HeaderMark는 중앙에 위치하도록 설정
@@ -34,6 +35,7 @@ const HeaderMark = styled.img`
   cursor: pointer;
   transform: rotate(0) scale(1);
   transition: 0.5s ease-in-out;
+  user-select: none;
 
   &:hover {
     transform: rotate(15deg) scale(0.5);
