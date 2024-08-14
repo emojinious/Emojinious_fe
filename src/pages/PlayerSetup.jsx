@@ -1,9 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { createPlayer } from '../utils/api';
 import styled from "styled-components";
 import BoingButton from '../components/BoingButton';
-import { useNavigate } from "react-router-dom";
 import Nick_select_bar from "../components/Nick_select_bar";
 import Header from "../components/Header";
+
 
 const HomeContainer = styled.div`
   width: 100vw;
@@ -36,7 +38,6 @@ const InstructionText = styled.div`
   text-align: center;
 `;
 
-
 // 캐릭터 선택 영역
 const CharacterSelectContainer = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const CharacterCardWrap = styled.div`
   justify-content: center;
   overflow:hidden;
   position:relative;
-`
+`;
 
 // 캐릭터 카드 (이미지)
 const CharacterCard = styled.img`
@@ -70,25 +71,51 @@ const CharacterCard = styled.img`
   user-select: none;
 `;
 
-
 // 화살표
-
 const Arrow = styled(BoingButton).attrs({ isImageButton: true })`
-  width: 5%;
+  width: 4%;
+  margin:0 50px;
   user-select: none;
 `;
 
 const PlayerSetup = () => {
+  const [nickname, setNickname] = useState('');
+  const [characterId, setCharacterId] = useState('E');
   const navigate = useNavigate();
-
-  const handleBackClick = useCallback(() => {
-    navigate(-1); // 이전 페이지로 이동
-  }, [navigate]);
-
+  const location = useLocation();
+  const [sessionId, setSessionId] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const characters = ['E', 'M', 'O', 'J', 'I', 'N', 'U', 'S'];
   const totalCharacters = characters.length;
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const sessionIdFromUrl = searchParams.get('sessionId');
+    if (sessionIdFromUrl) {
+      setSessionId(sessionIdFromUrl);
+      console.log('Joining as guest to session:', sessionIdFromUrl);
+    }
+    setCharacterId(characters[currentIndex])
+  }, [location.search,currentIndex]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await createPlayer(nickname, currentIndex + 1, sessionId);
+      localStorage.setItem('playerId', response.player.id);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('sessionId', response.player.sessionId);
+      localStorage.setItem('characterId', response.player.characterId.toString());
+      navigate(`/room/${response.player.sessionId}`);
+    } catch (error) {
+      console.error('Error creating player:', error);
+    }
+  };
+  
+  const handleBackClick = useCallback(() => {
+    navigate(-1); // 이전 페이지로 이동
+  }, [navigate]);
 
   const handleLeftClick = () => {
     if (currentIndex > 0) {
@@ -101,8 +128,9 @@ const PlayerSetup = () => {
       setCurrentIndex(currentIndex + 1);
     }
   };
+
   return (
-    <HomeContainer>
+    <HomeContainer onSubmit={handleSubmit}>
       <Header/>
       <BackButton 
         as="img"
@@ -114,33 +142,33 @@ const PlayerSetup = () => {
       <CharacterSelectContainer>
         <Arrow 
           as="img"
-          src="/setup_왼쪽캐릭터화살표.png" 
+          src="/setup_왼쪽캐릭터화살표.svg" 
           alt="Left Arrow" 
           onClick={handleLeftClick} 
           style={{ visibility: currentIndex === 0 ? 'hidden' : 'visible' }}
-        />
+          />
         <CharacterCardWrap>
         {characters.map((character, index) => {
-            const offset = (index - currentIndex) * 200;
-            return (
-              <CharacterCard
-                key={character}
-                src={`/setup_${character}캐릭터카드.svg`}
-                alt={`${character} 캐릭터`}
-                offset={offset}
-              />
+          const offset = (index - currentIndex) * 200;
+          return (
+            <CharacterCard
+            key={character}
+            src={`/setup_${character}캐릭터카드.svg`}
+            alt={`${character} 캐릭터`}
+            offset={offset}
+            />
           );
         })}
         </CharacterCardWrap>
         <Arrow 
           as="img"
-          src="/setup_오른쪽캐릭터화살표.png"
+          src="/setup_오른쪽캐릭터화살표.svg"
           alt="Right Arrow" 
           onClick={handleRightClick} 
           style={{ visibility: currentIndex === totalCharacters - 1 ? 'hidden' : 'visible' }} 
-        />
+          />
       </CharacterSelectContainer>
-      <Nick_select_bar/>
+      <Nick_select_bar nickname={nickname} setNickname={setNickname} handleSubmit={handleSubmit}/>
     </HomeContainer>
   );
 };

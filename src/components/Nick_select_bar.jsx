@@ -48,8 +48,7 @@ const ConfirmButton = styled(BoingButton).attrs({ isImageButton: true })`
   cursor: pointer;
 `;
 
-const NickSelectBar = () => {
-  const [nickname, setNickname] = useState("");
+const NickSelectBar = ({ nickname, setNickname, handleSubmit}) => {
   const navigate = useNavigate();
 
   const handleNicknameChange = (e) => {
@@ -58,14 +57,6 @@ const NickSelectBar = () => {
     }
   };
 
-  const handleDecisionClick = () => {
-    // 여기에서 백엔드로 닉네임 전송 로직을 구현
-    console.log("닉네임 전송: ", nickname);
-
-    // 페이지 이동
-    navigate("/room");
-  };
-  
   return (
     <div style={{ position: "relative", marginTop: "20px" }}>
       <PurpleShadow />
@@ -78,10 +69,11 @@ const NickSelectBar = () => {
           maxLength={7}
         />
         <ConfirmButton 
+          type="submit"
           as="img"
           src="/setup_결정버튼.svg"
           alt="결정"
-          onClick={handleDecisionClick}
+          onClick={handleSubmit} 
         />
       </YellowBar>
     </div>

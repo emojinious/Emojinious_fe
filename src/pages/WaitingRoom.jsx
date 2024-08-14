@@ -1,11 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { connectToSocket, sendChatMessage, disconnect } from '../utils/socket';
 import Header from "../components/Header";
+import Chat from '../components/Chat';
+import { updateGameSettings } from '../utils/api';
 import TopicBox from "../components/TopicBox";
 import Profile from '../components/Profile';
 import Setting from '../components/Setting';
 import BoingButton from "../components/BoingButton";
+
 
 const boingEffect = keyframes`
   0% {
@@ -78,7 +82,6 @@ const RightBox = styled.div`
   position:relative;
 `
 
-// 버튼 컨테이너
 const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -112,6 +115,55 @@ const Button = styled.button`
 const WaitingRoom = () => {
   const navigate = useNavigate();
   const [currentTopic, setCurrentTopic] = useState(0);
+  const { sessionId } = useParams();
+  const [gameState, setGameState] = useState(null);
+  const [isHost, setIsHost] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [connectionError, setConnectionError] = useState(null);
+
+  useEffect(() => {
+    const playerId = localStorage.getItem('playerId');
+    const token = localStorage.getItem('token');
+    const characterId = localStorage.getItem('characterId');
+
+    console.log('Player info:', { playerId, characterId, sessionId });
+
+    let stompClient;
+
+    const connectAndSubscribe = async () => {
+      try {
+        stompClient = await connectToSocket(token, playerId, sessionId, () => {
+          console.log('Successfully connected and joined the game');
+        });
+        
+        stompClient.subscribe(`/topic/game/${sessionId}`, function(gameState) {
+          const newGameState = JSON.parse(gameState.body);
+          console.log('Received game state:', newGameState);
+          setGameState(newGameState);
+          setIsHost(newGameState.players.find(p => p.id === playerId)?.isHost || false);
+        });
+        
+          stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
+            const newChatMessage = JSON.parse(chatMessage.body);
+            console.log('Received chat message:', newChatMessage);
+            setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
+          });
+
+        setConnectionError(null);
+      } catch (error) {
+        console.error('Failed to connect:', error);
+        setConnectionError('Failed to connect to the game server. Please try again.');
+      }
+    };
+
+    connectAndSubscribe();
+
+    return () => {
+      if (stompClient) {
+        disconnect();
+      }
+    };
+  }, [sessionId]);
 
   const topics = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -127,57 +179,60 @@ const WaitingRoom = () => {
     setCurrentTopic((prevTopic) => (prevTopic === topics.length - 1 ? 0 : prevTopic + 1));
   };
 
+  // 초대 버튼 클릭 시 로직
   const handleInviteClick = () => {
-    // 초대 버튼 클릭 시 로직
     console.log("Invite button clicked");
+    const inviteLink = generateInviteLink();
+    navigator.clipboard.writeText(inviteLink).then(() => {
+      alert('Invite link copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy invite link: ', err);
+    });
   };
 
+  const generateInviteLink = () => {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/join?sessionId=${sessionId}`;
+  };
+
+  // 시작 버튼 클릭 시 로직
   const handleStartClick = () => {
-    // 시작 버튼 클릭 시 로직
     console.log("Start button clicked");
   };
 
+  if (connectionError) {
+    return <div>Error: {connectionError}</div>;
+  }
+
   return (
     <HomeContainer>
-      <Header />
-      <BackButton 
-        as="img"
-        src="/뒤로가기.svg" 
-        alt="Back Button" 
-        onClick={handleBackClick} 
-      />
-      <TopicBox 
-        currentTopic={currentTopic} 
-        topics={topics} 
-        onPrevClick={handlePrevClick} 
-        onNextClick={handleNextClick} 
-      />
-       <BoxesContainer>
-        <PlayerListBox>
-          <PlayerBox>
-            <Profile character="E" nickname="난괜찮아링딩딩" />
-          </PlayerBox>
-          <PlayerBox>
-            <Profile character="M" nickname="Player2" />
-          </PlayerBox>
-          <PlayerBox>
-            <Profile character="O" nickname="Player2" />
-          </PlayerBox>
-          <PlayerBox>
-            <Profile character="J" nickname="Player2" />
-          </PlayerBox>
-          <PlayerBox>
-            <Profile character="I" nickname="Player2" />
-          </PlayerBox>
-        </PlayerListBox>
-        <RightBox>
-        <Setting />
-        <ButtonsContainer>
-            <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-            <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
-          </ButtonsContainer>
-        </RightBox>
-      </BoxesContainer>
+      {gameState && (
+        <>
+          <Header />
+          <BackButton 
+            as="img"
+            src="/뒤로가기.svg" 
+            alt="Back Button" 
+            onClick={handleBackClick} 
+            />
+          <TopicBox 
+            currentTopic={currentTopic} 
+            topics={topics} 
+            onPrevClick={handlePrevClick} 
+            onNextClick={handleNextClick} 
+            />
+          <BoxesContainer>
+            <Profile players={gameState.players}/>
+            <RightBox>
+            <Setting />
+            <ButtonsContainer>
+                <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
+                <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
+              </ButtonsContainer>
+            </RightBox>
+          </BoxesContainer>
+        </>
+      )}
     </HomeContainer>
   );
 };

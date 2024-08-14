@@ -60,16 +60,16 @@ const Emoji = styled.span`
   }
 `;
 
-const characterColors = {
-  E: '#EF6125',
-  M: '#FFCD1C',
-  O: '#14AE59',
-  J: '#FEA1BD',
-  I: '#2B9FE6',
-  N: '#FFCD1C',
-  U: '#7766C2',
-  S: '#FEA1BD',
-};
+const characterColors = [
+  '#EF6125', //E
+  '#FFCD1C', //M
+  '#14AE59', //O
+  '#FEA1BD', //J
+  '#2B9FE6', //I
+  '#FFCD1C', //N
+  '#7766C2', //U
+  '#FEA1BD', //S
+];
 
 const emojis = [
   '😆', '😁', '😄', '😃', '😀', '😊', '😉', '😍', '😘', '😚', 
@@ -77,7 +77,23 @@ const emojis = [
   '😖', '😢', '😭', '😩', '😫', '😤', '😠', '😡', '😌', '😴'
 ];
 
-const PlayerProfile = ({ character, nickname }) => {
+const PlayerBox= styled.div`
+  width: 100%;
+  height:20%;
+  display:flex;
+  justify-content:center;
+`
+
+const PlayerListBox = styled.div`
+  width: 49%;
+  height: 60vh;
+  background-color: #EAE8DC;
+  border-radius: 20px;
+`;
+
+const charactersIdx = ['E', 'M', 'O', 'J', 'I', 'N', 'U', 'S'];
+
+const PlayerProfile = ({ players }) => {
   const [isEmojiVisible, setEmojiVisible] = useState(false);
   
   const toggleEmojiContainer = () => {
@@ -89,27 +105,29 @@ const PlayerProfile = ({ character, nickname }) => {
     setEmojiVisible(false);
   };
 
-  const profileImgSrc = `/room_${character}프로필.svg`;
-  const chatImgSrc = `/room_${character}채팅.svg`;
-  const bgColor = characterColors[character] || '#ccc'; // 기본 색상 지정
-
   return (
-    <ProfileContainer>
-      <ProfileImage src={profileImgSrc} alt={`${character} Profile`} />
-      <NicknameBox bgColor={bgColor}>{nickname}</NicknameBox>
-      <ChatButton 
-        src={chatImgSrc} 
-        alt="Chat Button" 
-        onClick={toggleEmojiContainer} 
-      />
-      <EmojiContainer visible={isEmojiVisible}>
-        {emojis.map((emoji, index) => (
-          <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
-            {emoji}
-          </Emoji>
-        ))}
-      </EmojiContainer>
-    </ProfileContainer>
+    <PlayerListBox>
+      {players.map((player) => (
+        <PlayerBox>
+        <ProfileContainer key={player.id}>
+          <ProfileImage src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`} alt={`${player.nickname} Profile`} />
+          <NicknameBox bgColor={characterColors[player.characterId - 1]}>{player.nickname} {player.isHost && '(Host)'}</NicknameBox>
+          <ChatButton 
+            src={`/room_${charactersIdx[player.characterId - 1]}채팅.svg`}
+            alt="Chat Button" 
+            onClick={toggleEmojiContainer} 
+            />
+          <EmojiContainer visible={isEmojiVisible}>
+            {emojis.map((emoji, index) => (
+              <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
+                {emoji}
+              </Emoji>
+            ))}
+          </EmojiContainer>
+        </ProfileContainer>
+        </PlayerBox>
+      ))}
+    </PlayerListBox>
   );
 };
 

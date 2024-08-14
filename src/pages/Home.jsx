@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import BoingButton from '../components/BoingButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 
 // 흔들리는 애니메이션을 정의
@@ -15,7 +15,6 @@ const shakeAnimation = keyframes`
   90% { transform: rotate(5deg) translateY(15px); }
   100% { transform: rotate(0deg) translateY(0px); }
 `;
-
 
 const shake = keyframes`
   0% { transform: rotate(0deg)}
@@ -208,14 +207,22 @@ const Home = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimate(true);
       setTimeout(() => setAnimate(false), 3000); // 3초 애니메이션
     }, 5000); // 5초 간격으로 애니메이션 반복
+    const queryParams = new URLSearchParams(location.search);
+    const sessionId = queryParams.get('sessionId');
+    
+    if (sessionId) {
+      // 초대 링크로 접속한 경우 setup 페이지로 리다이렉트
+      navigate(`/setup?sessionId=${sessionId}`);
+    }
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 제거
-  }, []);
+  }, [location, navigate]);
 
   const handleStartClick = () => {
     navigate('/setup'); // 버튼 클릭 시 /setup으로 이동
