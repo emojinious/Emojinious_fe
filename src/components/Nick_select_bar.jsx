@@ -31,9 +31,10 @@ const YellowBar = styled.div`
 // 닉네임 입력 필드
 const NicknameInput = styled.input`
   height: 100%;
+  width: 100%;
   border: none;
   background:none;
-  font-size: 40px;
+  font-size: 30px;
   padding: 0 10px;
   outline: none;
 `;
@@ -70,7 +71,7 @@ const NickSelectBar = () => {
       <YellowBar>
         <NicknameInput
           type="text"
-          placeholder="닉네임을 입력하세요"
+          placeholder="닉네임을 입력하세요(최대7자)"
           value={nickname}
           onChange={handleNicknameChange}
           maxLength={7}

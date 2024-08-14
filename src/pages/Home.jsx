@@ -67,7 +67,7 @@ const Shadow = styled.img`
   position: absolute;
   bottom: -40%;
   width: 50%; /* 그림자 크기 조절 */
-  z-index: 1; /* 스케치북보다 뒤에 배치 */
+  z-index: 3; /* 스케치북보다 뒤에 배치 */
 `;
 
 const Emoji1 = styled.img`
