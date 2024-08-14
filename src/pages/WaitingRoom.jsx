@@ -1,10 +1,26 @@
 import React, { useState, useCallback } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import TopicBox from "../components/TopicBox";
 import Profile from '../components/Profile';
 import Setting from '../components/Setting';
+import BoingButton from "../components/BoingButton";
+
+const boingEffect = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 const HomeContainer = styled.div`
   width: 100vw;
@@ -21,7 +37,7 @@ const HomeContainer = styled.div`
   overflow: hidden;
 `;
 
-const BackButton = styled.img`
+const BackButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   left: 2%;
   top: 4%;
@@ -84,6 +100,10 @@ const Button = styled.button`
   border-radius: 10px;
   cursor: pointer;
 
+  &:hover {
+    animation: ${boingEffect} 0.4s ease;
+  }
+    
   &:active {
     background-color: ${({ activeColor }) => activeColor || '#999'};
   }
@@ -121,6 +141,7 @@ const WaitingRoom = () => {
     <HomeContainer>
       <Header />
       <BackButton 
+        as="img"
         src="/뒤로가기.svg" 
         alt="Back Button" 
         onClick={handleBackClick} 

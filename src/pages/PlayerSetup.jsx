@@ -64,7 +64,7 @@ const CharacterCard = styled.img`
   width: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
   height: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
   transition: all 0.3s ease-in-out;
-  opacity: ${({ offset }) => (Math.abs(offset) == 0 ? 1 : 0.5)};
+  filter: ${({ offset }) => (Math.abs(offset) == 0 ? 'brightness(100%)' : (Math.abs(offset) == 200 ? 'brightness(75%)' : 'brightness(50%)'))};
   z-index: ${({ offset }) => (Math.abs(offset) == 0 ? 3 : (Math.abs(offset) == 200 ? 2 : 1))};
   transform: ${({ offset }) => `translateX(${offset}px)`};
   user-select: none;
@@ -121,7 +121,6 @@ const PlayerSetup = () => {
         />
         <CharacterCardWrap>
         {characters.map((character, index) => {
-            const isCenter = index === currentIndex;
             const offset = (index - currentIndex) * 200;
             return (
               <CharacterCard
@@ -129,7 +128,6 @@ const PlayerSetup = () => {
                 src={`/setup_${character}캐릭터카드.svg`}
                 alt={`${character} 캐릭터`}
                 offset={offset}
-                isCenter={isCenter}
               />
           );
         })}

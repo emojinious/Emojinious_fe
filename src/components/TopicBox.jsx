@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import BoingButton from "./BoingButton";
 
 const TopicContainer = styled.div`
   width:100vw;
@@ -9,7 +10,7 @@ const TopicContainer = styled.div`
   margin-top: 10px;
 `;
 
-const ArrowButton = styled.img`
+const ArrowButton = styled(BoingButton).attrs({ isImageButton: true })`
   width: 4vw;
   height: 5vh;
   cursor: pointer;
@@ -48,7 +49,8 @@ const TopicBox = ({ currentTopic, topics, onPrevClick, onNextClick }) => {
   
   return (
     <TopicContainer>
-      <ArrowButton 
+      <ArrowButton
+        as="img"
         src="/room_주제왼화살표.png" 
         alt="Previous Topic" 
         onClick={onPrevClick} 
@@ -59,6 +61,7 @@ const TopicBox = ({ currentTopic, topics, onPrevClick, onNextClick }) => {
         </TopicBoxline>
       </TopicBoxStyled>
       <ArrowButton 
+        as="img"
         src="/room_주제오화살표.png"
         alt="Next Topic" 
         onClick={onNextClick} 

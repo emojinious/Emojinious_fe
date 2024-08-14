@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import BoingButton from './BoingButton';
 
 const GameSettingsBox = styled.div`
   width: 100%;
@@ -131,7 +132,7 @@ const BottomBox = styled.div`
   justify-content: center;
 `;
 
-const DifficultyImage = styled.img`
+const DifficultyImage = styled(BoingButton).attrs({ isImageButton: true })`
   height: 65%;
   cursor: pointer;
   user-select: none;
@@ -147,7 +148,7 @@ const TurnBox = styled.div`
   margin-top:10px;
 `;
 
-const TurnArrow = styled.img`
+const TurnArrow = styled(BoingButton).attrs({ isImageButton: true })`
   width: 20%;
   cursor: pointer;
 `;
@@ -236,6 +237,7 @@ const Setting = () => {
         <BottomBox>
           <Title>난이도</Title>
           <DifficultyImage
+            as="img"
             src={getDifficultyImage()}
             alt="Difficulty"
             onClick={handleDifficultyClick}
@@ -245,12 +247,14 @@ const Setting = () => {
           <Title>턴 수</Title>
           <TurnBox>
             <TurnArrow 
+              as="img"
               src="/room_턴왼화살표.svg" 
               alt="Decrease Turns" 
               onClick={handleDecrease} 
             />
             <TurnNumber>{turns}</TurnNumber>
-            <TurnArrow 
+            <TurnArrow
+              as="img" 
               src="/room_턴오화살표.svg" 
               alt="Increase Turns" 
               onClick={handleIncrease} 
