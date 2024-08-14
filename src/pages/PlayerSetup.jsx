@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import BoingButton from '../components/BoingButton';
 import { useNavigate } from "react-router-dom";
 import Nick_select_bar from "../components/Nick_select_bar";
 import Header from "../components/Header";
@@ -20,14 +21,12 @@ const HomeContainer = styled.div`
   user-select: none;
 `;
 
-const BackButton = styled.img`
+const BackButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   left: 2%;
   top: 4%;
   width: 8vh;
   height: 8vh;
-  cursor: pointer;
-  user-select: none;
 `;
 
 const InstructionText = styled.div`
@@ -50,7 +49,7 @@ const CharacterSelectContainer = styled.div`
 `;
 
 const CharacterCardWrap = styled.div`
-  width: 80%;
+  width: 60%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -62,20 +61,20 @@ const CharacterCardWrap = styled.div`
 // 캐릭터 카드 (이미지)
 const CharacterCard = styled.img`
   position: absolute;
-  width: ${({ isCenter }) => (isCenter ? '20vw' : '10vw')};
-  height: ${({ isCenter }) => (isCenter ? '20vw' : '10vw')};
-  transition: all 0.5s ease;
-  opacity: ${({ isCenter }) => (isCenter ? 1 : 0.5)};
-  z-index: ${({ isCenter }) => (isCenter ? 2 : 1)};
+  width: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
+  height: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
+  transition: all 0.3s ease-in-out;
+  opacity: ${({ offset }) => (Math.abs(offset) == 0 ? 1 : 0.5)};
+  z-index: ${({ offset }) => (Math.abs(offset) == 0 ? 3 : (Math.abs(offset) == 200 ? 2 : 1))};
   transform: ${({ offset }) => `translateX(${offset}px)`};
   user-select: none;
 `;
 
 
 // 화살표
-const Arrow = styled.img`
+
+const Arrow = styled(BoingButton).attrs({ isImageButton: true })`
   width: 5%;
-  cursor: pointer;
   user-select: none;
 `;
 
@@ -106,6 +105,7 @@ const PlayerSetup = () => {
     <HomeContainer>
       <Header/>
       <BackButton 
+        as="img"
         src="/뒤로가기.svg" 
         alt="Back Button" 
         onClick={handleBackClick} 
@@ -113,6 +113,7 @@ const PlayerSetup = () => {
       <InstructionText>플레이하고 싶은 캐릭터를 골라주세요!</InstructionText>
       <CharacterSelectContainer>
         <Arrow 
+          as="img"
           src="/setup_왼쪽캐릭터화살표.png" 
           alt="Left Arrow" 
           onClick={handleLeftClick} 
@@ -121,7 +122,7 @@ const PlayerSetup = () => {
         <CharacterCardWrap>
         {characters.map((character, index) => {
             const isCenter = index === currentIndex;
-            const offset = (index - currentIndex) * 300;
+            const offset = (index - currentIndex) * 200;
             return (
               <CharacterCard
                 key={character}
@@ -134,6 +135,7 @@ const PlayerSetup = () => {
         })}
         </CharacterCardWrap>
         <Arrow 
+          as="img"
           src="/setup_오른쪽캐릭터화살표.png"
           alt="Right Arrow" 
           onClick={handleRightClick} 
@@ -143,7 +145,7 @@ const PlayerSetup = () => {
       <Nick_select_bar/>
     </HomeContainer>
   );
-  };
+};
   
   export default PlayerSetup;
   

@@ -102,7 +102,7 @@ const RobotArm = styled.img`
   position: absolute;
   width: 30%; /* 로봇팔 크기 조절 */
   right: 12%;
-  bottom: -50px;
+  bottom: -70px;
   z-index: 10;
   /* 애니메이션 적용 */
   ${({ animate }) =>
@@ -116,7 +116,7 @@ const RobotArm = styled.img`
 // Styled-component for the Shadow (그림자)
 const Shadow = styled.img`
   position: absolute;
-  bottom: -150px;
+  bottom: -190px;
   width: 50%; /* 그림자 크기 조절 */
   z-index: 11; /* 스케치북보다 뒤에 배치 */
 `;
