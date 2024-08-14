@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import BoingButton from './BoingButton';
 
 // 보라색 그림자 스타일
 const PurpleShadow = styled.div`
@@ -40,7 +41,7 @@ const NicknameInput = styled.input`
 `;
 
 // 결정 버튼 스타일
-const ConfirmButton = styled.img`
+const ConfirmButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   right: 5%;
   width: 15%;
@@ -77,6 +78,7 @@ const NickSelectBar = () => {
           maxLength={7}
         />
         <ConfirmButton 
+          as="img"
           src="/setup_결정버튼.svg"
           alt="결정"
           onClick={handleDecisionClick}

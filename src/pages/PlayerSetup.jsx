@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import BoingButton from '../components/BoingButton';
 import { useNavigate } from "react-router-dom";
 import Nick_select_bar from "../components/Nick_select_bar";
 import Header from "../components/Header";
@@ -19,13 +20,12 @@ const HomeContainer = styled.div`
   overflow: hidden;
 `;
 
-const BackButton = styled.img`
+const BackButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   left: 2%;
   top: 4%;
   width: 8vh;
   height: 8vh;
-  cursor: pointer;
 `;
 
 const InstructionText = styled.div`
@@ -70,9 +70,9 @@ const CharacterCard = styled.img`
 
 
 // 화살표
-const Arrow = styled.img`
+
+const Arrow = styled(BoingButton).attrs({ isImageButton: true })`
   width: 5%;
-  cursor: pointer;
   user-select: none;
 `;
 
@@ -103,6 +103,7 @@ const PlayerSetup = () => {
     <HomeContainer>
       <Header/>
       <BackButton 
+        as="img"
         src="/뒤로가기.svg" 
         alt="Back Button" 
         onClick={handleBackClick} 
@@ -110,6 +111,7 @@ const PlayerSetup = () => {
       <InstructionText>플레이하고 싶은 캐릭터를 골라주세요!</InstructionText>
       <CharacterSelectContainer>
         <Arrow 
+          as="img"
           src="/setup_왼쪽캐릭터화살표.png" 
           alt="Left Arrow" 
           onClick={handleLeftClick} 
@@ -131,6 +133,7 @@ const PlayerSetup = () => {
         })}
         </CharacterCardWrap>
         <Arrow 
+          as="img"
           src="/setup_오른쪽캐릭터화살표.png"
           alt="Right Arrow" 
           onClick={handleRightClick} 
@@ -140,7 +143,7 @@ const PlayerSetup = () => {
       <Nick_select_bar/>
     </HomeContainer>
   );
-  };
+};
   
   export default PlayerSetup;
   
