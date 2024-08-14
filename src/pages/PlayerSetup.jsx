@@ -48,7 +48,7 @@ const CharacterSelectContainer = styled.div`
 `;
 
 const CharacterCardWrap = styled.div`
-  width: 80%;
+  width: 60%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -60,11 +60,11 @@ const CharacterCardWrap = styled.div`
 // 캐릭터 카드 (이미지)
 const CharacterCard = styled.img`
   position: absolute;
-  width: ${({ isCenter }) => (isCenter ? '20vw' : '10vw')};
-  height: ${({ isCenter }) => (isCenter ? '20vw' : '10vw')};
-  transition: all 0.5s ease;
-  opacity: ${({ isCenter }) => (isCenter ? 1 : 0.5)};
-  z-index: ${({ isCenter }) => (isCenter ? 2 : 1)};
+  width: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
+  height: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
+  transition: all 0.3s ease-in-out;
+  opacity: ${({ offset }) => (Math.abs(offset) == 0 ? 1 : 0.5)};
+  z-index: ${({ offset }) => (Math.abs(offset) == 0 ? 3 : (Math.abs(offset) == 200 ? 2 : 1))};
   transform: ${({ offset }) => `translateX(${offset}px)`};
 `;
 
@@ -120,7 +120,7 @@ const PlayerSetup = () => {
         <CharacterCardWrap>
         {characters.map((character, index) => {
             const isCenter = index === currentIndex;
-            const offset = (index - currentIndex) * 500;
+            const offset = (index - currentIndex) * 200;
             return (
               <CharacterCard
                 key={character}
