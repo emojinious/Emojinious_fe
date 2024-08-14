@@ -18,6 +18,7 @@ const HomeContainer = styled.div`
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
+  user-select: none;
 `;
 
 const BackButton = styled(BoingButton).attrs({ isImageButton: true })`
@@ -66,6 +67,7 @@ const CharacterCard = styled.img`
   opacity: ${({ offset }) => (Math.abs(offset) == 0 ? 1 : 0.5)};
   z-index: ${({ offset }) => (Math.abs(offset) == 0 ? 3 : (Math.abs(offset) == 200 ? 2 : 1))};
   transform: ${({ offset }) => `translateX(${offset}px)`};
+  user-select: none;
 `;
 
 
