@@ -1,26 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
+import BoingButton from '../components/BoingButton';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 
 // 흔들리는 애니메이션을 정의
 const shakeAnimation = keyframes`
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(5deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-5deg); }
-  100% { transform: rotate(0deg); }
+  0% { transform: rotate(0deg)  }
+  15% { transform: rotate(10deg) translateY(-10px); }
+  30% { transform: rotate(0deg); translateY(0px);}
+  45% { transform: rotate(-15deg) translateY(-10px);; }
+  60% { transform: rotate(0deg); }
+  75% { transform: translateY(0px); }
+  90% { transform: rotate(5deg) translateY(15px); }
+  100% { transform: rotate(0deg) translateY(0px); }
+`;
+
+
+const shake = keyframes`
+  0% { transform: rotate(0deg)}
+  15% { transform: rotate(1deg)}
+  30% { transform: rotate(-1deg); }
+  45% { transform: rotate(1deg) }
+  60% { transform: rotate(-1deg); }
+  75% { transform: translateY(1px); }
+  90% { transform: rotate(-1deg)}
+  100% { transform: rotate(0deg)}
 `;
 
 const lotate = keyframes`
   0% {
-    transform : rotate(0deg)
+    transform : rotate(0deg) translateY(0) scale(1);
+  }
+  60% {
+    transform : rotate(100deg) translateY(15px) scale(1.7);
   }
   80% {
-    transform : rotate(180deg)
+    transform : rotate(180deg) translateY(0px) scale(1.2);
   }
   100% {
-    transform : rotate(360deg)
+    transform : rotate(0deg) translateY(0) scale(1);
+  }
+`;
+
+const lotate1 = keyframes`
+  0% {
+    transform : rotate(0deg) translateY(0) scale(1);
+  }
+  60% {
+    transform : rotate(-100deg) translateY(0px) scale(1.4);
+  }
+  80% {
+    transform : rotate(-180deg) translateY(0px) scale(1.2);
+  }
+  100% {
+    transform : rotate(0deg) translateY(0) scale(1);
+  }
+`;
+
+const lotate2 = keyframes`
+  0% {
+    transform : rotate(0deg) translateY(0) scale(1);
+  }
+  60% {
+    transform : rotate(-100deg) translateY(0px) scale(1.5);
+  }
+  80% {
+    transform : rotate(-50deg) translateY(0px) scale(1.2);
+  }
+  100% {
+    transform : rotate(0deg) translateY(0) scale(1);
   }
 `;
 
@@ -44,6 +93,7 @@ const HomeContainer = styled.div`
 const Sketchbook = styled.img`
   width: 55%; /* 스케치북 크기 조절 */
   z-index: 1;
+  animation: ${shake} 5s ease-in-out infinite;
 `;
 
 // Styled-component for the Robot Arm (로봇팔)
@@ -51,8 +101,8 @@ const RobotArm = styled.img`
   position: absolute;
   width: 30%; /* 로봇팔 크기 조절 */
   right: 12%;
-  top: 47%;
-  z-index: 2;
+  bottom: -50px;
+  z-index: 10;
   /* 애니메이션 적용 */
   ${({ animate }) =>
     animate &&
@@ -65,9 +115,9 @@ const RobotArm = styled.img`
 // Styled-component for the Shadow (그림자)
 const Shadow = styled.img`
   position: absolute;
-  bottom: -40%;
+  bottom: -150px;
   width: 50%; /* 그림자 크기 조절 */
-  z-index: 3; /* 스케치북보다 뒤에 배치 */
+  z-index: 11; /* 스케치북보다 뒤에 배치 */
 `;
 
 const Emoji1 = styled.img`
@@ -86,7 +136,7 @@ const Emoji2 = styled.img`
   right: 25%;
   top: 60%;
   z-index: 2;
-  animation: ${lotate} 8.5s ease-in-out infinite;
+  animation: ${lotate1} 8.5s ease-in-out infinite;
   animation-delay: 2s;
   animation-iteration-count: infinite;
   transform-origin: center;
@@ -97,29 +147,28 @@ const Emoji3 = styled.img`
   right: 10%;
   top: 10%;
   z-index: 2;
-  animation: ${lotate} 7s ease-in-out infinite;
+  animation: ${lotate2} 7s ease-in-out infinite;
   animation-delay: 3.5s;
   animation-iteration-count: infinite;
   transform-origin: center;
 `;
 
 // Styled-component for the Start Button (게임 시작 버튼)
-const StartButton = styled.img`
+const StartButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   width: 20%; /* 버튼 크기 조절 */
   bottom: 10%; /* 컨테이너의 중앙에서 살짝 아래로 배치 */
-  z-index: 3; /* 다른 요소들 위에 배치 */
+  z-index: 13; /* 다른 요소들 위에 배치 */
   cursor: pointer;
 `;
 
 // 도움말 버튼 스타일
-const HelpButton = styled.img`
+const HelpButton = styled(BoingButton).attrs({ isImageButton: true })`
   position: absolute;
   right: 2%;
   bottom: 2%;
   width: 10vh;
   height: 10vh;
-  cursor: pointer;
 `;
 
 const CloseButton = styled.img`
@@ -188,14 +237,16 @@ const Home = () => {
       <Emoji2 src="/home_우는파랭이.svg" alt="우는파랭이" />
       <Emoji3 src="/home_놀라는보라.svg" alt="놀라는보라" />
       <StartButton
+        as="img"
         src="/home_게임시작버튼.svg"
         alt="Start Button"
         onClick={handleStartClick}
       />
       <HelpButton
-      src="/home_설명서물음표.svg"
-      alt="Help Button"
-      onClick={handleHelpClick}
+        as="img"
+        src="/home_설명서물음표.svg"
+        alt="Help Button"
+        onClick={handleHelpClick}
       />
       <Modal
         isOpen={isModalVisible}
