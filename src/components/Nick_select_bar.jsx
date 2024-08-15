@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import BoingButton from './BoingButton';
+import BoingButton from "./BoingButton";
 
 // 보라색 그림자 스타일
 const PurpleShadow = styled.div`
   width: 745px;
   height: 110px;
-  background-color: #8A2BE2;  // 보라색 배경
+  background-color: #8a2be2; // 보라색 배경
   position: absolute;
   top: 10px;
   left: 10px;
@@ -19,14 +19,14 @@ const PurpleShadow = styled.div`
 const YellowBar = styled.div`
   width: 700px;
   height: 110px;
-  background-color: #FFD700;  // 노란색 배경
+  background-color: #ffd700; // 노란색 배경
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   position: relative;
   border-radius: 10px;
-  z-index: 2;  // 그림자보다 위에 위치
+  z-index: 2; // 그림자보다 위에 위치
 `;
 
 // 닉네임 입력 필드
@@ -34,7 +34,7 @@ const NicknameInput = styled.input`
   height: 100%;
   width: 100%;
   border: none;
-  background:none;
+  background: none;
   font-size: 30px;
   padding: 0 10px;
   outline: none;
@@ -48,12 +48,19 @@ const ConfirmButton = styled(BoingButton).attrs({ isImageButton: true })`
   cursor: pointer;
 `;
 
-const NickSelectBar = ({ nickname, setNickname, handleSubmit}) => {
-  const navigate = useNavigate();
-
+const NickSelectBar = ({ nickname, setNickname, handleSubmit }) => {
   const handleNicknameChange = (e) => {
     if (e.target.value.length <= 7) {
       setNickname(e.target.value);
+    }
+  };
+
+  const handleConfirmClick = (e) => {
+    if (nickname.trim() === "") {
+      alert("닉네임을 입력해주세요."); // 닉네임이 비어 있을 때 알림
+      e.preventDefault(); // 제출 방지
+    } else {
+      handleSubmit(e); // 닉네임이 있을 때만 제출
     }
   };
 
@@ -68,12 +75,12 @@ const NickSelectBar = ({ nickname, setNickname, handleSubmit}) => {
           onChange={handleNicknameChange}
           maxLength={7}
         />
-        <ConfirmButton 
+        <ConfirmButton
           type="submit"
           as="img"
           src="/setup_결정버튼.svg"
           alt="결정"
-          onClick={handleSubmit} 
+          onClick={handleConfirmClick}
         />
       </YellowBar>
     </div>

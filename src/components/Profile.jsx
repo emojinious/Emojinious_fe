@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -13,15 +13,15 @@ const ProfileContainer = styled.div`
 
 const ProfileImage = styled.img`
   width: auto;
-  height: 80%;
+  height: 100%;
   border-radius: 50%;
   margin-right: 20px;
 `;
 
 const NicknameBox = styled.div`
-  width:50%;
-  height:70%;
-  display:flex;
+  width: 50%;
+  height: 90%;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -42,7 +42,7 @@ const EmojiContainer = styled.div`
   position: absolute;
   bottom: 50px;
   right: 10px;
-  display: ${({ visible }) => (visible ? 'flex' : 'none')};
+  display: ${({ visible }) => (visible ? "flex" : "none")};
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -61,41 +61,68 @@ const Emoji = styled.span`
 `;
 
 const characterColors = [
-  '#EF6125', //E
-  '#FFCD1C', //M
-  '#14AE59', //O
-  '#FEA1BD', //J
-  '#2B9FE6', //I
-  '#FFCD1C', //N
-  '#7766C2', //U
-  '#FEA1BD', //S
+  "#EF6125", //E
+  "#FFCD1C", //M
+  "#14AE59", //O
+  "#FEA1BD", //J
+  "#2B9FE6", //I
+  "#FFCD1C", //N
+  "#7766C2", //U
+  "#FEA1BD", //S
 ];
 
 const emojis = [
-  '😆', '😁', '😄', '😃', '😀', '😊', '😉', '😍', '😘', '😚', 
-  '😜', '😝', '😛', '😎', '😏', '😒', '😞', '😔', '😟', '😕', 
-  '😖', '😢', '😭', '😩', '😫', '😤', '😠', '😡', '😌', '😴'
+  "😆",
+  "😁",
+  "😄",
+  "😃",
+  "😀",
+  "😊",
+  "😉",
+  "😍",
+  "😘",
+  "😚",
+  "😜",
+  "😝",
+  "😛",
+  "😎",
+  "😏",
+  "😒",
+  "😞",
+  "😔",
+  "😟",
+  "😕",
+  "😖",
+  "😢",
+  "😭",
+  "😩",
+  "😫",
+  "😤",
+  "😠",
+  "😡",
+  "😌",
+  "😴",
 ];
 
-const PlayerBox= styled.div`
+const PlayerBox = styled.div`
   width: 100%;
-  height:20%;
-  display:flex;
-  justify-content:center;
-`
+  height: 20%;
+  display: flex;
+  justify-content: center;
+`;
 
 const PlayerListBox = styled.div`
   width: 49%;
   height: 60vh;
-  background-color: #EAE8DC;
+  background-color: #eae8dc;
   border-radius: 20px;
 `;
 
-const charactersIdx = ['E', 'M', 'O', 'J', 'I', 'N', 'U', 'S'];
+const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
 
 const PlayerProfile = ({ players }) => {
   const [isEmojiVisible, setEmojiVisible] = useState(false);
-  
+
   const toggleEmojiContainer = () => {
     setEmojiVisible(!isEmojiVisible);
   };
@@ -109,22 +136,27 @@ const PlayerProfile = ({ players }) => {
     <PlayerListBox>
       {players.map((player) => (
         <PlayerBox>
-        <ProfileContainer key={player.id}>
-          <ProfileImage src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`} alt={`${player.nickname} Profile`} />
-          <NicknameBox bgColor={characterColors[player.characterId - 1]}>{player.nickname} {player.isHost && '(Host)'}</NicknameBox>
-          <ChatButton 
-            src={`/room_${charactersIdx[player.characterId - 1]}채팅.svg`}
-            alt="Chat Button" 
-            onClick={toggleEmojiContainer} 
+          <ProfileContainer key={player.id}>
+            <ProfileImage
+              src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
+              alt={`${player.nickname} Profile`}
             />
-          <EmojiContainer visible={isEmojiVisible}>
-            {emojis.map((emoji, index) => (
-              <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
-                {emoji}
-              </Emoji>
-            ))}
-          </EmojiContainer>
-        </ProfileContainer>
+            <NicknameBox bgColor={characterColors[player.characterId - 1]}>
+              {player.nickname} {player.isHost && "(Host)"}
+            </NicknameBox>
+            <ChatButton
+              src={`/room_${charactersIdx[player.characterId - 1]}채팅.svg`}
+              alt="Chat Button"
+              onClick={toggleEmojiContainer}
+            />
+            <EmojiContainer visible={isEmojiVisible}>
+              {emojis.map((emoji, index) => (
+                <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
+                  {emoji}
+                </Emoji>
+              ))}
+            </EmojiContainer>
+          </ProfileContainer>
         </PlayerBox>
       ))}
     </PlayerListBox>
