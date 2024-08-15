@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 
@@ -32,7 +32,12 @@ const Chatbox = styled.div`
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   flex-direction: column;
-  overflow-Y: scroll;
+  overflow-Y: auto;
+  &::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+  -ms-overflow-style: none;  /* for Internet Explorer and Edge */
+  scrollbar-width: none; /* for Firefox */
   color:black;
 `;
 
@@ -40,22 +45,21 @@ const InputBox = styled.form`
   width:100%;
   height: 10%;
   display:flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: #EAE8DC;
   margin-bottom:2%;
 `
 const Chat = styled.input`
-  width:84%;
+  width:70%;
   height:95%;
   background-color: #EAE8DC;
   border:none;
   padding:0 20px;
-  margin-left: 2%;
 `
 
 const ChatButton = styled.button`
   width:10%;
-  height:100%;
+  height:auto;
   border-radius: 10px;
   background-image: url('/room_채팅버튼.svg');
   background-size: cover;
@@ -96,6 +100,7 @@ const Divider = styled.div`
 
 const ChatBox = ({ players, messages, onSendMessage }) => {
   const [inputMessage, setInputMessage] = useState('');
+  const chatboxRef = useRef(null);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -105,11 +110,17 @@ const ChatBox = ({ players, messages, onSendMessage }) => {
     }
   };
 
+  useEffect(() => {
+    if (chatboxRef.current) {
+      chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight; // 자동 스크롤
+    }
+  }, [messages]);
+
   return (
     <>
         <ChatContainer>
         <Box>
-        <Chatbox>
+        <Chatbox ref={chatboxRef}>
         {messages.map((msg, index) => {
           const player = players.find(p => p.nickname === msg.sender);
           const color = player ? nicknameColors[player.characterId-1] : 'black';
