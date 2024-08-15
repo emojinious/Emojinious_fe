@@ -96,10 +96,16 @@ const SetNavButton = styled.button`
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
   padding: 10px;
-  overflow:hidden;
+  overflow: hidden;
+  margin-bottom: 10px;
 
   img {
     width: 80%;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    animation: ${boingEffect} 0.4s ease;
   }
 `;
 
