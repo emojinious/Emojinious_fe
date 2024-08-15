@@ -55,6 +55,7 @@ const Chat = styled.input`
   background-color: #EAE8DC;
   border:none;
   padding:0 20px;
+  margin-left: 3%;
 `
 
 const ChatButton = styled.button`
