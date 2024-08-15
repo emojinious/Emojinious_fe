@@ -148,6 +148,8 @@ const LobbyRoom = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [connectionError, setConnectionError] = useState(null);
   const [activeTab, setActiveTab] = useState('setting');
+  const [hasChatNotification, setHasChatNotification] = useState(false);
+  const [hasSettingNotification, setHasSettingNotification] = useState(false);
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -169,12 +171,18 @@ const LobbyRoom = () => {
           console.log('Received game state:', newGameState);
           setGameState(newGameState);
           setIsHost(newGameState.players.find(p => p.id === playerId)?.isHost || false);
+          if (activeTab !== 'setting') {
+            setHasSettingNotification(true);
+          }
         });
         
           stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
             const newChatMessage = JSON.parse(chatMessage.body);
             console.log('Received chat message:', newChatMessage);
             setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
+            if (activeTab !== 'chat') {
+              setHasChatNotification(true);
+            }
           });
 
         setConnectionError(null);
@@ -241,6 +249,15 @@ const LobbyRoom = () => {
     }
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    if (tab === 'chat') {
+      setHasChatNotification(false);
+    } else if (tab === 'setting') {
+      setHasSettingNotification(false);
+    }
+  };
+
   if (connectionError) {
     return <div>Error: {connectionError}</div>;
   }
@@ -273,11 +290,11 @@ const LobbyRoom = () => {
                 </ButtonsContainer>
               </MainContent>
               <SetNav>
-                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => setActiveTab('setting')}>
-                  <img src="/room_설정.svg" alt="설정" />
+                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
+                  <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
                 </SetNavButton>
-                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => setActiveTab('chat')}>
-                  <img src="/room_채팅방.svg" alt="채팅방" />
+                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
+                  <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
                 </SetNavButton>
               </SetNav>
             </RightBox>
