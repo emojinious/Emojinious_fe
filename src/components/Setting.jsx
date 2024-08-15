@@ -4,7 +4,7 @@ import BoingButton from './BoingButton';
 
 const GameSettingsBox = styled.div`
   width: 100%;
-  height: 50vh;
+  height: 52vh;
   background-color: #14AE59;
   border-radius: 20px;
   display: flex;

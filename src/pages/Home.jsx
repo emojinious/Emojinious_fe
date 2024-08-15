@@ -4,6 +4,31 @@ import BoingButton from '../components/BoingButton';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Modal from 'react-modal';
 
+// 모지그림자가 아래에서 위로 튀어나오는 애니메이션
+const bounceInAnimation = keyframes`
+  0% { 
+    transform: translateY(100%); 
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-10%);
+    opacity: 1;
+  }
+  100% { 
+    transform: translateY(0); 
+    opacity: 1;
+  }
+`;
+
+const boingAnimation = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+`;
+
 // 흔들리는 애니메이션을 정의
 const shakeAnimation = keyframes`
   0% { transform: rotate(0deg)  }
@@ -99,9 +124,9 @@ const Sketchbook = styled.img`
 // Styled-component for the Robot Arm (로봇팔)
 const RobotArm = styled.img`
   position: absolute;
-  width: 30%; /* 로봇팔 크기 조절 */
-  right: 12%;
-  bottom: -70px;
+  width: 50%; /* 로봇팔 크기 조절 */
+  right: 7%;
+  bottom: -430px;
   z-index: 10;
   /* 애니메이션 적용 */
   ${({ animate }) =>
@@ -118,6 +143,7 @@ const Shadow = styled.img`
   bottom: -190px;
   width: 50%; /* 그림자 크기 조절 */
   z-index: 11; /* 스케치북보다 뒤에 배치 */
+  animation: ${boingAnimation} 2s ease-in-out infinite;
 `;
 
 const Emoji1 = styled.img`
@@ -239,7 +265,7 @@ const Home = () => {
   return (
     <HomeContainer>
       <Sketchbook src="/home_메인스케치북.svg" alt="Sketchbook" />
-      <RobotArm src="/home_로봇팔.png" alt="Robot Arm" animate={animate} />
+      <RobotArm src="/home_로봇팔.svg" alt="Robot Arm" animate={animate} />
       <Shadow src="/home_모지그림자.svg" alt="Shadow" />
       <Emoji1 src="/home_웃는노랭이.svg" alt="웃는노랭이" />
       <Emoji2 src="/home_우는파랭이.svg" alt="우는파랭이" />

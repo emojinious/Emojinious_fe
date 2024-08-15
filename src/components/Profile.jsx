@@ -13,15 +13,17 @@ const ProfileContainer = styled.div`
 
 const ProfileImage = styled.img`
   width: auto;
-  height: 100%;
+  height: 85%;
   border-radius: 50%;
   margin-right: 20px;
+  left:5%;
 `;
 
 const NicknameBox = styled.div`
-  width: 50%;
-  height: 90%;
+  width: 80%;
+  height: 85%;
   display: flex;
+  left:20%;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -30,6 +32,7 @@ const NicknameBox = styled.div`
   background-color: ${({ bgColor }) => bgColor};
   color: #333;
   border-radius: 10px;
+  overflow:hidden;
 `;
 
 const ChatButton = styled.img`
@@ -112,10 +115,13 @@ const PlayerBox = styled.div`
 `;
 
 const PlayerListBox = styled.div`
-  width: 49%;
+  width: 38%;
   height: 60vh;
+  display:flex;
+  flex-direction:column;
   background-color: #eae8dc;
   border-radius: 20px;
+  padding: 10px 0;
 `;
 
 const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
@@ -144,11 +150,6 @@ const PlayerProfile = ({ players }) => {
             <NicknameBox bgColor={characterColors[player.characterId - 1]}>
               {player.nickname} {player.isHost && "(Host)"}
             </NicknameBox>
-            <ChatButton
-              src={`/room_${charactersIdx[player.characterId - 1]}채팅.svg`}
-              alt="Chat Button"
-              onClick={toggleEmojiContainer}
-            />
             <EmojiContainer visible={isEmojiVisible}>
               {emojis.map((emoji, index) => (
                 <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>

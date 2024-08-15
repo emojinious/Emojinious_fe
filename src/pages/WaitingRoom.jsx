@@ -26,7 +26,7 @@ const boingEffect = keyframes`
   }
 `;
 
-const HomeContainer = styled.div`
+const HomeContainer = styled.div` 
   width: 100vw;
   height: 100vh;
   background-color: #434040;
@@ -54,7 +54,7 @@ const BackButton = styled(BoingButton).attrs({ isImageButton: true })`
 const BoxesContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 75%;
   margin-top: 20px;
 `;
 
@@ -77,8 +77,8 @@ const PlayerBox= styled.div`
 `
 
 const RightBox = styled.div`
-  width: 49%;
-  height: 60vh;
+  width: 60%;
+  height: 62.5vh;
   position:relative;
 `
 

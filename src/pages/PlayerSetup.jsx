@@ -50,7 +50,7 @@ const CharacterSelectContainer = styled.div`
 `;
 
 const CharacterCardWrap = styled.div`
-  width: 60%;
+  width: 80%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -60,22 +60,37 @@ const CharacterCardWrap = styled.div`
 `;
 
 // 캐릭터 카드 (이미지)
+const chWidth = ['45vh', '30vh', '25vh', '20vh', '17vh', '15vh', '14vh', '13vh']
+const chHeight = ['45vh', '30vh', '25vh', '20vh', '17vh', '15vh', '14vh', '13ch']
+const chFilter = ['brightness(100%)', 'brightness(66%)', 'brightness(55%)', 'brightness(40%)', 'brightness(30%)', 'brightness(20%)', 'brightness(18%)', 'brightness(16%)']
+const chZindex = [7, 6, 5, 4, 3, 2, 1, 0]
 const CharacterCard = styled.img`
   position: absolute;
-  width: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
-  height: ${({ offset }) => (Math.abs(offset) == 0 ? '20vw' : (Math.abs(offset) == 200 ? '13vw' : '10vw'))};
+  width: ${({ diff }) => chWidth[diff]};
+  height: ${({diff }) => chHeight[diff]};
   transition: all 0.3s ease-in-out;
-  filter: ${({ offset }) => (Math.abs(offset) == 0 ? 'brightness(100%)' : (Math.abs(offset) == 200 ? 'brightness(75%)' : 'brightness(50%)'))};
-  z-index: ${({ offset }) => (Math.abs(offset) == 0 ? 3 : (Math.abs(offset) == 200 ? 2 : 1))};
+  filter: ${({diff }) => chFilter[diff]};
+  z-index: ${({diff }) => chZindex[diff]};
   transform: ${({ offset }) => `translateX(${offset}px)`};
   user-select: none;
 `;
 
 // 화살표
-const Arrow = styled(BoingButton).attrs({ isImageButton: true })`
+const RightArrow = styled(BoingButton).attrs({ isImageButton: true })`
   width: 4%;
-  margin:0 50px;
+  position:absolute;
+  right:5%;
+  margin:0;
   user-select: none;
+  z-index:8;
+`;
+const LeftArrow = styled(BoingButton).attrs({ isImageButton: true })`
+  width: 4%;
+  position:absolute;
+  left:5%;
+  margin:0;
+  user-select: none;
+  z-index:8;
 `;
 
 const PlayerSetup = () => {
@@ -140,33 +155,35 @@ const PlayerSetup = () => {
       />
       <InstructionText>플레이하고 싶은 캐릭터를 골라주세요!</InstructionText>
       <CharacterSelectContainer>
-        <Arrow 
+        <CharacterCardWrap>
+        <LeftArrow 
           as="img"
           src="/setup_왼쪽캐릭터화살표.svg" 
           alt="Left Arrow" 
           onClick={handleLeftClick} 
           style={{ visibility: currentIndex === 0 ? 'hidden' : 'visible' }}
           />
-        <CharacterCardWrap>
         {characters.map((character, index) => {
-          const offset = (index - currentIndex) * 200;
+          const offset = Math.sign(index - currentIndex) * (300 * Math.log(Math.abs(index - currentIndex) + 1) / Math.log(2));
+          // Math.sign(index - curentIndex) * (200 * Math.log(Math.abs(index - currentIndex) + 1) / Math.log(2));
           return (
             <CharacterCard
             key={character}
             src={`/setup_${character}캐릭터카드.svg`}
             alt={`${character} 캐릭터`}
             offset={offset}
+            diff={Math.abs(index - currentIndex)}
             />
           );
         })}
-        </CharacterCardWrap>
-        <Arrow 
+        <RightArrow 
           as="img"
           src="/setup_오른쪽캐릭터화살표.svg"
-          alt="Right Arrow" 
+          alt="Right Arrow"  
           onClick={handleRightClick} 
           style={{ visibility: currentIndex === totalCharacters - 1 ? 'hidden' : 'visible' }} 
           />
+        </CharacterCardWrap>
       </CharacterSelectContainer>
       <Nick_select_bar nickname={nickname} setNickname={setNickname} handleSubmit={handleSubmit}/>
     </HomeContainer>

@@ -7,10 +7,10 @@ import BoingButton from "./BoingButton";
 const PurpleShadow = styled.div`
   width: 745px;
   height: 110px;
-  background-color: #8a2be2; // 보라색 배경
+  background-color: #7766C2; // 보라색 배경
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 5px;
   border-radius: 10px;
   z-index: 1;
 `;
