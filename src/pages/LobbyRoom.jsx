@@ -148,8 +148,6 @@ const LobbyRoom = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [connectionError, setConnectionError] = useState(null);
   const [activeTab, setActiveTab] = useState('setting');
-  const [hasChatNotification, setHasChatNotification] = useState(false);
-  const [hasSettingNotification, setHasSettingNotification] = useState(false);
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -171,18 +169,12 @@ const LobbyRoom = () => {
           console.log('Received game state:', newGameState);
           setGameState(newGameState);
           setIsHost(newGameState.players.find(p => p.id === playerId)?.isHost || false);
-          if (activeTab !== 'setting') {
-            setHasSettingNotification(true);
-          }
         });
         
           stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
             const newChatMessage = JSON.parse(chatMessage.body);
             console.log('Received chat message:', newChatMessage);
             setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
-            if (activeTab !== 'chat') {
-              setHasChatNotification(true);
-            }
           });
 
         setConnectionError(null);
@@ -220,6 +212,16 @@ const LobbyRoom = () => {
     sendChatMessage(sessionId, content);
   };
 
+  const handleUpdateGameSettings = async (settings) => {
+    try {
+      const token = localStorage.getItem('token');
+      await updateGameSettings(sessionId, settings, token);
+      console.log('Game settings updated successfully');
+    } catch (error) {
+      console.error('Failed to update game settings:', error);
+    }
+  };
+
   // 초대 버튼 클릭 시 로직
   const handleInviteClick = () => {
     console.log("Invite button clicked");
@@ -246,15 +248,6 @@ const LobbyRoom = () => {
       console.log('Game settings updated successfully');
     } catch (error) {
       console.error('Failed to update game settings:', error);
-    }
-  };
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    if (tab === 'chat') {
-      setHasChatNotification(false);
-    } else if (tab === 'setting') {
-      setHasSettingNotification(false);
     }
   };
 
@@ -290,11 +283,11 @@ const LobbyRoom = () => {
                 </ButtonsContainer>
               </MainContent>
               <SetNav>
-                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
-                  <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
+                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => setActiveTab('setting')}>
+                  <img src="/room_설정.svg" alt="설정" />
                 </SetNavButton>
-                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
-                  <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
+                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => setActiveTab('chat')}>
+                  <img src="/room_채팅방.svg" alt="채팅방" />
                 </SetNavButton>
               </SetNav>
             </RightBox>
