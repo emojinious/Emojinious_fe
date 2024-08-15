@@ -1,6 +1,5 @@
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
-window.global = window;
 
 let stompClient = null;
 

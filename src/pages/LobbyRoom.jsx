@@ -3,11 +3,11 @@ import styled, { keyframes } from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { connectToSocket, sendChatMessage, disconnect } from '../utils/socket';
 import Header from "../components/Header";
-import Chat from '../components/Chat';
 import { updateGameSettings } from '../utils/api';
 import TopicBox from "../components/TopicBox";
 import Profile from '../components/Profile';
 import Setting from '../components/Setting';
+import ChatBox from '../components/ChatBox';
 import BoingButton from "../components/BoingButton";
 
 
@@ -58,34 +58,55 @@ const BoxesContainer = styled.div`
   margin-top: 20px;
 `;
 
-const PlayerListBox = styled.div`
-  width: 49%;
-  height: 60vh;
-  background-color: #EAE8DC;
-  border-radius: 20px;
-  display: flex;
-  flex-direction:column;
-  justify-content:space-around;
-`;
-
-const PlayerBox= styled.div`
-  dispaly:flex;
-  width: 100%;
-  height:20%;
-  display:flex;
-  justify-content:center;
-`
-
 const RightBox = styled.div`
   width: 60%;
   height: 62.5vh;
-  position:relative;
+  position: relative;
+  display: flex;
 `
+
+const MainContent = styled.div`
+  width: 90%;
+  height: 100%;
+  border-radius: 20px;
+`;
+
+const SetNav = styled.div`
+  display: flex;
+  position:absolute;
+  right:0;
+  top:4%;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 90%;
+  width: 10%;
+`;
+
+const SetNavButton = styled.button`
+  width: 80%;
+  height: 20%;
+  background-color: ${({ color }) => color || '#777'};
+  color: white;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px;
+  overflow:hidden;
+
+  img {
+    width: 80%;
+  }
+`;
 
 const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 90%;
   height: 8vh;
   position: absolute;
   bottom: 0; /* 설정 박스 바로 아래에 위치하도록 조정 */
@@ -112,7 +133,7 @@ const Button = styled.button`
   }
 `;
 
-const WaitingRoom = () => {
+const LobbyRoom = () => {
   const navigate = useNavigate();
   const [currentTopic, setCurrentTopic] = useState(0);
   const { sessionId } = useParams();
@@ -120,6 +141,7 @@ const WaitingRoom = () => {
   const [isHost, setIsHost] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [connectionError, setConnectionError] = useState(null);
+  const [activeTab, setActiveTab] = useState('setting');
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -165,6 +187,7 @@ const WaitingRoom = () => {
     };
   }, [sessionId]);
 
+  //주제 종류
   const topics = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const handleBackClick = useCallback(() => {
@@ -177,6 +200,10 @@ const WaitingRoom = () => {
 
   const handleNextClick = () => {
     setCurrentTopic((prevTopic) => (prevTopic === topics.length - 1 ? 0 : prevTopic + 1));
+  };
+
+  const handleSendChatMessage = (content) => {
+    sendChatMessage(sessionId, content);
   };
 
   // 초대 버튼 클릭 시 로직
@@ -196,8 +223,16 @@ const WaitingRoom = () => {
   };
 
   // 시작 버튼 클릭 시 로직
-  const handleStartClick = () => {
+  const handleStartClick = async (settings) => {
     console.log("Start button clicked");
+    //설정 보낸 후 시작.
+    try {
+      const token = localStorage.getItem('token');
+      await updateGameSettings(sessionId, settings, token);
+      console.log('Game settings updated successfully');
+    } catch (error) {
+      console.error('Failed to update game settings:', error);
+    }
   };
 
   if (connectionError) {
@@ -224,11 +259,21 @@ const WaitingRoom = () => {
           <BoxesContainer>
             <Profile players={gameState.players}/>
             <RightBox>
-            <Setting />
-            <ButtonsContainer>
-                <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
-              </ButtonsContainer>
+              <MainContent>
+                {activeTab === 'setting' ? <Setting /> : <ChatBox players={gameState.players} messages={chatMessages} onSendMessage={handleSendChatMessage}/>}
+                <ButtonsContainer>
+                  <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
+                  <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
+                </ButtonsContainer>
+              </MainContent>
+              <SetNav>
+                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => setActiveTab('setting')}>
+                  <img src="/room_설정.svg" alt="설정" />
+                </SetNavButton>
+                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => setActiveTab('chat')}>
+                  <img src="/room_채팅방.svg" alt="채팅방" />
+                </SetNavButton>
+              </SetNav>
             </RightBox>
           </BoxesContainer>
         </>
@@ -237,4 +282,4 @@ const WaitingRoom = () => {
   );
 };
 
-export default WaitingRoom;
+export default LobbyRoom;

@@ -35,12 +35,6 @@ const NicknameBox = styled.div`
   overflow:hidden;
 `;
 
-const ChatButton = styled.img`
-  width: 20%;
-  height: 100%;
-  cursor: pointer;
-`;
-
 const EmojiContainer = styled.div`
   position: absolute;
   bottom: 50px;
