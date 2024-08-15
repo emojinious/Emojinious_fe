@@ -50,7 +50,7 @@ const InputBox = styled.form`
   margin-bottom:2%;
 `
 const Chat = styled.input`
-  width:70%;
+  width:80%;
   height:95%;
   background-color: #EAE8DC;
   border:none;
@@ -58,17 +58,19 @@ const Chat = styled.input`
 `
 
 const ChatButton = styled.button`
-  width:10%;
-  height:auto;
-  border-radius: 10px;
+  width: 20%;
+  height: 95%
+  aspect-ratio: 1 / 1;
   background-image: url('/room_채팅버튼.svg');
-  background-size: cover;
+  background-size: contain;
+  background-position: center;
   background-repeat: no-repeat;
+  background-color: transparent;
   cursor: pointer;
-  border:none;
-  margin-right:3%;
+  border: none;
+  margin-right: 3%;
 
-  &:active{
+  &:active {
     background-image: url('/room_채팅버튼눌림.svg');
   }
 `
