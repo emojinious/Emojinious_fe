@@ -10,20 +10,30 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items:center;
   padding: 20px;
   box-sizing: border-box;
 `;
 
+const Box = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #EAE8DC;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items:center;
+`
 const Chatbox = styled.div`
   width: 100%;
-  height: 90%;
+  height: 80%;
   background-color: #EAE8DC;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   flex-direction: column;
   overflow-Y: scroll;
   color:black;
-  padding: 
 `;
 
 const InputBox = styled.form`
@@ -31,32 +41,31 @@ const InputBox = styled.form`
   height: 10%;
   display:flex;
   justify-content: space-between;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
   background-color: #EAE8DC;
+  margin-bottom:2%;
 `
 const Chat = styled.input`
   width:84%;
   height:95%;
-  border-bottom-left-radius: 10px;
   background-color: #EAE8DC;
   border:none;
   padding:0 20px;
+  margin-left: 2%;
 `
 
 const ChatButton = styled.button`
   width:10%;
   height:100%;
   border-radius: 10px;
-  background-color: #EAE8DC;
   background-image: url('/room_채팅버튼.svg');
   background-size: cover;
   background-repeat: no-repeat;
   cursor: pointer;
   border:none;
+  margin-right:3%;
 
   &:active{
-    background-color:#E1DFD0;
+    background-image: url('/room_채팅버튼눌림.svg');
   }
 `
 
@@ -72,6 +81,19 @@ const nicknameColors = [
   "#FEA1BD", //S
 ];
 
+const Divider = styled.div`
+  width: 92%;
+  height: 5px;
+  background: repeating-linear-gradient(
+    to right,
+    #14AE59,
+    #14AE59 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  background-color: #EAE8DC;
+`;
+
 const ChatBox = ({ players, messages, onSendMessage }) => {
   const [inputMessage, setInputMessage] = useState('');
 
@@ -86,6 +108,7 @@ const ChatBox = ({ players, messages, onSendMessage }) => {
   return (
     <>
         <ChatContainer>
+        <Box>
         <Chatbox>
         {messages.map((msg, index) => {
           const player = players.find(p => p.nickname === msg.sender);
@@ -101,6 +124,7 @@ const ChatBox = ({ players, messages, onSendMessage }) => {
           );
         })}
         </Chatbox>
+        <Divider />
         <InputBox onSubmit={handleSendMessage}>
           <Chat
             type="text"
@@ -110,6 +134,7 @@ const ChatBox = ({ players, messages, onSendMessage }) => {
             />
           <ChatButton type="submit"/>
         </InputBox>
+        </Box>
       </ChatContainer>
     </>
   );
