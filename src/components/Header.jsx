@@ -8,7 +8,6 @@ const HeaderParent = styled.header`
   height: 15vh;
   position: relative;
   display: flex;
-  align-items: flex-start;
   justify-content: center; /* HeaderMark를 중앙에 배치 */
   align-items:center;
   text-align:center;
