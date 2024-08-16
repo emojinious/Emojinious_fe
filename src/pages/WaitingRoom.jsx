@@ -27,23 +27,15 @@ const HeaderBack = styled.img`
   cursor: pointer;
   z-index: 1;
 `;
-const UnionIcon = styled.img`
+const LeftBlueArrow = styled.img`
   align-self: stretch;
   height: 44.5px;
   position: relative;
   max-width: 100%;
   overflow: hidden;
   flex-shrink: 0;
-  background-color: var(--color-deepskyblue-100);
   display: flex;
   width: auto;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    align-self: stretch;
-    width: auto;
-    height: 44.5px;
-  }
 `;
 const UnionWrapper = styled.div`
   width: 74.4px;
@@ -56,18 +48,6 @@ const UnionWrapper = styled.div`
   height: auto;
   gap: var(--gap-0);
   transform: rotate(0deg);
-  &:hover {
-    display: flex;
-    width: 74.4px;
-    height: auto;
-    flex-direction: column;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: flex-start;
-    transform: rotate(0deg);
-    padding: var(--padding-smi-5) 0px 0px;
-    box-sizing: border-box;
-  }
 `;
 const B = styled.b`
   position: relative;
@@ -118,27 +98,6 @@ const Wrapper = styled.button`
   gap: var(--gap-0);
   transform: rotate(0deg);
   z-index: 1;
-  &:hover {
-    background-color: var(--color-linen-100);
-    display: flex;
-    flex: 1;
-    height: auto;
-    flex-direction: row;
-    gap: var(--gap-0);
-    align-items: flex-start;
-    justify-content: center;
-    transform: rotate(0deg);
-    border-radius: var(--br-mini);
-    padding: var(--padding-5xs) var(--padding-xl);
-    box-sizing: border-box;
-    border: 3px solid var(--color-deepskyblue-100);
-    max-width: 100%;
-  }
-  &:active {
-    background-color: var(--color-lightgray);
-    border: 3px solid var(--color-steelblue);
-    box-sizing: border-box;
-  }
 `;
 const FrameDiv = styled.div`
   flex: 1;
@@ -172,7 +131,7 @@ const FrameDiv = styled.div`
     max-width: 100%;
   }
 `;
-const UnionIcon1 = styled.img`
+const RightBlueArrow = styled.img`
   align-self: stretch;
   height: 44.5px;
   position: relative;
@@ -180,16 +139,8 @@ const UnionIcon1 = styled.img`
   overflow: hidden;
   flex-shrink: 0;
   object-fit: contain;
-  background-color: var(--color-deepskyblue-100);
   display: flex;
   width: auto;
-  &:hover {
-    background-color: var(--color-deepskyblue-100);
-    display: flex;
-    align-self: stretch;
-    width: auto;
-    height: 44.5px;
-  }
 `;
 const FrameContainer = styled.div`
   width: 659.4px;
@@ -412,6 +363,7 @@ const Parent = styled.div`
   }
 `;
 const InvitationContainer = styled.div`
+  background-color: black;
   align-self: stretch;
   display: flex;
   flex-direction: column;
@@ -1727,7 +1679,7 @@ function WaitingRoom() {
           <FrameWrapper>
             <FrameContainer>
               <UnionWrapper>
-                <UnionIcon loading="lazy" alt="" src="/union2.svg" />
+                <LeftBlueArrow loading="lazy" alt="" src="/waitingroom_왼쪽파란화살표.svg" />
               </UnionWrapper>
               <FrameDiv>
                 <Wrapper>
@@ -1735,7 +1687,7 @@ function WaitingRoom() {
                 </Wrapper>
               </FrameDiv>
               <UnionWrapper>
-                <UnionIcon1 loading="lazy" alt="" src="/union-1@2x.png" />
+                <RightBlueArrow loading="lazy" alt="" src="/waitingroom_오른쪽파란화살표.svg" />
               </UnionWrapper>
             </FrameContainer>
           </FrameWrapper>
@@ -1750,6 +1702,24 @@ function WaitingRoom() {
                 <B2>왕자 탄 백마</B2>
               </Parent>
               <InvitationContainer>
+                <InnerInvitation
+                  group174="/group-165@2x.png"
+                  prop="왕자 탄 백마"
+                  union="/union-2.svg"
+                  prop1="🤤"
+                />
+                <InnerInvitation
+                  group174="/group-186.svg"
+                  prop="용감한 제리"
+                  union="/union-2.svg"
+                  prop1="🤤"
+                />
+                <InnerInvitation
+                  group174="/group-186.svg"
+                  prop="용감한 제리"
+                  union="/union-2.svg"
+                  prop1="🤤"
+                />
                 <InnerInvitation
                   group174="/group-186.svg"
                   prop="용감한 제리"

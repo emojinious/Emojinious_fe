@@ -87,7 +87,6 @@ const UnionIcon = styled.img`
   position: relative;
   max-height: 100%;
   min-height: 58;
-  background-color: var(--color-tomato-300);
   display: flex;
   height: auto;
   z-index: 1;
