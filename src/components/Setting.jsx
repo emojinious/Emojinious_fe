@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import BoingButton from './BoingButton';
 
@@ -166,10 +166,12 @@ const TurnNumber = styled.div`
   box-sizing:border-box;
 `;
 
-const Setting = () => {
-  const [difficulty, setDifficulty] = useState('하');
+const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
+  const [difficulty, setDifficulty] = useState(gameState.settings.difficulty || '하');
 
   const handleDifficultyClick = (event) => {
+    if (!isHost) return;
+
     const { clientY, target } = event;
     const { top, height } = target.getBoundingClientRect();
     const clickPosition = clientY - top;
@@ -195,15 +197,29 @@ const Setting = () => {
     }
   };
 
-  const [turns, setTurns] = useState(1);
+  const [turns, setTurns] = useState(gameState.settings.turns || 1);
 
   const handleDecrease = () => {
-    if (turns > 1) setTurns(turns - 1);
+    if (isHost && turns > 1) setTurns(turns - 1);
   };
 
   const handleIncrease = () => {
-    if (turns < 5) setTurns(turns + 1);
+    if (isHost && turns < 5) setTurns(turns + 1);
   };
+
+  const handleSubmit = () => {
+    if (isHost) {
+      handleUpdateGameSettings(
+        difficulty,
+        turns
+
+      );
+    }
+  };
+
+  useEffect(() => {
+    handleSubmit();
+  }, [difficulty, turns]);
 
   return (
     <GameSettingsBox>
@@ -262,6 +278,7 @@ const Setting = () => {
           </TurnBox>
         </BottomBox>
       </BottomBoxes>
+      {isHost && <button onClick={handleSubmit}>Update Settings</button>}
     </GameSettingsBox>
   );
 };

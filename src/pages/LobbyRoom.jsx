@@ -237,16 +237,8 @@ const LobbyRoom = () => {
   };
 
   // 시작 버튼 클릭 시 로직
-  const handleStartClick = async (settings) => {
+  const handleStartClick = async () => {
     console.log("Start button clicked");
-    //설정 보낸 후 시작.
-    try {
-      const token = localStorage.getItem('token');
-      await updateGameSettings(sessionId, settings, token);
-      console.log('Game settings updated successfully');
-    } catch (error) {
-      console.error('Failed to update game settings:', error);
-    }
   };
 
   const handleTabChange = (tab) => {
@@ -261,6 +253,16 @@ const LobbyRoom = () => {
   if (connectionError) {
     return <div>Error: {connectionError}</div>;
   }
+
+  const handleUpdateGameSettings = async (settings) => {
+    try {
+      const token = localStorage.getItem('token');
+      await updateGameSettings(sessionId, settings, token);
+      console.log('Game settings updated successfully');
+    } catch (error) {
+      console.error('Failed to update game settings:', error);
+    }
+  };
 
   return (
     <HomeContainer>
@@ -283,7 +285,19 @@ const LobbyRoom = () => {
             <Profile players={gameState.players}/>
             <RightBox>
               <MainContent>
-                {activeTab === 'setting' ? <Setting /> : <ChatBox players={gameState.players} messages={chatMessages} onSendMessage={handleSendChatMessage}/>}
+                {activeTab === 'setting' ? (
+                  <Setting
+                    isHost={isHost}
+                    gameState={gameState}
+                    handleUpdateGameSettings={handleUpdateGameSettings}
+                  />
+                ) : (
+                  <ChatBox
+                    players={gameState.players}
+                    messages={chatMessages}
+                    onSendMessage={handleSendChatMessage}
+                  />
+                )}
                 <ButtonsContainer>
                   <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
                   <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
