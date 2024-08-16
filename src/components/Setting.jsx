@@ -277,7 +277,7 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
                </TimeInputmiddle>
               <TimeInputSec 
               type="number" 
-              value={promptTimeLimit}
+              value={guessTimeLimit}
               onChange={(e) => handleTimeChange('guess', e.target.value)}
               placeholder="00" />
             </TimeInnerBox>
