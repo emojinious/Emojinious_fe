@@ -255,6 +255,7 @@ const LobbyRoom = () => {
   }
 
   const handleUpdateGameSettings = async (settings) => {
+    console.log(settings)
     try {
       const token = localStorage.getItem('token');
       await updateGameSettings(sessionId, settings, token);

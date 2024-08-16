@@ -63,7 +63,7 @@ const CharacterCardWrap = styled.div`
 const chWidth = ['45vh', '30vh', '25vh', '20vh', '17vh', '15vh', '14vh', '13vh']
 const chHeight = ['45vh', '30vh', '25vh', '20vh', '17vh', '15vh', '14vh', '13ch']
 const chFilter = ['brightness(100%)', 'brightness(66%)', 'brightness(55%)', 'brightness(40%)', 'brightness(30%)', 'brightness(20%)', 'brightness(18%)', 'brightness(16%)']
-const chZindex = [7, 6, 5, 4, 3, 2, 1, 0]
+const chZindex = [127, 63, 31, 15, 7, 3, 1, 0]
 const CharacterCard = styled.img`
   position: absolute;
   width: ${({ diff }) => chWidth[diff]};
@@ -82,7 +82,7 @@ const RightArrow = styled(BoingButton).attrs({ isImageButton: true })`
   right:5%;
   margin:0;
   user-select: none;
-  z-index:8;
+  z-index:128;
 `;
 const LeftArrow = styled(BoingButton).attrs({ isImageButton: true })`
   width: 4%;
@@ -164,7 +164,7 @@ const PlayerSetup = () => {
           style={{ visibility: currentIndex === 0 ? 'hidden' : 'visible' }}
           />
         {characters.map((character, index) => {
-          const offset = Math.sign(index - currentIndex) * (300 * Math.log(Math.abs(index - currentIndex) + 1) / Math.log(2));
+          const offset = Math.sign(index - currentIndex) * (200 * Math.log((Math.sqrt(Math.abs(index - currentIndex), 2) + 1.3)) / Math.log(2));
           // Math.sign(index - curentIndex) * (200 * Math.log(Math.abs(index - currentIndex) + 1) / Math.log(2));
           return (
             <CharacterCard

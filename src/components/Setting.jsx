@@ -167,59 +167,86 @@ const TurnNumber = styled.div`
 `;
 
 const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
-  const [difficulty, setDifficulty] = useState(gameState.settings.difficulty || '하');
+  const [difficulty, setDifficulty] = useState(gameState.settings.difficulty || 'EASY');
+  const [turns, setTurns] = useState(gameState.settings.turns || 1);
+  const [promptTimeLimit, setPromptTimeLimit] = useState(gameState.settings.promptTimeLimit || 0);
+  const [guessTimeLimit, setGuessTimeLimit] = useState(gameState.settings.guessTimeLimit || 0);
+  const [theme, setTheme] = useState(gameState.settings.theme || '');
 
-  const handleDifficultyClick = (event) => {
+  useEffect(function() {
+    setDifficulty(gameState.settings.difficulty);
+    setTurns(gameState.settings.turns);
+    setPromptTimeLimit(gameState.settings.promptTimeLimit);
+    setGuessTimeLimit(gameState.settings.guessTimeLimit);
+    setTheme(gameState.settings.theme);
+  }, [gameState]);
+
+  const handleDifficultyClick = function(event) {
     if (!isHost) return;
 
-    const { clientY, target } = event;
-    const { top, height } = target.getBoundingClientRect();
-    const clickPosition = clientY - top;
-    const third = height / 3;
+    var clientY = event.clientY;
+    var target = event.target;
+    var top = target.getBoundingClientRect().top;
+    var height = target.getBoundingClientRect().height;
+    var clickPosition = clientY - top;
+    var third = height / 3;
 
+    var newDifficulty;
     if (clickPosition >= third * 2) {
-      setDifficulty('하');
+      newDifficulty = 'EASY';
     } else if (clickPosition >= third) {
-      setDifficulty('중');
+      newDifficulty = 'NORMAL';
     } else {
-      setDifficulty('상');
+      newDifficulty = 'HARD';
+    }
+    setDifficulty(newDifficulty);
+    handleSubmit({ difficulty: newDifficulty });
+  };
+
+  const handleDecrease = function() {
+    if (isHost && turns > 1) {
+      var newTurns = turns - 1;
+      setTurns(newTurns);
+      handleSubmit({ turns: newTurns });
     }
   };
 
-  const getDifficultyImage = () => {
-    switch (difficulty) {
-      case '상':
-        return '/room_난이도상.svg';
-      case '중':
-        return '/room_난이도중.svg';
-      default:
-        return '/room_난이도하.svg';
+  const handleIncrease = function() {
+    if (isHost && turns < 5) {
+      var newTurns = turns + 1;
+      setTurns(newTurns);
+      handleSubmit({ turns: newTurns });
     }
   };
 
-  const [turns, setTurns] = useState(gameState.settings.turns || 1);
-
-  const handleDecrease = () => {
-    if (isHost && turns > 1) setTurns(turns - 1);
+  const handleTimeChange = function(type, value) {
+    if (!isHost) return;
+    
+    var newTime = parseInt(value, 10) || 0;
+    
+    if (type === 'prompt') {
+      setPromptTimeLimit(newTime);
+      handleSubmit({ promptTimeLimit: newTime });
+    } else {
+      setGuessTimeLimit(newTime);
+      handleSubmit({ guessTimeLimit: newTime });
+    }
   };
 
-  const handleIncrease = () => {
-    if (isHost && turns < 5) setTurns(turns + 1);
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = function(changedSettings) {
     if (isHost) {
-      handleUpdateGameSettings(
-        difficulty,
-        turns
+      var settings = {
+        promptTimeLimit: promptTimeLimit,
+        guessTimeLimit: guessTimeLimit,
+        difficulty: difficulty,
+        turns: turns,
+        theme: theme
+      };
 
-      );
+      Object.assign(settings, changedSettings || {});
+      handleUpdateGameSettings(settings);
     }
   };
-
-  useEffect(() => {
-    handleSubmit();
-  }, [difficulty, turns]);
 
   return (
     <GameSettingsBox>
@@ -233,7 +260,11 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
                <TimeInputmiddle>
                 :
                </TimeInputmiddle>
-              <TimeInputSec type="text" placeholder="00" />
+              <TimeInputSec 
+              type="number" 
+              value={promptTimeLimit}
+              onChange={(e) => handleTimeChange('prompt', e.target.value)}
+              placeholder="00" />
             </TimeInnerBox>
           </TimeBox>
           <VerticalDottedLine />
@@ -244,7 +275,11 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
                <TimeInputmiddle>
                 :
                </TimeInputmiddle>
-              <TimeInputSec type="text" placeholder="00" />
+              <TimeInputSec 
+              type="number" 
+              value={promptTimeLimit}
+              onChange={(e) => handleTimeChange('guess', e.target.value)}
+              placeholder="00" />
             </TimeInnerBox>
           </TimeBox>
         </TopInnerBox>
@@ -254,7 +289,7 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
           <Title>난이도</Title>
           <DifficultyImage
             as="img"
-            src={getDifficultyImage()}
+            src={"/room_난이도" + difficulty + ".svg"}
             alt="Difficulty"
             onClick={handleDifficultyClick}
           />
@@ -278,7 +313,6 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
           </TurnBox>
         </BottomBox>
       </BottomBoxes>
-      {isHost && <button onClick={handleSubmit}>Update Settings</button>}
     </GameSettingsBox>
   );
 };
