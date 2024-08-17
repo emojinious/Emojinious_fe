@@ -9,6 +9,7 @@ import Profile from '../components/Profile';
 import Setting from '../components/Setting';
 import ChatBox from '../components/ChatBox';
 import BoingButton from "../components/BoingButton";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 const boingEffect = keyframes`
@@ -150,6 +151,7 @@ const LobbyRoom = () => {
   const [activeTab, setActiveTab] = useState('setting');
   const [hasChatNotification, setHasChatNotification] = useState(false);
   const [hasSettingNotification, setHasSettingNotification] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -255,6 +257,7 @@ const LobbyRoom = () => {
   }
 
   const handleUpdateGameSettings = async (settings) => {
+    setLoading(true);
     console.log(settings)
     try {
       const token = localStorage.getItem('token');
@@ -262,59 +265,65 @@ const LobbyRoom = () => {
       console.log('Game settings updated successfully');
     } catch (error) {
       console.error('Failed to update game settings:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <HomeContainer>
-      {gameState && (
-        <>
-          <Header />
-          <BackButton 
-            as="img"
-            src="/뒤로가기.svg" 
-            alt="Back Button" 
-            onClick={handleBackClick} 
-            />
-          <TopicBox 
-            currentTopic={currentTopic} 
-            topics={topics} 
-            onPrevClick={handlePrevClick} 
-            onNextClick={handleNextClick} 
-            />
-          <BoxesContainer>
-            <Profile players={gameState.players}/>
-            <RightBox>
-              <MainContent>
-                {activeTab === 'setting' ? (
-                  <Setting
-                    isHost={isHost}
-                    gameState={gameState}
-                    handleUpdateGameSettings={handleUpdateGameSettings}
-                  />
-                ) : (
-                  <ChatBox
-                    players={gameState.players}
-                    messages={chatMessages}
-                    onSendMessage={handleSendChatMessage}
-                  />
-                )}
-                <ButtonsContainer>
-                  <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                  <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
-                </ButtonsContainer>
-              </MainContent>
-              <SetNav>
-                <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
-                  <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
-                </SetNavButton>
-                <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
-                  <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
-                </SetNavButton>
-              </SetNav>
-            </RightBox>
-          </BoxesContainer>
-        </>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        gameState && (
+          <>
+            <Header />
+            <BackButton 
+              as="img"
+              src="/뒤로가기.svg" 
+              alt="Back Button" 
+              onClick={handleBackClick} 
+              />
+            <TopicBox 
+              currentTopic={currentTopic} 
+              topics={topics} 
+              onPrevClick={handlePrevClick} 
+              onNextClick={handleNextClick} 
+              />
+            <BoxesContainer>
+              <Profile players={gameState.players}/>
+              <RightBox>
+                <MainContent>
+                  {activeTab === 'setting' ? (
+                    <Setting
+                      isHost={isHost}
+                      gameState={gameState}
+                      handleUpdateGameSettings={handleUpdateGameSettings}
+                    />
+                  ) : (
+                    <ChatBox
+                      players={gameState.players}
+                      messages={chatMessages}
+                      onSendMessage={handleSendChatMessage}
+                    />
+                  )}
+                  <ButtonsContainer>
+                    <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
+                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
+                  </ButtonsContainer>
+                </MainContent>
+                <SetNav>
+                  <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
+                    <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
+                  </SetNavButton>
+                  <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
+                    <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
+                  </SetNavButton>
+                </SetNav>
+              </RightBox>
+            </BoxesContainer>
+          </>
+        )
       )}
     </HomeContainer>
   );
