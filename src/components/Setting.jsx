@@ -130,6 +130,7 @@ const BottomBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 `;
 
 const DifficultyImage = styled(BoingButton).attrs({ isImageButton: true })`
@@ -155,14 +156,15 @@ const TurnArrow = styled(BoingButton).attrs({ isImageButton: true })`
 
 const TurnNumber = styled.div`
   height: 100%;
+  width: 55px;
   display: flex;
+  justify-content: center;
   align-items: center;
   text-align:center;
   font-size: 80px;
   color:#434040;
   font-weight: bold;
   margin: 0 30px;
-  padding-bottom: 20px;
   box-sizing:border-box;
 `;
 

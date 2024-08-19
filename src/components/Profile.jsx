@@ -120,6 +120,7 @@ const PlayerListBox = styled.div`
 
 const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
 
+/*
 const PlayerProfile = ({ players }) => {
   const [isEmojiVisible, setEmojiVisible] = useState(false);
 
@@ -135,8 +136,8 @@ const PlayerProfile = ({ players }) => {
   return (
     <PlayerListBox>
       {players.map((player) => (
-        <PlayerBox>
-          <ProfileContainer key={player.id}>
+        <PlayerBox key={player.id}>
+          <ProfileContainer>
             <ProfileImage
               src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
               alt={`${player.nickname} Profile`}
@@ -147,6 +148,45 @@ const PlayerProfile = ({ players }) => {
             <EmojiContainer visible={isEmojiVisible}>
               {emojis.map((emoji, index) => (
                 <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
+                  {emoji}
+                </Emoji>
+              ))}
+            </EmojiContainer>
+          </ProfileContainer>
+        </PlayerBox>
+      ))}
+    </PlayerListBox>
+  );
+};
+*/
+
+const PlayerProfile = ({ players }) => {
+  const [isEmojiVisible, setEmojiVisible] = useState(false);
+  
+  const toggleEmojiContainer = () => {
+    setEmojiVisible(!isEmojiVisible);
+  };
+  
+  const handleEmojiClick = (emoji) => {
+    alert(`You selected: ${emoji}`);
+    setEmojiVisible(false);
+  };
+  
+  return (
+    <PlayerListBox>
+      {players.map((player, index) => (
+        <PlayerBox key={`${player.id}-${index}`}>
+          <ProfileContainer>
+            <ProfileImage
+              src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
+              alt={`${player.nickname} Profile`}
+              />
+            <NicknameBox bgColor={characterColors[player.characterId - 1]}>
+              {player.nickname} {player.isHost && "(Host)"}
+            </NicknameBox>
+            <EmojiContainer visible={isEmojiVisible}>
+              {emojis.map((emoji, emojiIndex) => (
+                <Emoji key={emojiIndex} onClick={() => handleEmojiClick(emoji)}>
                   {emoji}
                 </Emoji>
               ))}
