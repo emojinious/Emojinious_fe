@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://yhcho.ddns.net:8081/api';
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+const API_BASE_URL = serverUrl + '/api';
 
 export async function createPlayer(nickname, characterId, sessionId = null) {
   const url = sessionId

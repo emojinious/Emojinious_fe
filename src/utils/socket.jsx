@@ -2,10 +2,11 @@ import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 
 let stompClient = null;
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export function connectToSocket(token, playerId, sessionId, onConnectSuccess) {
   return new Promise((resolve, reject) => {
-    const socket = new SockJS('http://yhcho.ddns.net:8081/ws');
+    const socket = new SockJS(serverUrl + '/ws');
     stompClient = Stomp.over(socket);
 
     const headers = {
