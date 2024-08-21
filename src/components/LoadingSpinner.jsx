@@ -6,22 +6,19 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-const Spinner = styled.div`
-  border: 16px solid #f3f3f3;
+const Spinner = styled.img`
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
+  width: 60px;
+  height: 60px;
   animation: ${spin} 2s linear infinite;
   margin: auto;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  bottom: 4%;
+  right: 2%;
   transform: translate(-50%, -50%);
+  z-index:1000;
 `;
 
-const LoadingSpinner = () => (
-  <Spinner />
-);
+const LoadingSpinner = () => <Spinner src="/로딩원.svg" alt="로딩"/>;
 
 export default LoadingSpinner;

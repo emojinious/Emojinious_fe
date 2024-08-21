@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import { connectToSocket, sendChatMessage, disconnect } from '../utils/socket';
@@ -142,7 +142,7 @@ const Button = styled.button`
 
 const LobbyRoom = () => {
   const navigate = useNavigate();
-  const [currentTopic, setCurrentTopic] = useState(0);
+  const [currentTopic, setCurrentTopic] = useState();
   const { sessionId } = useParams();
   const [gameState, setGameState] = useState(null);
   const [isHost, setIsHost] = useState(false);
@@ -152,6 +152,7 @@ const LobbyRoom = () => {
   const [hasChatNotification, setHasChatNotification] = useState(false);
   const [hasSettingNotification, setHasSettingNotification] = useState(false);
   const [loading, setLoading] = useState(false);
+  const previousSettingsRef = useRef(gameState?.settings);
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -173,9 +174,16 @@ const LobbyRoom = () => {
           console.log('Received game state:', newGameState);
           setGameState(newGameState);
           setIsHost(newGameState.players.find(p => p.id === playerId)?.isHost || false);
-          if (activeTab !== 'setting') {
+          const previousSettings = previousSettingsRef.current;
+          const newSettings = newGameState.settings;
+
+          if (newGameState.settings.topic) {
+            setCurrentTopic(newGameState.settings.topic); // 주제 업데이트
+          }
+          if (previousSettings && JSON.stringify(previousSettings) !== JSON.stringify(newSettings)) {
             setHasSettingNotification(true);
           }
+          previousSettingsRef.current = newSettings;
         });
         
           stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
@@ -203,20 +211,9 @@ const LobbyRoom = () => {
     };
   }, [sessionId]);
 
-  //주제 종류
-  const topics = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
   const handleBackClick = useCallback(() => {
     navigate(-1); // 이전 페이지로 이동
   }, [navigate]);
-
-  const handlePrevClick = () => {
-    setCurrentTopic((prevTopic) => (prevTopic === 0 ? topics.length - 1 : prevTopic - 1));
-  };
-
-  const handleNextClick = () => {
-    setCurrentTopic((prevTopic) => (prevTopic === topics.length - 1 ? 0 : prevTopic + 1));
-  };
 
   const handleSendChatMessage = (content) => {
     sendChatMessage(sessionId, content);
@@ -258,7 +255,6 @@ const LobbyRoom = () => {
 
   const handleUpdateGameSettings = async (settings) => {
     setLoading(true);
-    console.log(settings)
     try {
       const token = localStorage.getItem('token');
       await updateGameSettings(sessionId, settings, token);
@@ -270,12 +266,23 @@ const LobbyRoom = () => {
     }
   };
 
+  const handleUpdateTheme = async (settings) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      console.log("dksltlqkf: "+settings.theme);
+      await updateGameSettings(sessionId, settings, token);
+      console.log('Game settings updated successfully');
+    } catch (error) {
+      console.error('Failed to update game settings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <HomeContainer>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        gameState && (
+      {gameState && (
           <>
             <Header />
             <BackButton 
@@ -285,11 +292,10 @@ const LobbyRoom = () => {
               onClick={handleBackClick} 
               />
             <TopicBox 
-              currentTopic={currentTopic} 
-              topics={topics} 
-              onPrevClick={handlePrevClick} 
-              onNextClick={handleNextClick} 
-              />
+              isHost={isHost} 
+              gameState={gameState} 
+              handleUpdateTheme={handleUpdateTheme} 
+            />
             <BoxesContainer>
               <Profile players={gameState.players}/>
               <RightBox>
@@ -323,8 +329,8 @@ const LobbyRoom = () => {
               </RightBox>
             </BoxesContainer>
           </>
-        )
-      )}
+        )}
+        {loading && <LoadingSpinner />}
     </HomeContainer>
   );
 };

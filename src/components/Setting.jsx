@@ -72,45 +72,26 @@ const TimeInnerBox = styled.div`
   justify-content: center;
 `;
 
-const TimeInputMin = styled.input`
-  width: 43%;
-  font-size: 40px;
+const TimeDisplay = styled.div`
+  font-size: 35px;
   font-weight: bold;
   text-align: center;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  background: none;
-  color: #939393;
-  padding: 5px;
-  box-sizing: border-box;
-
+  color: #434040;
+  width: 120px;
 `;
 
-const TimeInputmiddle = styled.div`
-  width: 7%;
+const TimeButton = styled.button`
   font-size: 40px;
   font-weight: bold;
-  text-align: center;
-  align-items: center;
-  border:none;
-  color: #939393;
-  box-sizing:border;
-
-`
-
-const TimeInputSec = styled.input`
-  width: 43%;
-  font-size: 40px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
   background: none;
-  color: #939393;
-  padding: 5px;
-  box-sizing: border-box;
+  border: none;
+  color: #434040;
+  cursor: pointer;
+  
+  &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const BottomBoxes = styled.div`
@@ -168,19 +149,77 @@ const TurnNumber = styled.div`
   box-sizing:border-box;
 `;
 
+const HelpButton = styled.button`
+  position: absolute;
+  top: 5%;
+  right: 10px;
+  background-color:#14AE59;
+  padding: 4px 9px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight:bold;
+  color: #EAE8DC;
+  z-index: 10;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+`;
+
+const ModalContainer = styled.div`
+  position: relative;
+  border-radius: 10px;
+  height:80vmin;
+  width:80vmin;
+  max-width: 800px;
+  text-align: center;
+`
+
+const ModalContent = styled.img`
+  border-radius: 10px;
+  height:100%;
+  width:100%;
+  max-width: 800px;
+  text-align: center;
+`;
+
+const ModalExit = styled.img`
+  position: absolute;
+  top: 6%;
+  right: 3%;
+  background-color: transparent;
+  border: none;
+  width: 6%;
+  cursor: pointer;
+`;
+
+
+
 const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
   const [difficulty, setDifficulty] = useState(gameState.settings.difficulty || 'EASY');
   const [turns, setTurns] = useState(gameState.settings.turns || 1);
   const [promptTimeLimit, setPromptTimeLimit] = useState(gameState.settings.promptTimeLimit || 0);
   const [guessTimeLimit, setGuessTimeLimit] = useState(gameState.settings.guessTimeLimit || 0);
-  const [theme, setTheme] = useState(gameState.settings.theme || '');
+  const [topic, setTopic] = useState(gameState.settings.difficulty || '');
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(function() {
     setDifficulty(gameState.settings.difficulty);
     setTurns(gameState.settings.turns);
     setPromptTimeLimit(gameState.settings.promptTimeLimit);
     setGuessTimeLimit(gameState.settings.guessTimeLimit);
-    setTheme(gameState.settings.theme);
+    setTopic(gameState.settings.difficulty);
   }, [gameState]);
 
   const handleDifficultyClick = function(event) {
@@ -220,18 +259,22 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
       handleSubmit({ turns: newTurns });
     }
   };
-
-  const handleTimeChange = function(type, value) {
+  const handleTimeChange = (type, operation) => {
     if (!isHost) return;
-    
-    var newTime = parseInt(value, 10) || 0;
-    
+
+    const updateLimit = (currentValue, operation) => {
+      let newTime = operation === 'increase' ? currentValue + 5 : currentValue - 5;
+      return Math.max(10, Math.min(120, newTime));
+    };
+
     if (type === 'prompt') {
-      setPromptTimeLimit(newTime);
-      handleSubmit({ promptTimeLimit: newTime });
+      const newPromptTime = updateLimit(promptTimeLimit, operation);
+      setPromptTimeLimit(newPromptTime);
+      handleSubmit({ promptTimeLimit: newPromptTime });
     } else {
-      setGuessTimeLimit(newTime);
-      handleSubmit({ guessTimeLimit: newTime });
+      const newGuessTime = updateLimit(guessTimeLimit, operation);
+      setGuessTimeLimit(newGuessTime);
+      handleSubmit({ guessTimeLimit: newGuessTime });
     }
   };
 
@@ -242,12 +285,19 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
         guessTimeLimit: guessTimeLimit,
         difficulty: difficulty,
         turns: turns,
-        theme: theme
       };
 
       Object.assign(settings, changedSettings || {});
       handleUpdateGameSettings(settings);
     }
+  };
+
+  const handleHelpClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -258,30 +308,46 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
           <TimeBox>
             <SemiTitle>프롬프트 입력 시간</SemiTitle>
             <TimeInnerBox>
-              <TimeInputMin type="text" placeholder="00" />
-               <TimeInputmiddle>
-                :
-               </TimeInputmiddle>
-              <TimeInputSec 
-              type="number" 
-              value={promptTimeLimit}
-              onChange={(e) => handleTimeChange('prompt', e.target.value)}
-              placeholder="00" />
+            {isHost && (
+              <TimeButton 
+                onClick={() => handleTimeChange('prompt', 'decrease')}
+                disabled={promptTimeLimit <= 10}
+              >
+                -
+              </TimeButton>
+            )}
+            <TimeDisplay>{promptTimeLimit}초</TimeDisplay>
+            {isHost && (
+              <TimeButton 
+                onClick={() => handleTimeChange('prompt', 'increase')}
+                disabled={promptTimeLimit >= 120}
+              >
+                +
+              </TimeButton>
+            )}
             </TimeInnerBox>
           </TimeBox>
           <VerticalDottedLine />
           <TimeBox>
             <SemiTitle>정답 입력 시간</SemiTitle>
             <TimeInnerBox>
-            <TimeInputMin type="text" placeholder="00" />
-               <TimeInputmiddle>
-                :
-               </TimeInputmiddle>
-              <TimeInputSec 
-              type="number" 
-              value={guessTimeLimit}
-              onChange={(e) => handleTimeChange('guess', e.target.value)}
-              placeholder="00" />
+            {isHost && (
+              <TimeButton 
+                onClick={() => handleTimeChange('guess', 'decrease')}
+                disabled={guessTimeLimit <= 10}
+              >
+                -
+              </TimeButton>
+            )}
+            <TimeDisplay>{guessTimeLimit}초</TimeDisplay>
+            {isHost && (
+              <TimeButton 
+                onClick={() => handleTimeChange('guess', 'increase')}
+                disabled={guessTimeLimit >= 120}
+              >
+                +
+              </TimeButton>
+            )}
             </TimeInnerBox>
           </TimeBox>
         </TopInnerBox>
@@ -289,6 +355,7 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
       <BottomBoxes>  
         <BottomBox>
           <Title>난이도</Title>
+          <HelpButton onClick={handleHelpClick}>?</HelpButton>
           <DifficultyImage
             as="img"
             src={"/room_난이도" + difficulty + ".svg"}
@@ -299,22 +366,34 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
         <BottomBox>
           <Title>턴 수</Title>
           <TurnBox>
+          {isHost && (
             <TurnArrow 
               as="img"
               src="/room_턴왼화살표.svg" 
               alt="Decrease Turns" 
               onClick={handleDecrease} 
             />
-            <TurnNumber>{turns}</TurnNumber>
+          )}
+          <TurnNumber>{turns}</TurnNumber>
+          {isHost && (
             <TurnArrow
               as="img" 
               src="/room_턴오화살표.svg" 
               alt="Increase Turns" 
               onClick={handleIncrease} 
             />
+          )}
           </TurnBox>
         </BottomBox>
       </BottomBoxes>
+      {isModalOpen && (
+        <ModalOverlay onClick={handleCloseModal}>
+          <ModalContainer>
+            <ModalExit src="/room_난이도설명창닫기.svg" alt="닫기" onClick={handleCloseModal}/>
+            <ModalContent src="/room_난이도설명창.svg" alt="난이도설명창"/>
+          </ModalContainer>
+        </ModalOverlay>
+      )}
     </GameSettingsBox>
   );
 };

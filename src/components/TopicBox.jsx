@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import BoingButton from "./BoingButton";
 
 const TopicContainer = styled.div`
   width:100vw;
@@ -8,13 +7,6 @@ const TopicContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
-`;
-
-const ArrowButton = styled(BoingButton).attrs({ isImageButton: true })`
-  width: 4vw;
-  height: 5vh;
-  cursor: pointer;
-  user-select: none;
 `;
 
 const TopicBoxStyled = styled.div`
@@ -31,7 +23,7 @@ const TopicBoxStyled = styled.div`
   color: #333;
 `;
 
-const TopicBoxline = styled.div`
+const TopicBoxline = styled.input`
   width:95%;
   height:70%;
   background: none;
@@ -39,35 +31,52 @@ const TopicBoxline = styled.div`
   border: 4px solid #2B9FE6;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   font-size: 24px;
   font-weight: bold;
   color: #333;
-`
 
-const TopicBox = ({ currentTopic, topics, onPrevClick, onNextClick }) => {
+  &:focus {
+    outline: none;
+  }
+`;
+
+const TopicBox = ({ isHost, gameState, handleUpdateTheme }) => {
+  const [topic, setTopic] = useState(gameState.settings.theme || '');
+
+  useEffect(() => {
+    setTopic(gameState.settings.theme);
+  }, [gameState]);
+
+  const handleTopicChange = (e) => {
+    if (!isHost) return;
   
+    const newTopic = e.target.value;
+    setTopic(newTopic);
+    console.log("Tlqkf!!!!!!!!!" + newTopic)
+
+    const settings = { 
+      theme: newTopic
+    };
+    console.log("Tlqkf!!!!!!!!!" + settings)
+    console.log("Tlqkf!!!!!!!!!" + typeof(settings.theme))
+    handleUpdateTheme(settings);
+  };
+
   return (
     <TopicContainer>
-      <ArrowButton
-        as="img"
-        src="/room_주제왼화살표.png" 
-        alt="Previous Topic" 
-        onClick={onPrevClick} 
-      />
       <TopicBoxStyled>
-        <TopicBoxline>
-          {topics[currentTopic]}
-        </TopicBoxline>
+          <TopicBoxline
+          type="text"
+          value={topic}
+          onChange={handleTopicChange}
+          placeholder="주제 입력..."
+          readOnly={!isHost}
+          />
       </TopicBoxStyled>
-      <ArrowButton 
-        as="img"
-        src="/room_주제오화살표.png"
-        alt="Next Topic" 
-        onClick={onNextClick} 
-      />
     </TopicContainer>
   );
 };
-
+  
 export default TopicBox;

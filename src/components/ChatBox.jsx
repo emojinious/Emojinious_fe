@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import BoingButton from './BoingButton';
 
 
 const ChatContainer = styled.div`
@@ -58,7 +59,7 @@ const Chat = styled.input`
   margin-left: 3%;
 `
 
-const ChatButton = styled.button`
+const ChatButton = styled(BoingButton).attrs({ isImageButton: true })`
   width: 20%;
   height: 95%
   aspect-ratio: 1 / 1;
