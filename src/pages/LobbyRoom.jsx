@@ -142,7 +142,6 @@ const Button = styled.button`
 
 const LobbyRoom = () => {
   const navigate = useNavigate();
-  const [currentTopic, setCurrentTopic] = useState();
   const { sessionId } = useParams();
   const [gameState, setGameState] = useState(null);
   const [isHost, setIsHost] = useState(false);
@@ -238,7 +237,7 @@ const LobbyRoom = () => {
   // 시작 버튼 클릭 시 로직
   const handleStartClick = async () => {
     console.log("Start button clicked");
-    navigate(`/game`);
+    navigate('/game', { state: { gameState, sessionId } });
   };
 
   const handleTabChange = (tab) => {

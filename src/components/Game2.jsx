@@ -1,21 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Header from '../components/Header';
-
-const Container = styled.div` 
-  width: 100%;
-  height: 100%;
-  background-color: #434040;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  overflow: hidden;
-`;
 
 const TopicContainer = styled.div`
   width:100vw;
@@ -39,7 +23,7 @@ const TopicBoxStyled = styled.div`
   color: #333;
 `;
 
-const TopicBoxline = styled.input`
+const TopicBoxline = styled.div`
   width:95%;
   height:70%;
   background: none;
@@ -107,12 +91,10 @@ const ImageInput = styled.div`
 // Game 컴포넌트
 const Game2 = ({ keyword }) => {
   return (
-    <Container>
+    <>
       <TopicContainer>
         <TopicBoxStyled>
-          <TopicBoxline
-            readOnly
-            >
+          <TopicBoxline>
             {keyword}
           </TopicBoxline>
         </TopicBoxStyled>
@@ -125,7 +107,7 @@ const Game2 = ({ keyword }) => {
           </ImageBox>
         </LeftBox>
       </TotalBox>
-    </Container>
+    </>
   );
 };
 

@@ -35,28 +35,6 @@ const NicknameBox = styled.div`
   overflow:hidden;
 `;
 
-const EmojiContainer = styled.div`
-  position: absolute;
-  bottom: 50px;
-  right: 10px;
-  display: ${({ visible }) => (visible ? "flex" : "none")};
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 5px;
-  z-index: 10;
-`;
-
-const Emoji = styled.span`
-  font-size: 24px;
-  margin: 5px;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
-
 const characterColors = [
   "#EF6125", //E
   "#FFCD1C", //M
@@ -66,39 +44,6 @@ const characterColors = [
   "#FFCD1C", //N
   "#7766C2", //U
   "#FEA1BD", //S
-];
-
-const emojis = [
-  "😆",
-  "😁",
-  "😄",
-  "😃",
-  "😀",
-  "😊",
-  "😉",
-  "😍",
-  "😘",
-  "😚",
-  "😜",
-  "😝",
-  "😛",
-  "😎",
-  "😏",
-  "😒",
-  "😞",
-  "😔",
-  "😟",
-  "😕",
-  "😖",
-  "😢",
-  "😭",
-  "😩",
-  "😫",
-  "😤",
-  "😠",
-  "😡",
-  "😌",
-  "😴",
 ];
 
 const PlayerBox = styled.div`
@@ -120,58 +65,8 @@ const PlayerListBox = styled.div`
 
 const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
 
-/*
-const PlayerProfile = ({ players }) => {
-  const [isEmojiVisible, setEmojiVisible] = useState(false);
-
-  const toggleEmojiContainer = () => {
-    setEmojiVisible(!isEmojiVisible);
-  };
-
-  const handleEmojiClick = (emoji) => {
-    alert(`You selected: ${emoji}`);
-    setEmojiVisible(false);
-  };
-
-  return (
-    <PlayerListBox>
-      {players.map((player) => (
-        <PlayerBox key={player.id}>
-          <ProfileContainer>
-            <ProfileImage
-              src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
-              alt={`${player.nickname} Profile`}
-            />
-            <NicknameBox bgColor={characterColors[player.characterId - 1]}>
-              {player.nickname} {player.isHost && "(Host)"}
-            </NicknameBox>
-            <EmojiContainer visible={isEmojiVisible}>
-              {emojis.map((emoji, index) => (
-                <Emoji key={index} onClick={() => handleEmojiClick(emoji)}>
-                  {emoji}
-                </Emoji>
-              ))}
-            </EmojiContainer>
-          </ProfileContainer>
-        </PlayerBox>
-      ))}
-    </PlayerListBox>
-  );
-};
-*/
 
 const PlayerProfile = ({ players }) => {
-  const [isEmojiVisible, setEmojiVisible] = useState(false);
-  
-  const toggleEmojiContainer = () => {
-    setEmojiVisible(!isEmojiVisible);
-  };
-  
-  const handleEmojiClick = (emoji) => {
-    alert(`You selected: ${emoji}`);
-    setEmojiVisible(false);
-  };
-  
   return (
     <PlayerListBox>
       {players.map((player, index) => (
@@ -184,13 +79,6 @@ const PlayerProfile = ({ players }) => {
             <NicknameBox bgColor={characterColors[player.characterId - 1]}>
               {player.nickname} {player.isHost && "(방장)"}
             </NicknameBox>
-            <EmojiContainer visible={isEmojiVisible}>
-              {emojis.map((emoji, emojiIndex) => (
-                <Emoji key={emojiIndex} onClick={() => handleEmojiClick(emoji)}>
-                  {emoji}
-                </Emoji>
-              ))}
-            </EmojiContainer>
           </ProfileContainer>
         </PlayerBox>
       ))}
