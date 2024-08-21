@@ -182,7 +182,7 @@ const PlayerProfile = ({ players }) => {
               alt={`${player.nickname} Profile`}
               />
             <NicknameBox bgColor={characterColors[player.characterId - 1]}>
-              {player.nickname} {player.isHost && "(Host)"}
+              {player.nickname} {player.isHost && "(방장)"}
             </NicknameBox>
             <EmojiContainer visible={isEmojiVisible}>
               {emojis.map((emoji, emojiIndex) => (

@@ -90,7 +90,7 @@ const LeftArrow = styled(BoingButton).attrs({ isImageButton: true })`
   left:5%;
   margin:0;
   user-select: none;
-  z-index:8;
+  z-index:128;
 `;
 
 const PlayerSetup = () => {

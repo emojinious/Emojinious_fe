@@ -43,37 +43,40 @@ const TopicBoxline = styled.input`
 `;
 
 const TopicBox = ({ isHost, gameState, handleUpdateTheme }) => {
-  const [topic, setTopic] = useState(gameState.settings.theme || '');
+  const [topic, setTopic] = useState(gameState.settings.theme || 'RANDOM');
 
   useEffect(() => {
     setTopic(gameState.settings.theme);
   }, [gameState]);
 
   const handleTopicChange = (e) => {
-    if (!isHost) return;
-  
-    const newTopic = e.target.value;
-    setTopic(newTopic);
-    console.log("Tlqkf!!!!!!!!!" + newTopic)
-
-    const settings = { 
-      theme: newTopic
-    };
-    console.log("Tlqkf!!!!!!!!!" + settings)
-    console.log("Tlqkf!!!!!!!!!" + typeof(settings.theme))
-    handleUpdateTheme(settings);
+    setTopic(e.target.value);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && isHost) {
+      handleUpdateTheme({ theme: topic });
+    }
+  };
+  
 
   return (
     <TopicContainer>
       <TopicBoxStyled>
+      {isHost ? (
           <TopicBoxline
           type="text"
-          value={topic}
+          value={topic === 'RANDOM' ? '' : topic}
           onChange={handleTopicChange}
-          placeholder="주제 입력..."
-          readOnly={!isHost}
-          />
+          onKeyDown={handleKeyDown}
+          placeholder="주제를 입력하세요.(미입력시 랜덤)"
+          />) : (
+            <TopicBoxline
+            type="text"
+            value={topic}
+            readOnly
+            />
+          )}
       </TopicBoxStyled>
     </TopicContainer>
   );

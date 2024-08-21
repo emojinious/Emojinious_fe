@@ -238,6 +238,7 @@ const LobbyRoom = () => {
   // 시작 버튼 클릭 시 로직
   const handleStartClick = async () => {
     console.log("Start button clicked");
+    navigate(`/game`);
   };
 
   const handleTabChange = (tab) => {
