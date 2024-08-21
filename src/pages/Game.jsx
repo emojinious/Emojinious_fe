@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/Header';
+import Game1 from '../components/Game1';
+import Game2 from '../components/Game2';
 
 // 스타일 정의
 const HomeContainer = styled.div` 
@@ -191,41 +193,7 @@ const Game = ({ keyword, timeLimit, readyPlayers, totalPlayers, onReady }) => {
   return (
     <HomeContainer>
       <Header />
-      <TopicContainer>
-        <TopicBoxStyled>
-          <TopicBoxline
-            readOnly
-          >
-            {keyword}
-          </TopicBoxline>
-        </TopicBoxStyled>
-      </TopicContainer>
-      <TotalBox>
-        <LeftBox>
-          <UserProfile/>
-        </LeftBox>
-        <RightBox>
-          <ExplanationBox>
-            <Explanationinput placeholder="키워드에 맞는 설명을 작성하세요..."
-            value={explanation}
-            onChange={handleExplanationChange}
-            />
-          </ExplanationBox>
-          <ReadyButton onClick={handleReadyClick}>준비</ReadyButton>
-          <TimerBarContainer>
-            <TimerBar width={(timeLeft / timeLimit) * 100} />
-          </TimerBarContainer>
-        </RightBox>
-      </TotalBox>
-      <ReadyPlayersContainer>
-        {[...Array(totalPlayers)].map((_, index) => (
-          <ReadyPlayerIcon
-            key={index}
-            src={index < readyPlayers ? "/game_플레이어준비완료.svg" : "/game_플레이어준비중.svg"}
-            alt={index < readyPlayers ? "준비 완료" : "준비 중"}
-          />
-        ))}
-      </ReadyPlayersContainer>
+      <Game2/>
     </HomeContainer>
   );
 };
