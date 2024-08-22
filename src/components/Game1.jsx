@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import PlayerProfile from './Profile';
 
 const TopicContainer = styled.div`
   width:100vw;
@@ -67,24 +66,7 @@ const UserProfile = styled.div`
   width:100%;
   height:20%;
   background-color:red;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const UserAvatar = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-`;
-
-const UserName = styled.div`
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-`;
+`
 
 const RightBox = styled.div`
   width:80%;
@@ -129,14 +111,14 @@ const ReadyButton = styled.button`
   padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
-  background-color: ${(props) => (props.isReady ? '#14AE59' : '#FFCD1C')};
-  color: ${(props) => (props.isReady ? '#FFFFFF' : '#7766C2')};
+  background-color: #FFCD1C;
+  color: #7766C2;
   border: none;
   border-radius: 15px;
   cursor: pointer;
   margin-bottom: 20px;
   &:hover {
-    background-color: ${(props) => (props.isReady ? '#128C48' : '#E6B517')};
+    background-color: #E6B517;
   }
 `;
 
@@ -169,10 +151,9 @@ const ReadyPlayerIcon = styled.img`
 `;
 
 // Game 컴포넌트
-const Game1 = ({ keyword, timeLimit, readyPlayers, totalPlayers, onReady, players }) => {
+const Game1 = ({ keyword, timeLimit, readyPlayers, totalPlayers, onReady }) => {
   const [explanation, setExplanation] = useState('');
   const [timeLeft, setTimeLeft] = useState(timeLimit);
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -187,39 +168,32 @@ const Game1 = ({ keyword, timeLimit, readyPlayers, totalPlayers, onReady, player
   };
 
   const handleReadyClick = () => {
-    setIsReady(true);
     onReady(explanation);
   };
 
   return (
     <>
-      <TopicContainer>
+    <TopicContainer>
         <TopicBoxStyled>
-          <TopicBoxline readOnly>
+          <TopicBoxline
+            readOnly
+            >
             {keyword}
           </TopicBoxline>
         </TopicBoxStyled>
       </TopicContainer>
       <TotalBox>
         <LeftBox>
-          <PlayerProfile players={players} /> {/* PlayerProfile 컴포넌트 추가 */}
+          <UserProfile/>
         </LeftBox>
         <RightBox>
           <ExplanationBox>
-            <Explanationinput 
-              placeholder="키워드에 맞는 설명을 작성하세요..."
-              value={explanation}
-              onChange={handleExplanationChange}
-              disabled={isReady}
+            <Explanationinput placeholder="키워드에 맞는 설명을 작성하세요..."
+            value={explanation}
+            onChange={handleExplanationChange}
             />
           </ExplanationBox>
-          <ReadyButton
-          onClick={handleReadyClick}
-          isReady={isReady}
-          disabled={isReady}
-          >
-            {isReady ? '완료!' : '준비'}
-          </ReadyButton>
+          <ReadyButton onClick={handleReadyClick}>준비</ReadyButton>
           <TimerBarContainer>
             <TimerBar width={(timeLeft / timeLimit) * 100} />
           </TimerBarContainer>
