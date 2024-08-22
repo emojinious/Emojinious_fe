@@ -28,7 +28,7 @@ const TopicBoxline = styled.div`
   height:70%;
   background: none;
   border-radius: 10px;
-  border: 4px solid #FEA1BD;
+  border: 4px solid #14AE59;
   display: flex;
   align-items: center;
   text-align: center;
@@ -71,7 +71,6 @@ const UserProfile = styled.div`
 const RightBox = styled.div`
   width:80%;
   height:100%;
-  background-color:black;
   display:flex;
   align-items: center;
   text-align: center;
@@ -79,35 +78,86 @@ const RightBox = styled.div`
   flex-direction: column;
 `
 
-const ExplanationBox = styled.div`
+const RightInner = styled.div`
   width: 95%;
-  height: 70%;
+  height: 90%;
+  display:flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+`
+
+const Sketchbook = styled.div`
+  width: 65%;
+  height: 100%;
+  display:flex;
+  justify-content:center;
+  background-color:#EAE7DC;
+  position: relative;
   border-radius: 15px;
-  border:none;
-  margin-bottom: 20px;
-  background-color:#FEA1BD;
+`
+
+const SketchbookSpring= styled.img`
+  width: 90%;
+  height: 12%;
+  background:none;
+  position:absolute;
+  top:-5%;
+`
+const ExplanationContainer = styled.div`
+  width: 43%;
+  height: 100%;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+`
+const ExplanationBox = styled.div`
+  width: 22vw;
+  height:17vw;
+  background-color: ${({ lineColor }) => lineColor || 'black'};
+  border-radius: 15px;
   display:flex;
   align-items: center;
   text-align: center;
   justify-content: center;
+  position: relative;
+  aspect-ratio: 1 / 1;
+`
+
+const ExplanationImg = styled.img`
+  width: 90%;
+  height: 90%;
+  border-radius: 15px;
+  border:none;
+  margin-bottom: 20px;
+  display:flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  position:absolute;
+  top:4%;
 `;
 
 const Explanationinput = styled.textarea`
-  width: 100%;
-  height: 80%;
+  width: 75%;
+  height: 20%;
   padding: 15px;
-  margin: 25px;
   font-size: 18px;
   border-radius: 15px;
-  background-color:#EAE8DC;
+  background:none;
   border:none;
   resize: none;
   outline: none; 
+  position: absolute;
+  top:12%;
+  overflow:hidden;
 `;
 
 const ReadyButton = styled.button`
-  width: 95%;
-  height: 20%;
+  width: 97%;
+  height: 32%;
   padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
@@ -116,7 +166,6 @@ const ReadyButton = styled.button`
   border: none;
   border-radius: 15px;
   cursor: pointer;
-  margin-bottom: 20px;
   &:hover {
     background-color: #E6B517;
   }
@@ -150,15 +199,27 @@ const ReadyPlayerIcon = styled.img`
   margin: 0 5px;
 `;
 
+const characterColors = [
+  "#EF6125", //E
+  "#FFCD1C", //M
+  "#14AE59", //O
+  "#FEA1BD", //J
+  "#2B9FE6", //I
+  "#FFCD1C", //N
+  "#7766C2", //U
+  "#FEA1BD", //S
+];
+
 // Game 컴포넌트
-const Game1 = ({ keyword, onReady }) => {
+const GameGuess = () => {
+  const lineColor = characterColors[0]; // [0] <=> [player.characterId - 1]
 
   return (
     <>
     <TopicContainer>
         <TopicBoxStyled>
           <TopicBoxline>
-            {keyword}
+            키워드
           </TopicBoxline>
         </TopicBoxStyled>
       </TopicContainer>
@@ -167,11 +228,19 @@ const Game1 = ({ keyword, onReady }) => {
           <UserProfile/>
         </LeftBox>
         <RightBox>
-          <ExplanationBox>
-            <Explanationinput placeholder="키워드에 맞는 설명을 작성하세요..."
-            />
-          </ExplanationBox>
-          <ReadyButton onClick={onReady}>준비</ReadyButton>
+          <RightInner>
+            <Sketchbook>
+              <SketchbookSpring src="game_스프링.png" alt="스케치북스프링"/>
+            </Sketchbook>
+            <ExplanationContainer>
+              <ExplanationBox lineColor={lineColor}>
+                <ExplanationImg src="/game_E말풍선.svg" alt="player 말풍선"/>
+                <Explanationinput placeholder="정답 맞추기..."
+              />
+              </ExplanationBox>
+            <ReadyButton>준비</ReadyButton>
+              </ExplanationContainer>
+          </RightInner>
           <TimerBarContainer>
             <TimerBar />
           </TimerBarContainer>
@@ -188,4 +257,4 @@ const Game1 = ({ keyword, onReady }) => {
   );
 };
 
-export default Game1;
+export default GameGuess;

@@ -6,6 +6,7 @@ import PlayerSetup from "./pages/PlayerSetup";
 import LobbyRoom from "./pages/LobbyRoom";
 import styled from 'styled-components';
 import Game from './pages/Game';
+import Loading from './components/Loading';
 
 function JoinRedirect() {
   const location = useLocation();
@@ -61,6 +62,7 @@ function App() {
         <Route path="/room/:sessionId" element={<LobbyRoom />} />
         <Route path="/game" element={<Game/>}/>
         <Route path="/join" element={<JoinRedirect />} />
+        <Route path="/loading" element={<Loading/>}/>
       </Routes>
     </motion.div>
       </GradientBackground>
