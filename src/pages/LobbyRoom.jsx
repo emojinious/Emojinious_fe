@@ -10,6 +10,8 @@ import Setting from '../components/Setting';
 import ChatBox from '../components/ChatBox';
 import BoingButton from "../components/BoingButton";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Game1 from '../components/Game1';
+import Game2 from '../components/Game2';
 
 
 const boingEffect = keyframes`
@@ -152,6 +154,12 @@ const LobbyRoom = () => {
   const [hasSettingNotification, setHasSettingNotification] = useState(false);
   const [loading, setLoading] = useState(false);
   const previousSettingsRef = useRef(gameState?.settings);
+  const [submissionProgress, setSubmissionProgress] = useState({ submitted: 0, total: 0 });
+  const [gameProgress, setGameProgress] = useState('WAITING');
+  const [isAllReady, setIsAllReady] = useState(false);
+  const [promptTimeLimit, setPromptTimeLimit] = useState(null);
+  const [totalPlayers, setTotalPlayers] = useState(1);
+  const [readyPlayers, setReadyPlayers] = useState(1);
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -185,14 +193,20 @@ const LobbyRoom = () => {
           previousSettingsRef.current = newSettings;
         });
         
-          stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
-            const newChatMessage = JSON.parse(chatMessage.body);
-            console.log('Received chat message:', newChatMessage);
-            setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
-            if (activeTab !== 'chat') {
-              setHasChatNotification(true);
-            }
-          });
+        stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
+          const newChatMessage = JSON.parse(chatMessage.body);
+          console.log('Received chat message:', newChatMessage);
+          setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
+          if (activeTab !== 'chat') {
+            setHasChatNotification(true);
+          }
+        });
+
+        stompClient.subscribe(`/topic/game/${sessionId}/progress`, function(progress) {
+          const newProgress = JSON.parse(progress.body);
+          console.log('Received game progress:', newProgress);
+          setSubmissionProgress(newProgress);
+        });
 
         setConnectionError(null);
       } catch (error) {
@@ -237,7 +251,8 @@ const LobbyRoom = () => {
   // 시작 버튼 클릭 시 로직
   const handleStartClick = async () => {
     console.log("Start button clicked");
-    navigate('/game', { state: { gameState, sessionId } });
+    setGameProgress('IN_PROGRESS');
+    console.log(submissionProgress);
   };
 
   const handleTabChange = (tab) => {
@@ -280,59 +295,109 @@ const LobbyRoom = () => {
     }
   };
 
-  return (
-    <HomeContainer>
-      {gameState && (
-          <>
+  const handleReady = () => {
+    setIsAllReady(true);
+  };
+
+  useEffect(() => {
+    if (gameState && gameState.settings) {
+      setPromptTimeLimit(gameState.settings.promptTimeLimit);
+      setTotalPlayers(submissionProgress.total);
+      setReadyPlayers(submissionProgress.submitted);
+      console.log(submissionProgress);
+    }
+  }, [gameState]);
+  
+
+  switch (gameProgress) {
+      case 'WAITING':
+        return (
+          <HomeContainer>
+            {gameState && (
+                <>
+                  <Header />
+                  <BackButton 
+                    as="img"
+                    src="/뒤로가기.svg" 
+                    alt="Back Button" 
+                    onClick={handleBackClick} 
+                    />
+                  <TopicBox 
+                    isHost={isHost} 
+                    gameState={gameState} 
+                    handleUpdateTheme={handleUpdateTheme} 
+                  />
+                  <BoxesContainer>
+                  <Profile players={gameState.players}/>
+                    <RightBox>
+                      <MainContent>
+                        {activeTab === 'setting' ? (
+                          <Setting
+                            isHost={isHost}
+                            gameState={gameState}
+                            handleUpdateGameSettings={handleUpdateGameSettings}
+                          />
+                        ) : (
+                          <ChatBox
+                            players={gameState.players}
+                            messages={chatMessages}
+                            onSendMessage={handleSendChatMessage}
+                          />
+                        )}
+                        <ButtonsContainer>
+                          <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
+                          <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912" disabled={!isHost} >시작</Button>
+                        </ButtonsContainer>
+                      </MainContent>
+                      <SetNav>
+                        <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
+                          <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
+                        </SetNavButton>
+                        <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
+                          <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
+                        </SetNavButton>
+                      </SetNav>
+                    </RightBox>
+                  </BoxesContainer>
+                </>
+              )}
+              {loading && <LoadingSpinner />}
+          </HomeContainer>
+        );
+      case 'IN_PROGRESS':
+        return (
+          <HomeContainer>
             <Header />
-            <BackButton 
-              as="img"
-              src="/뒤로가기.svg" 
-              alt="Back Button" 
-              onClick={handleBackClick} 
+            {!isAllReady ? (
+              <Game1
+              keyword="YourKeyword"  // Game1에 필요한 props 전달
+              handleReady={handleReady}   // 모두 준비 완료 되면 handleReady 함수가 실행되도록 전달
+              promptTimeLimit={promptTimeLimit}
+              totalPlayers={totalPlayers}
+              readyPlayers={readyPlayers}
+              players={gameState.players}
               />
-            <TopicBox 
-              isHost={isHost} 
-              gameState={gameState} 
-              handleUpdateTheme={handleUpdateTheme} 
-            />
-            <BoxesContainer>
-              <Profile players={gameState.players}/>
-              <RightBox>
-                <MainContent>
-                  {activeTab === 'setting' ? (
-                    <Setting
-                      isHost={isHost}
-                      gameState={gameState}
-                      handleUpdateGameSettings={handleUpdateGameSettings}
-                    />
-                  ) : (
-                    <ChatBox
-                      players={gameState.players}
-                      messages={chatMessages}
-                      onSendMessage={handleSendChatMessage}
-                    />
-                  )}
-                  <ButtonsContainer>
-                    <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
-                  </ButtonsContainer>
-                </MainContent>
-                <SetNav>
-                  <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
-                    <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
-                  </SetNavButton>
-                  <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
-                    <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
-                  </SetNavButton>
-                </SetNav>
-              </RightBox>
-            </BoxesContainer>
-          </>
-        )}
-        {loading && <LoadingSpinner />}
-    </HomeContainer>
-  );
+              ) : (
+                <Game2
+                keyword="YourKeyword"  // Game2에 필요한 props 전달
+                />
+                )}
+                {/*<GameAnswer gameState={gameState}/>
+                <GameGuess/>*/}
+          </HomeContainer>
+                );
+      case 'FINISHED':
+        return (
+          <div>
+            <h3>Game Finished</h3>
+          </div>
+        );
+      default:
+        return null;
+      
+  }
+
+  
 };
 
 export default LobbyRoom;

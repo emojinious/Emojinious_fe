@@ -111,14 +111,14 @@ const ReadyButton = styled.button`
   padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
-  background-color: #FFCD1C;
-  color: #7766C2;
+  background-color: ${(props) => (props.isReady ? '#14AE59' : '#FFCD1C')};
+  color: ${(props) => (props.isReady ? '#FFFFFF' : '#7766C2')};
   border: none;
   border-radius: 15px;
   cursor: pointer;
   margin-bottom: 20px;
   &:hover {
-    background-color: #E6B517;
+    background-color: ${(props) => (props.isReady ? '#14AE59' : '#E6B517')};
   }
 `;
 
@@ -127,13 +127,14 @@ const TimerBarContainer = styled.div`
   height: 25px;
   border-radius: 15px;
   overflow: hidden;
+  background-color: #EAE8DC;
 `;
 
 const TimerBar = styled.div`
   height: 100%;
-  background-color: #EAE8DC;
+  background-color: red;
   width: ${({ width }) => width}%;
-  transition: width 0.5s linear;
+  transition: width 0.1s linear;
 `;
 
 const ReadyPlayersContainer = styled.div`
@@ -151,7 +152,65 @@ const ReadyPlayerIcon = styled.img`
 `;
 
 // Game 컴포넌트
-const Game1 = ({ keyword, onReady }) => {
+const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlayers, }) => {
+  const [isReady, setIsReady] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [explanation, setExplanation] = useState('');
+  const [allReady, setAllReady] = useState(false);
+
+  useEffect(() => {
+    const interval = 100; // 타이머 업데이트 주기 (단위 : ms)
+    const timer = setInterval(() => {
+      setElapsedTime((prevTime) => {
+        const newTime = prevTime + interval / 1000;
+        if (newTime >= promptTimeLimit) {
+          handleReady();
+          clearInterval(timer); // 타이머가 끝나면 멈춤
+          return promptTimeLimit;
+        }
+        return newTime;
+      });
+    }, interval);
+
+    return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
+  }, [promptTimeLimit]);
+
+  const handleExplanationChange = (e) => {
+    setExplanation(e.target.value);
+  };
+
+  const handleReadyClick = () => {
+    setIsReady(true);
+  };
+
+  const renderStatusIcons = () => {
+    const statusIcons = [];
+    for (let i = 0; i < readyPlayers; i++) {
+      statusIcons.push(
+        <img
+          key={`ready-${i}`}
+          src="/game_플레이어준비완료.svg"
+          alt="Ready"
+          style={{ width: '20px', height: '20px', margin: '0 5px' }}
+        />
+      );
+    }
+    for (let i = 0; i < totalPlayers - readyPlayers; i++) {
+      statusIcons.push(
+        <img
+          key={`not-ready-${i}`}
+          src="/game_플레이어준비중.svg"
+          alt="Not Ready"
+          style={{ width: '20px', height: '20px', margin: '0 5px' }}
+        />
+      );
+    }
+    return statusIcons;
+  };
+
+  useEffect(() => {
+    
+  });
 
   return (
     <>
@@ -168,21 +227,23 @@ const Game1 = ({ keyword, onReady }) => {
         </LeftBox>
         <RightBox>
           <ExplanationBox>
-            <Explanationinput placeholder="키워드에 맞는 설명을 작성하세요..."
+            <Explanationinput
+              placeholder="키워드에 맞는 설명을 작성하세요..."
+              value={explanation}
+              onChange={handleExplanationChange}
+              disabled={isReady}
             />
           </ExplanationBox>
-          <ReadyButton onClick={onReady}>준비</ReadyButton>
+          <ReadyButton onClick={handleReadyClick} isReady={isReady} disabled={isReady}>
+            {isReady ? '완료!' : '준비'}
+          </ReadyButton>
           <TimerBarContainer>
-            <TimerBar />
+            <TimerBar width={(elapsedTime / promptTimeLimit) * 100} />
           </TimerBarContainer>
         </RightBox>
       </TotalBox>
       <ReadyPlayersContainer>
-        <ReadyPlayerIcon src="/game_플레이어준비완료.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
+        {renderStatusIcons()}
       </ReadyPlayersContainer>
     </>
   );
