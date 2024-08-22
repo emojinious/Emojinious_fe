@@ -5,10 +5,10 @@
 <rect x="258.517" y="95.5842" width="70.8648" height="41.0943" transform="rotate(-43.3263 258.517 95.5842)" fill="#434040"/>
 <rect x="273.597" y="122.444" width="70.8648" height="11.2075" transform="rotate(-43.3263 273.597 122.444)" fill="#434040"/>
 <rect x="76" y="130.719" width="101" height="39.9012" rx="19.9506" fill="#EF6125"/>
-<rect x="76" y="170.621" width="101" height="39.9012" rx="19.9506" fill="#EF6125"/>
-<rect x="76" y="210.522" width="101" height="39.9012" rx="19.9506" fill="#EF6125"/>
-<rect x="125.253" y="269.127" width="46.7593" height="18.7037" rx="9.35185" transform="rotate(-180 125.253 269.127)" fill="#2B9FE6"/>
-<rect x="176.377" y="269.127" width="46.7593" height="18.7037" rx="9.35185" transform="rotate(-180 176.377 269.127)" fill="#2B9FE6"/>
+<rect x="76" y="170" width="101" height="39.9012" rx="19.9506" fill="#EF6125"/>
+<rect x="76" y="208" width="101" height="39.9012" rx="19.9506" fill="#EF6125"/>
+<rect x="125.253" y="264.704" width="46.7593" height="18.7037" rx="9.35185" transform="rotate(-180 125.253 264.704)" fill="#2B9FE6"/>
+<rect x="176.377" y="264.704" width="46.7593" height="18.7037" rx="9.35185" transform="rotate(-180 176.377 264.704)" fill="#2B9FE6"/>
 <path d="M138.969 184.337V184.337C132.427 190.879 121.82 190.879 115.278 184.337V184.337" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M138.969 184.337V184.337C132.427 190.879 121.82 190.879 115.278 184.337V184.337" stroke="#444342" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="127.435" cy="159.087" r="11.5339" fill="#D9D9D9"/>

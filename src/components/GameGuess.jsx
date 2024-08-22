@@ -28,7 +28,7 @@ const TopicBoxline = styled.div`
   height:70%;
   background: none;
   border-radius: 10px;
-  border: 4px solid #FEA1BD;
+  border: 4px solid #14AE59;
   display: flex;
   align-items: center;
   text-align: center;
@@ -99,7 +99,7 @@ const Sketchbook = styled.div`
 
 const SketchbookSpring= styled.img`
   width: 90%;
-  height: auto;
+  height: 12%;
   background:none;
   position:absolute;
   top:-5%;
@@ -114,8 +114,8 @@ const ExplanationContainer = styled.div`
   justify-content: space-between;
 `
 const ExplanationBox = styled.div`
-  width: 95%;
-  height:65%;
+  width: 22vw;
+  height:17vw;
   background-color: ${({ lineColor }) => lineColor || 'black'};
   border-radius: 15px;
   display:flex;
@@ -123,12 +123,12 @@ const ExplanationBox = styled.div`
   text-align: center;
   justify-content: center;
   position: relative;
+  aspect-ratio: 1 / 1;
 `
 
 const ExplanationImg = styled.img`
   width: 90%;
   height: 90%;
-
   border-radius: 15px;
   border:none;
   margin-bottom: 20px;
@@ -141,22 +141,23 @@ const ExplanationImg = styled.img`
 `;
 
 const Explanationinput = styled.textarea`
-  width: 80%;
+  width: 75%;
   height: 20%;
   padding: 15px;
   font-size: 18px;
   border-radius: 15px;
-  background-color:blue;
+  background:none;
   border:none;
   resize: none;
   outline: none; 
   position: absolute;
-  top:13%;
+  top:12%;
+  overflow:hidden;
 `;
 
 const ReadyButton = styled.button`
-  width: 95%;
-  height: 25%;
+  width: 97%;
+  height: 32%;
   padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
@@ -233,8 +234,8 @@ const GameGuess = () => {
             </Sketchbook>
             <ExplanationContainer>
               <ExplanationBox lineColor={lineColor}>
-                <ExplanationImg src="/game_E말풍선.png" alt="player 말풍선"/>
-                <Explanationinput placeholder="키워드에 맞는 설명을 작성하세요..."
+                <ExplanationImg src="/game_E말풍선.svg" alt="player 말풍선"/>
+                <Explanationinput placeholder="정답 맞추기..."
               />
               </ExplanationBox>
             <ReadyButton>준비</ReadyButton>
