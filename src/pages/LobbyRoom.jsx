@@ -10,12 +10,9 @@ import Setting from '../components/Setting';
 import ChatBox from '../components/ChatBox';
 import BoingButton from "../components/BoingButton";
 import LoadingSpinner from "../components/LoadingSpinner";
-<<<<<<< HEAD
 import Lobby from "../components/Lobby";
-=======
 import Game1 from '../components/Game1';
 import Game2 from '../components/Game2';
->>>>>>> minsu1
 
 
 const boingEffect = keyframes`
@@ -174,16 +171,13 @@ const LobbyRoom = () => {
   const [hasSettingNotification, setHasSettingNotification] = useState(false);
   const [loading, setLoading] = useState(false);
   const previousSettingsRef = useRef(gameState?.settings);
-<<<<<<< HEAD
   const [currentKeyword, setCurrentKeyword] = useState('');
-=======
   const [submissionProgress, setSubmissionProgress] = useState({ submitted: 0, total: 0 });
   const [gameProgress, setGameProgress] = useState('WAITING');
   const [isAllReady, setIsAllReady] = useState(false);
   const [promptTimeLimit, setPromptTimeLimit] = useState(null);
   const [totalPlayers, setTotalPlayers] = useState(1);
   const [readyPlayers, setReadyPlayers] = useState(1);
->>>>>>> minsu1
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
@@ -220,11 +214,7 @@ const LobbyRoom = () => {
           }
           previousSettingsRef.current = newSettings;
         });
-<<<<<<< HEAD
-  
-=======
         
->>>>>>> minsu1
         stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
           const newChatMessage = JSON.parse(chatMessage.body);
           console.log('Received chat message:', newChatMessage);
@@ -233,9 +223,6 @@ const LobbyRoom = () => {
             setHasChatNotification(true);
           }
         });
-<<<<<<< HEAD
-  
-=======
 
         stompClient.subscribe(`/topic/game/${sessionId}/progress`, function(progress) {
           const newProgress = JSON.parse(progress.body);
@@ -243,7 +230,6 @@ const LobbyRoom = () => {
           setSubmissionProgress(newProgress);
         });
 
->>>>>>> minsu1
         setConnectionError(null);
       } catch (error) {
         console.error('Failed to connect:', error);
@@ -294,13 +280,8 @@ const LobbyRoom = () => {
   // 시작 버튼 클릭 시 로직
   const handleStartClick = async () => {
     console.log("Start button clicked");
-<<<<<<< HEAD
-    startGame(sessionId);
-    console.log("gamestate:"+gameState.state);
-=======
     setGameProgress('IN_PROGRESS');
     console.log(submissionProgress);
->>>>>>> minsu1
   };
 
   const handleTabChange = (tab) => {
@@ -415,25 +396,6 @@ const LobbyRoom = () => {
         return (
           <HomeContainer>
             <Header />
-<<<<<<< HEAD
-            <Lobby
-              gameState={gameState}
-              sessionId={sessionId}
-              isHost={isHost}
-              chatMessages={chatMessages}
-              handleBackClick={handleBackClick}
-              handleUpdateTheme={handleUpdateTheme}
-              handleUpdateGameSettings={handleUpdateGameSettings}
-              handleSendChatMessage={handleSendChatMessage}
-              handleInviteClick={handleInviteClick}
-              handleStartClick={handleStartClick}
-              loading={loading}
-            />
-            </>
-      )}
-    </HomeContainer>
-  );
-=======
             {!isAllReady ? (
               <Game1
               keyword="YourKeyword"  // Game1에 필요한 props 전달
@@ -464,7 +426,6 @@ const LobbyRoom = () => {
   }
 
   
->>>>>>> minsu1
 };
 
 export default LobbyRoom;
