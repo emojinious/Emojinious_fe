@@ -88,6 +88,18 @@ const ImageInput = styled.div`
   outline: none; 
 `;
 
+// 캐릭터에 따른 색상 설정
+const characterColors = [
+  "#EF6125", //E
+  "#FFCD1C", //M
+  "#14AE59", //O
+  "#FEA1BD", //J
+  "#2B9FE6", //I
+  "#FFCD1C", //N
+  "#7766C2", //U
+  "#FEA1BD", //S
+];
+
 // Game 컴포넌트
 const Game2 = ({ keyword, currentImage, players }) => {
   // 현재 플레이어를 찾습니다.
