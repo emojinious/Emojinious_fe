@@ -211,7 +211,6 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
   const [turns, setTurns] = useState(gameState.settings.turns || 1);
   const [promptTimeLimit, setPromptTimeLimit] = useState(gameState.settings.promptTimeLimit || 0);
   const [guessTimeLimit, setGuessTimeLimit] = useState(gameState.settings.guessTimeLimit || 0);
-  const [topic, setTopic] = useState(gameState.settings.difficulty || '');
   const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(function() {
