@@ -28,6 +28,7 @@ const HomeContainer = styled.div`
 
 
 // Game 컴포넌트
+<<<<<<< HEAD
 const Game = () => {
   const [isReady, setIsReady] = useState(false);
   const location = useLocation();
@@ -127,26 +128,51 @@ const Game = () => {
   if (connectionError) {
     return <div>Error: {connectionError}</div>;
   }
+=======
+const Game = ({ gameState, submissionProgress }) => {
+  const [isAllReady, setIsAllReady] = useState(false);
+  const [promptTimeLimit, setPromptTimeLimit] = useState(gameState.settings.promptTimeLimit || 0);
+  const [totalPlayers, setTotalPlayers] = useState(submissionProgress.total || 0);
+  const [readyPlayers, setReadyPlayers] = useState(submissionProgress.submitted || 0);
+
+  useEffect(function() {
+    setPromptTimeLimit(gameState.settings.promptTimeLimit);
+    setTotalPlayers(submissionProgress.total);
+    setReadyPlayers(submissionProgress.submitted);
+  }, [gameState]);
+>>>>>>> minsu1
   
+console.log(submissionProgress);
 
   const handleReady = () => {
-    // 준비 버튼을 눌렀을 때 실행될 함수
-    setIsReady(true);
+    setIsAllReady(true);
   };
 
   return (
     <HomeContainer>
       <Header />
+<<<<<<< HEAD
       {!isReady ? (
+=======
+      {!isAllReady ? (
+>>>>>>> minsu1
         <Game1
         keyword="YourKeyword"  // Game1에 필요한 props 전달
-        onReady={handleReady}   // 준비 버튼이 눌리면 handleReady 함수가 실행되도록 전달
+        handleReady={handleReady}   // 모두 준비 완료 되면 handleReady 함수가 실행되도록 전달
+        promptTimeLimit={promptTimeLimit}
+        totalPlayers={totalPlayers}
+        readyPlayers={readyPlayers}
         />
         ) : (
           <Game2
           keyword="YourKeyword"  // Game2에 필요한 props 전달
           />
           )}
+<<<<<<< HEAD
+=======
+          {/*<GameAnswer gameState={gameState}/>
+          <GameGuess/>*/}
+>>>>>>> minsu1
     </HomeContainer>
   );
 };
