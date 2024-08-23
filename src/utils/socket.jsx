@@ -74,14 +74,7 @@ export function startGame(sessionId) {
     console.error('STOMP client is not initialized');
     return;
   }
-
-  if (!stompClient.connected) {
-    console.error('STOMP client is not connected');
-    return;
-  }
-
   stompClient.send(`/app/game/${sessionId}/start`, {}, JSON.stringify({}));
-  console.log('Game start message sent.');
 }
 
 export function submitPrompt(sessionId, prompt) {

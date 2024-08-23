@@ -66,7 +66,7 @@ const TopicBox = ({ isHost, gameState, handleUpdateTheme }) => {
       {isHost ? (
           <TopicBoxline
           type="text"
-          value={topic === '무작위' ? '' : topic}
+          value={topic === 'RANDOM' ? '' : topic}
           onChange={handleTopicChange}
           onKeyDown={handleKeyDown}
           placeholder="주제를 입력하세요.(미입력시 랜덤)"
