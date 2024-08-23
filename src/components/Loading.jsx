@@ -154,18 +154,18 @@ const Loading = () => {
   return (
     <HomeContainer>
       <LoadingContainer>
-      <MojiImage src={loadingComplete ? "로딩완료모지.svg" : "로딩중모지.svg"} alt="Loading Moji" />
-      <PlatformImage src="로딩발판.svg" alt="Loading Platform" />
+      <MojiImage src={loadingComplete ? "/로딩완료모지.svg" : "/로딩중모지.svg"} alt="Loading Moji" />
+      <PlatformImage src="/로딩발판.svg" alt="Loading Platform" />
       {!loadingComplete && (
         <LoadingDots>
-          <DotImage src="로딩점.svg" alt="Loading Dot" delay={0} position={0} />
-          <DotImage src="로딩점.svg" alt="Loading Dot" delay={0.3} position={15} />
-          <DotImage src="로딩점.svg" alt="Loading Dot" delay={0.6} position={30} />
+          <DotImage src="/로딩점.svg" alt="Loading Dot" delay={0} position={0} />
+          <DotImage src="/로딩점.svg" alt="Loading Dot" delay={0.3} position={15} />
+          <DotImage src="/로딩점.svg" alt="Loading Dot" delay={0.6} position={30} />
         </LoadingDots>
       )}
       {loadingComplete && (
         <LoadingDots>
-          <Light src="로딩전구.svg" alt="Loading Complete Lightbulb" />
+          <Light src="/로딩전구.svg" alt="Loading Complete Lightbulb" />
         </LoadingDots>
       )} 
       <LoadingText>

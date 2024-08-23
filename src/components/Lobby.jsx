@@ -111,16 +111,18 @@ const Button = styled.button`
   font-size: 25px;
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 
   &:hover {
-    animation: ${boingEffect} 0.4s ease;
+    animation: ${({ disabled }) => (disabled ? 'none' : boingEffect)} 0.4s ease;
   }
-    
+
   &:active {
     background-color: ${({ activeColor }) => activeColor || '#999'};
   }
 `;
+
 
 const LoadingSpinnerContainer = styled.div`
   display: flex;
@@ -138,20 +140,7 @@ const LoadingText = styled.div`
   margin-right: 5px;
 `;
 
-const Lobby = ({gameState, sessionId, isHost, chatMessages,handleBackClick,handleUpdateTheme,handleUpdateGameSettings,handleSendChatMessage,handleInviteClick,handleStartClick,loading}) => {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('setting');
-  const [hasChatNotification, setHasChatNotification] = useState(false);
-  const [hasSettingNotification, setHasSettingNotification] = useState(false);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    if (tab === 'chat') {
-      setHasChatNotification(false);
-    } else if (tab === 'setting') {
-      setHasSettingNotification(false);
-    }
-  };
+const Lobby = ({gameState, isHost, chatMessages,handleBackClick,handleUpdateTheme,handleUpdateGameSettings,handleSendChatMessage,handleInviteClick,handleStartClick,loading,hasSettingNotification,hasChatNotification,handleTabChange,activeTab}) => {
 
   return (
           <>
@@ -185,7 +174,7 @@ const Lobby = ({gameState, sessionId, isHost, chatMessages,handleBackClick,handl
                   )}
                   <ButtonsContainer>
                     <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
+                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912" disabled={!isHost}>시작</Button>
                   </ButtonsContainer>
                 </MainContent>
                 <SetNav>

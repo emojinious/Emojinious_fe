@@ -206,7 +206,7 @@ const ModalExit = styled.img`
 
 
 
-const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
+const Setting = ({ isHost, gameState, handleUpdateGameSettings}) => {
   const [difficulty, setDifficulty] = useState(gameState.settings.difficulty || 'EASY');
   const [turns, setTurns] = useState(gameState.settings.turns || 1);
   const [promptTimeLimit, setPromptTimeLimit] = useState(gameState.settings.promptTimeLimit || 0);

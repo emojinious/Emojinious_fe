@@ -28,7 +28,7 @@ const TopicBoxline = styled.div`
   height:70%;
   background: none;
   border-radius: 10px;
-  border: 4px solid #FEA1BD;
+  border: 4px solid ${({ bgColor }) => bgColor};
   display: flex;
   align-items: center;
   text-align: center;
@@ -71,7 +71,6 @@ const UserProfile = styled.div`
 const RightBox = styled.div`
   width:80%;
   height:100%;
-  background-color:black;
   display:flex;
   align-items: center;
   text-align: center;
@@ -85,7 +84,7 @@ const ExplanationBox = styled.div`
   border-radius: 15px;
   border:none;
   margin-bottom: 20px;
-  background-color:#FEA1BD;
+  background-color:${({ bgColor }) => bgColor};
   display:flex;
   align-items: center;
   text-align: center;
@@ -132,7 +131,7 @@ const TimerBarContainer = styled.div`
 
 const TimerBar = styled.div`
   height: 100%;
-  background-color: red;
+  background-color: #EF6125;
   width: ${({ width }) => width}%;
   transition: width 0.1s linear;
 `;
@@ -151,12 +150,23 @@ const ReadyPlayerIcon = styled.img`
   margin: 0 5px;
 `;
 
+// 캐릭터에 따른 색상 설정
+const characterColors = [
+  "#EF6125", //E
+  "#FFCD1C", //M
+  "#14AE59", //O
+  "#FEA1BD", //J
+  "#2B9FE6", //I
+  "#FFCD1C", //N
+  "#7766C2", //U
+  "#FEA1BD", //S
+];
+
 // Game 컴포넌트
-const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlayers, }) => {
+const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt}) => {
   const [isReady, setIsReady] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [explanation, setExplanation] = useState('');
-  const [allReady, setAllReady] = useState(false);
+  const [currentPrompt, setCurrentPrompt] = useState("");
 
   useEffect(() => {
     const interval = 100; // 타이머 업데이트 주기 (단위 : ms)
@@ -175,12 +185,10 @@ const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlaye
     return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [promptTimeLimit]);
 
-  const handleExplanationChange = (e) => {
-    setExplanation(e.target.value);
-  };
-
   const handleReadyClick = () => {
+    submitPrompt(sessionId, currentPrompt);
     setIsReady(true);
+    setCurrentPrompt('');
   };
 
   const renderStatusIcons = () => {
@@ -211,12 +219,17 @@ const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlaye
   useEffect(() => {
     
   });
+  // 현재 플레이어를 찾습니다.
+  const player = players.find(p => p.id === localStorage.getItem('playerId'));
+  // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
+  const bgColor = player ? characterColors[player.characterId - 1] : '#FFFFFF'; 
+
 
   return (
-    <>
-    <TopicContainer>
+      <>
+      <TopicContainer>
         <TopicBoxStyled>
-          <TopicBoxline>
+          <TopicBoxline bgColor={bgColor}>
             {keyword}
           </TopicBoxline>
         </TopicBoxStyled>
@@ -226,11 +239,11 @@ const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlaye
           <UserProfile/>
         </LeftBox>
         <RightBox>
-          <ExplanationBox>
+          <ExplanationBox bgColor={bgColor}>
             <Explanationinput
               placeholder="키워드에 맞는 설명을 작성하세요..."
-              value={explanation}
-              onChange={handleExplanationChange}
+              value={isReady ? "제출 완료!!" : currentPrompt}
+              onChange={(e) => setCurrentPrompt(e.target.value)}
               disabled={isReady}
             />
           </ExplanationBox>
@@ -245,7 +258,7 @@ const Game1 = ({ keyword, handleReady, promptTimeLimit, totalPlayers, readyPlaye
       <ReadyPlayersContainer>
         {renderStatusIcons()}
       </ReadyPlayersContainer>
-    </>
+      </>
   );
 };
 

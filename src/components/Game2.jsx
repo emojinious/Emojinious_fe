@@ -76,7 +76,7 @@ const ImageBox = styled.div`
 `;
 
 const ImageInput = styled.div`
-  width: 100%;
+  width: 85%;
   height: 85%;
   padding: 15px;
   margin: 25px;
@@ -89,7 +89,7 @@ const ImageInput = styled.div`
 `;
 
 // Game 컴포넌트
-const Game2 = ({ keyword }) => {
+const Game2 = ({ keyword, currentImage }) => {
   return (
     <>
       <TopicContainer>
@@ -102,8 +102,9 @@ const Game2 = ({ keyword }) => {
       <TotalBox>
         <LeftBox>
           <ImageBox>
-            <ImageInput
-            />
+            <ImageInput>
+              <img src={currentImage} alt="Generated" style={{maxWidth: '80%'}} />
+            </ImageInput>
           </ImageBox>
         </LeftBox>
       </TotalBox>
