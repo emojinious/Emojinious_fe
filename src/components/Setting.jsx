@@ -218,7 +218,6 @@ const Setting = ({ isHost, gameState, handleUpdateGameSettings }) => {
     setTurns(gameState.settings.turns);
     setPromptTimeLimit(gameState.settings.promptTimeLimit);
     setGuessTimeLimit(gameState.settings.guessTimeLimit);
-    setTopic(gameState.settings.difficulty);
   }, [gameState]);
 
   const handleDifficultyClick = function(event) {
