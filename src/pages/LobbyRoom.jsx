@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import { connectToSocket, sendChatMessage, disconnect } from '../utils/socket';
+import { connectToSocket, sendChatMessage, disconnect, startGame, submitPrompt, submitGuess } from '../utils/socket';
 import Header from "../components/Header";
 import { updateGameSettings } from '../utils/api';
 import TopicBox from "../components/TopicBox";
@@ -10,6 +10,7 @@ import Setting from '../components/Setting';
 import ChatBox from '../components/ChatBox';
 import BoingButton from "../components/BoingButton";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Lobby from "../components/Lobby";
 
 
 const boingEffect = keyframes`
@@ -140,6 +141,22 @@ const Button = styled.button`
   }
 `;
 
+const LoadingSpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 3%;
+  right: 1%;
+  transform: translate(-50%, -50%);
+`;
+
+const LoadingText = styled.div`
+  font-size: 20px;
+  color: #EAE8DC;
+  margin-right: 5px;
+`;
+
 const LobbyRoom = () => {
   const navigate = useNavigate();
   const { sessionId } = useParams();
@@ -152,63 +169,75 @@ const LobbyRoom = () => {
   const [hasSettingNotification, setHasSettingNotification] = useState(false);
   const [loading, setLoading] = useState(false);
   const previousSettingsRef = useRef(gameState?.settings);
+  const [currentKeyword, setCurrentKeyword] = useState('');
 
   useEffect(() => {
     const playerId = localStorage.getItem('playerId');
     const token = localStorage.getItem('token');
     const characterId = localStorage.getItem('characterId');
-
+  
     console.log('Player info:', { playerId, characterId, sessionId });
-
+  
     let stompClient;
-
+  
     const connectAndSubscribe = async () => {
       try {
         stompClient = await connectToSocket(token, playerId, sessionId, () => {
           console.log('Successfully connected and joined the game');
         });
-        
+  
+        // 서버 구독은 한 번만 수행되도록 설정
         stompClient.subscribe(`/topic/game/${sessionId}`, function(gameState) {
           const newGameState = JSON.parse(gameState.body);
           console.log('Received game state:', newGameState);
           setGameState(newGameState);
           setIsHost(newGameState.players.find(p => p.id === playerId)?.isHost || false);
+  
+          // 주제 업데이트
+          if (newGameState.settings.topic) {
+            setCurrentTopic(newGameState.settings.topic);
+          }
+  
+          // 알림 상태 업데이트
           const previousSettings = previousSettingsRef.current;
           const newSettings = newGameState.settings;
-
-          if (newGameState.settings.topic) {
-            setCurrentTopic(newGameState.settings.topic); // 주제 업데이트
-          }
           if (previousSettings && JSON.stringify(previousSettings) !== JSON.stringify(newSettings)) {
             setHasSettingNotification(true);
           }
           previousSettingsRef.current = newSettings;
         });
-        
-          stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
-            const newChatMessage = JSON.parse(chatMessage.body);
-            console.log('Received chat message:', newChatMessage);
-            setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
-            if (activeTab !== 'chat') {
-              setHasChatNotification(true);
-            }
-          });
-
+  
+        stompClient.subscribe(`/topic/game/${sessionId}/chat`, function(chatMessage) {
+          const newChatMessage = JSON.parse(chatMessage.body);
+          console.log('Received chat message:', newChatMessage);
+          setChatMessages(prevMessages => [...prevMessages, newChatMessage]);
+          if (activeTab !== 'chat') {
+            setHasChatNotification(true);
+          }
+        });
+  
         setConnectionError(null);
       } catch (error) {
         console.error('Failed to connect:', error);
         setConnectionError('Failed to connect to the game server. Please try again.');
       }
     };
-
+  
     connectAndSubscribe();
-
+  
     return () => {
       if (stompClient) {
         disconnect();
       }
     };
-  }, [sessionId]);
+  }, [sessionId]);  // 게임 세션 ID가 변경될 때만 재실행
+  
+  // gameState 감지 로직은 별도로 관리
+  useEffect(() => {
+    if (gameState?.currentPhase === 2) {
+      navigate('/game', { state: { gameState, sessionId } });
+    }
+  }, [gameState, navigate, sessionId]);
 
   const handleBackClick = useCallback(() => {
     navigate(-1); // 이전 페이지로 이동
@@ -237,7 +266,8 @@ const LobbyRoom = () => {
   // 시작 버튼 클릭 시 로직
   const handleStartClick = async () => {
     console.log("Start button clicked");
-    navigate('/game', { state: { gameState, sessionId } });
+    startGame(sessionId);
+    console.log("gamestate:"+gameState.state);
   };
 
   const handleTabChange = (tab) => {
@@ -270,7 +300,6 @@ const LobbyRoom = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      console.log("dksltlqkf: "+settings.theme);
       await updateGameSettings(sessionId, settings, token);
       console.log('Game settings updated successfully');
     } catch (error) {
@@ -285,52 +314,21 @@ const LobbyRoom = () => {
       {gameState && (
           <>
             <Header />
-            <BackButton 
-              as="img"
-              src="/뒤로가기.svg" 
-              alt="Back Button" 
-              onClick={handleBackClick} 
-              />
-            <TopicBox 
-              isHost={isHost} 
-              gameState={gameState} 
-              handleUpdateTheme={handleUpdateTheme} 
+            <Lobby
+              gameState={gameState}
+              sessionId={sessionId}
+              isHost={isHost}
+              chatMessages={chatMessages}
+              handleBackClick={handleBackClick}
+              handleUpdateTheme={handleUpdateTheme}
+              handleUpdateGameSettings={handleUpdateGameSettings}
+              handleSendChatMessage={handleSendChatMessage}
+              handleInviteClick={handleInviteClick}
+              handleStartClick={handleStartClick}
+              loading={loading}
             />
-            <BoxesContainer>
-              <Profile players={gameState.players}/>
-              <RightBox>
-                <MainContent>
-                  {activeTab === 'setting' ? (
-                    <Setting
-                      isHost={isHost}
-                      gameState={gameState}
-                      handleUpdateGameSettings={handleUpdateGameSettings}
-                    />
-                  ) : (
-                    <ChatBox
-                      players={gameState.players}
-                      messages={chatMessages}
-                      onSendMessage={handleSendChatMessage}
-                    />
-                  )}
-                  <ButtonsContainer>
-                    <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912">시작</Button>
-                  </ButtonsContainer>
-                </MainContent>
-                <SetNav>
-                  <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
-                    <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
-                  </SetNavButton>
-                  <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
-                    <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
-                  </SetNavButton>
-                </SetNav>
-              </RightBox>
-            </BoxesContainer>
-          </>
-        )}
-        {loading && <LoadingSpinner />}
+            </>
+      )}
     </HomeContainer>
   );
 };

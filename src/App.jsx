@@ -60,8 +60,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/setup" element={<PlayerSetup />} />
         <Route path="/room/:sessionId" element={<LobbyRoom />} />
-        <Route path="/game" element={<Game/>}/>
         <Route path="/join" element={<JoinRedirect />} />
+        <Route path="/game" element={<Game/>}/>
         <Route path="/loading" element={<Loading/>}/>
       </Routes>
     </motion.div>
