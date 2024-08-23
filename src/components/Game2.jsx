@@ -28,7 +28,7 @@ const TopicBoxline = styled.div`
   height:70%;
   background: none;
   border-radius: 10px;
-  border: 4px solid #FEA1BD;
+  border: 4px solid ${({ bgColor }) => bgColor};
   display: flex;
   align-items: center;
   text-align: center;
@@ -68,7 +68,7 @@ const ImageBox = styled.div`
   border-radius: 15px;
   border: none;
   margin-bottom: 20px;
-  background-color: #FEA1BD;
+  background-color: ${({ bgColor }) => bgColor};
   display: flex;
   align-items: center;
   text-align: center;
@@ -89,19 +89,24 @@ const ImageInput = styled.div`
 `;
 
 // Game 컴포넌트
-const Game2 = ({ keyword, currentImage }) => {
+const Game2 = ({ keyword, currentImage, players }) => {
+  // 현재 플레이어를 찾습니다.
+  const player = players.find(p => p.id === localStorage.getItem('playerId'));
+  // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
+  const bgColor = player ? characterColors[player.characterId - 1] : '#FFFFFF'; 
+
   return (
     <>
       <TopicContainer>
         <TopicBoxStyled>
-          <TopicBoxline>
+          <TopicBoxline bgColor={bgColor}>
             {keyword}
           </TopicBoxline>
         </TopicBoxStyled>
       </TopicContainer>
       <TotalBox>
         <LeftBox>
-          <ImageBox>
+          <ImageBox bgColor={bgColor}>
             <ImageInput>
               <img src={currentImage} alt="Generated" style={{maxWidth: '80%'}} />
             </ImageInput>

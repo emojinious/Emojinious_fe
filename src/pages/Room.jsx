@@ -383,6 +383,7 @@ const connectAndSubscribe = useCallback(async () => {
           <Game2
             currentImage={currentImage}
             keyword={currentKeyword}
+            players={gameState.players}
           />
         );
       case 5: // Guessing phase
