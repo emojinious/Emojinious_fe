@@ -3,9 +3,8 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/Home";
 import PlayerSetup from "./pages/PlayerSetup";
-import LobbyRoom from "./pages/LobbyRoom";
+import Room from "./pages/Room";
 import styled from 'styled-components';
-import Game from './pages/Game';
 import Loading from './components/Loading';
 
 function JoinRedirect() {
@@ -59,9 +58,8 @@ function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/setup" element={<PlayerSetup />} />
-        <Route path="/room/:sessionId" element={<LobbyRoom />} />
+        <Route path="/room/:sessionId" element={<Room />} />
         <Route path="/join" element={<JoinRedirect />} />
-        <Route path="/game" element={<Game/>}/>
         <Route path="/loading" element={<Loading/>}/>
       </Routes>
     </motion.div>
