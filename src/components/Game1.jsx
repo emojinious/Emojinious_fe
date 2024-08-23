@@ -50,23 +50,54 @@ const TotalBox = styled.div`
   text-align: center;
   justify-content: center;
   margin-top: 40px;
-`
+`;
 
 const LeftBox = styled.div`
   width: 10%;
   height: 100%;
   background-color: #EAE8DC;
   border-radius: 15px;
-  border:none;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0;
+`;
+
+const PlayerBox = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 `
 
-const UserProfile = styled.div`
-  width:100%;
-  height:20%;
-  background-color:red;
-`
+const ProfileImage = styled.img`
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  margin-bottom: 0.3vw;
+  object-fit: cover;
+`;
+
+const NicknameBox = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 0.8vw;
+  font-weight: 700;
+  background-color: #EAE8DC
+  color: #333;
+  border-radius: 10px;
+  padding: 0.2vw 0;
+`;
 
 const RightBox = styled.div`
   width:80%;
@@ -76,7 +107,7 @@ const RightBox = styled.div`
   text-align: center;
   justify-content: space-between;
   flex-direction: column;
-`
+`;
 
 const ExplanationBox = styled.div`
   width: 95%;
@@ -224,6 +255,10 @@ const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, tota
   // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
   const bgColor = player ? characterColors[player.characterId - 1] : '#FFFFFF'; 
 
+  const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
+
+  const maxPlayers = 5;
+  const emptySlots = maxPlayers - totalPlayers;
 
   return (
       <>
@@ -236,7 +271,22 @@ const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, tota
       </TopicContainer>
       <TotalBox>
         <LeftBox>
-          <UserProfile/>
+          {players.map((player, index) => (
+            <PlayerBox key={`${player.id}-${index}`}>
+              <ProfileContainer>
+                <ProfileImage
+                  src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
+                  alt={`${player.nickname} Profile`}
+                />
+                <NicknameBox>
+                  {player.nickname}
+                </NicknameBox>
+              </ProfileContainer>
+            </PlayerBox>
+          ))}
+          {Array.from({ length: emptySlots }).map((_, index) => (
+            <PlayerBox key={`empty-${index}`} />
+          ))}
         </LeftBox>
         <RightBox>
           <ExplanationBox bgColor={bgColor}>
