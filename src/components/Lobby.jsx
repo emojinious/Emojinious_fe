@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import TopicBox from "./TopicBox";
-import Profile from './Profile';
-import Setting from './Setting';
-import ChatBox from './ChatBox';
+import Profile from "./Profile";
+import Setting from "./Setting";
+import ChatBox from "./ChatBox";
 import BoingButton from "./BoingButton";
 import LoadingSpinner from "./LoadingSpinner";
-
 
 const boingEffect = keyframes`
   0% {
@@ -46,7 +45,7 @@ const RightBox = styled.div`
   height: 62.5vh;
   position: relative;
   display: flex;
-`
+`;
 
 const MainContent = styled.div`
   width: 90%;
@@ -56,9 +55,9 @@ const MainContent = styled.div`
 
 const SetNav = styled.div`
   display: flex;
-  position:absolute;
-  right:0;
-  top:4%;
+  position: absolute;
+  right: 0;
+  top: 4%;
   flex-direction: column;
   justify-content: flex-start;
   height: 90%;
@@ -68,7 +67,7 @@ const SetNav = styled.div`
 const SetNavButton = styled.button`
   width: 80%;
   height: 20%;
-  background-color: ${({ color }) => color || '#777'};
+  background-color: ${({ color }) => color || "#777"};
   color: white;
   font-size: 18px;
   border: none;
@@ -105,24 +104,23 @@ const Button = styled.button`
   width: 48%;
   padding: 10px 0;
   font-size: 18px;
-  background-color: ${({ color }) => color || '#777'};
-  color: ${({ color2 }) => color2 || 'white'};
+  background-color: ${({ color }) => color || "#777"};
+  color: ${({ color2 }) => color2 || "white"};
   font-weight: bold;
   font-size: 25px;
   border: none;
   border-radius: 10px;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 
   &:hover {
-    animation: ${({ disabled }) => (disabled ? 'none' : boingEffect)} 0.4s ease;
+    animation: ${({ disabled }) => (disabled ? "none" : boingEffect)} 0.4s ease;
   }
 
   &:active {
-    background-color: ${({ activeColor }) => activeColor || '#999'};
+    background-color: ${({ activeColor }) => activeColor || "#999"};
   }
 `;
-
 
 const LoadingSpinnerContainer = styled.div`
   display: flex;
@@ -136,67 +134,118 @@ const LoadingSpinnerContainer = styled.div`
 
 const LoadingText = styled.div`
   font-size: 20px;
-  color: #EAE8DC;
+  color: #eae8dc;
   margin-right: 5px;
 `;
 
-const Lobby = ({gameState, isHost, chatMessages,handleBackClick,handleUpdateTheme,handleUpdateGameSettings,handleSendChatMessage,handleInviteClick,handleStartClick,loading,hasSettingNotification,hasChatNotification,handleTabChange,activeTab}) => {
-
+const Lobby = ({
+  gameState,
+  isHost,
+  chatMessages,
+  handleBackClick,
+  handleUpdateTheme,
+  handleUpdateGameSettings,
+  handleSendChatMessage,
+  handleInviteClick,
+  handleStartClick,
+  loading,
+  hasSettingNotification,
+  hasChatNotification,
+  handleTabChange,
+  activeTab,
+  keywordloading,
+}) => {
   return (
-          <>
-            <BackButton 
-              as="img"
-              src="/뒤로가기.svg" 
-              alt="Back Button" 
-              onClick={handleBackClick} 
+    <>
+      <BackButton
+        as="img"
+        src="/뒤로가기.svg"
+        alt="Back Button"
+        onClick={handleBackClick}
+      />
+      <TopicBox
+        isHost={isHost}
+        gameState={gameState}
+        handleUpdateTheme={handleUpdateTheme}
+      />
+      <BoxesContainer>
+        <Profile players={gameState.players} />
+        <RightBox>
+          <MainContent>
+            {activeTab === "setting" ? (
+              <Setting
+                isHost={isHost}
+                gameState={gameState}
+                handleUpdateGameSettings={handleUpdateGameSettings}
               />
-            <TopicBox 
-              isHost={isHost} 
-              gameState={gameState} 
-              handleUpdateTheme={handleUpdateTheme} 
-            />
-            <BoxesContainer>
-              <Profile players={gameState.players}/>
-              <RightBox>
-                <MainContent>
-                  {activeTab === 'setting' ? (
-                    <Setting
-                      isHost={isHost}
-                      gameState={gameState}
-                      handleUpdateGameSettings={handleUpdateGameSettings}
-                    />
-                  ) : (
-                    <ChatBox
-                      players={gameState.players}
-                      messages={chatMessages}
-                      onSendMessage={handleSendChatMessage}
-                    />
-                  )}
-                  <ButtonsContainer>
-                    <Button onClick={handleInviteClick} color="#7766C2" activeColor="#6456A5">초대</Button>
-                    <Button onClick={handleStartClick} color="#FFCD1C" color2="black" activeColor="#BF9912" disabled={!isHost}>시작</Button>
-                  </ButtonsContainer>
-                </MainContent>
-                <SetNav>
-                  <SetNavButton color="#14AE59" active={activeTab === 'setting'} onClick={() => handleTabChange('setting')}>
-                    <img src={hasSettingNotification ? "/room_설정알림.svg" : "/room_설정.svg"} alt="설정" />
-                  </SetNavButton>
-                  <SetNavButton color="#FEA1BD" active={activeTab === 'chat'} onClick={() => handleTabChange('chat')}>
-                    <img src={hasChatNotification ? "/room_채팅방알림.svg" : "/room_채팅방.svg"} alt="채팅방" />
-                  </SetNavButton>
-                </SetNav>
-              </RightBox>
-            </BoxesContainer>
-          {gameState?.currentPhase === 1 && (
-          <>
+            ) : (
+              <ChatBox
+                players={gameState.players}
+                messages={chatMessages}
+                onSendMessage={handleSendChatMessage}
+              />
+            )}
+            <ButtonsContainer>
+              <Button
+                onClick={handleInviteClick}
+                color="#7766C2"
+                activeColor="#6456A5"
+              >
+                초대
+              </Button>
+              <Button
+                onClick={handleStartClick}
+                color="#FFCD1C"
+                color2="black"
+                activeColor="#BF9912"
+                disabled={!isHost}
+              >
+                시작
+              </Button>
+            </ButtonsContainer>
+          </MainContent>
+          <SetNav>
+            <SetNavButton
+              color="#14AE59"
+              active={activeTab === "setting"}
+              onClick={() => handleTabChange("setting")}
+            >
+              <img
+                src={
+                  hasSettingNotification
+                    ? "/room_설정알림.svg"
+                    : "/room_설정.svg"
+                }
+                alt="설정"
+              />
+            </SetNavButton>
+            <SetNavButton
+              color="#FEA1BD"
+              active={activeTab === "chat"}
+              onClick={() => handleTabChange("chat")}
+            >
+              <img
+                src={
+                  hasChatNotification
+                    ? "/room_채팅방알림.svg"
+                    : "/room_채팅방.svg"
+                }
+                alt="채팅방"
+              />
+            </SetNavButton>
+          </SetNav>
+        </RightBox>
+      </BoxesContainer>
+      {keywordloading && (
+        <>
           <LoadingSpinnerContainer>
             <LoadingText>키워드 생성중...</LoadingText>
           </LoadingSpinnerContainer>
-            <LoadingSpinner />
-          </>
-        )}
-        {loading && <LoadingSpinner />}
+          <LoadingSpinner />
         </>
+      )}
+      {loading && <LoadingSpinner />}
+    </>
   );
 };
 
