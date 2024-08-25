@@ -16,6 +16,7 @@ import Game1 from "../components/Game1";
 import Game2 from "../components/Game2";
 import Loading from "../components/Loading";
 import GameGuess from "../components/GameGuess";
+import TotalScore from "../components/TotalScore";
 
 const HomeContainer = styled.div`
   width: 100vw;
@@ -378,19 +379,7 @@ const Room = () => {
       case "IN_PROGRESS":
         return <>{renderPhaseContent()}</>;
       case "FINISHED":
-        return (
-          <div>
-            <h3>Game Finished</h3>
-            <p>
-              Winner:{" "}
-              {
-                gameState.players.reduce((prev, current) =>
-                  prev.score > current.score ? prev : current
-                ).nickname
-              }
-            </p>
-          </div>
-        );
+        return <TotalScore players={gameState.players} />;
       default:
         return null;
     }
