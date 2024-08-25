@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const TopicContainer = styled.div`
-  width:100vw;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +12,7 @@ const TopicContainer = styled.div`
 const TopicBoxStyled = styled.div`
   width: 30%;
   height: 80px;
-  background-color: #EAE8DC;
+  background-color: #eae8dc;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -24,11 +24,11 @@ const TopicBoxStyled = styled.div`
 `;
 
 const TopicBoxline = styled.div`
-  width:95%;
-  height:70%;
+  width: 95%;
+  height: 70%;
   background: none;
   border-radius: 10px;
-  border: 4px solid #14AE59;
+  border: 4px solid ${({ bgColor }) => bgColor};
   display: flex;
   align-items: center;
   text-align: center;
@@ -45,99 +45,129 @@ const TopicBoxline = styled.div`
 const TotalBox = styled.div`
   width: 75%;
   height: 60%;
-  display:flex;
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
   margin-top: 40px;
-`
+`;
 
 const LeftBox = styled.div`
   width: 10%;
   height: 100%;
-  background-color: #EAE8DC;
+  background-color: #eae8dc;
   border-radius: 15px;
-  border:none;
-  display:flex;
-  flex-direction:column;
-`
+  border: none;
+  display: flex;
+  flex-direction: column;
+`;
 
-const UserProfile = styled.div`
-  width:100%;
-  height:20%;
-  background-color:red;
-`
+const PlayerBox = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const ProfileImage = styled.img`
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  margin-bottom: 0.3vw;
+  object-fit: cover;
+`;
+
+const NicknameBox = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 0.8vw;
+  font-weight: 700;
+  background-color: #EAE8DC
+  color: #333;
+  border-radius: 10px;
+  padding: 0.2vw 0;
+`;
 
 const RightBox = styled.div`
-  width:80%;
-  height:100%;
-  display:flex;
+  width: 80%;
+  height: 100%;
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: space-between;
   flex-direction: column;
-`
+`;
 
 const RightInner = styled.div`
   width: 95%;
   height: 90%;
-  display:flex;
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: space-between;
-`
+`;
 
 const Sketchbook = styled.div`
   width: 65%;
   height: 100%;
-  display:flex;
-  justify-content:center;
-  background-color:#EAE7DC;
+  display: flex;
+  justify-content: center;
+  background-color: #eae7dc;
   position: relative;
   border-radius: 15px;
-`
+`;
 
-const SketchbookSpring= styled.img`
+const SketchbookSpring = styled.img`
   width: 90%;
   height: 12%;
-  background:none;
-  position:absolute;
-  top:-5%;
-`
+  background: none;
+  position: absolute;
+  top: -5%;
+`;
 const ExplanationContainer = styled.div`
   width: 43%;
   height: 100%;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
   justify-content: space-between;
-`
+`;
 const ExplanationBox = styled.div`
   width: 22vw;
-  height:17vw;
-  background-color: ${({ lineColor }) => lineColor || 'black'};
+  height: 17vw;
+  background-color: ${({ bgColor }) => bgColor};
   border-radius: 15px;
-  display:flex;
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
   position: relative;
   aspect-ratio: 1 / 1;
-`
+`;
 
 const ExplanationImg = styled.img`
   width: 90%;
   height: 90%;
   border-radius: 15px;
-  border:none;
+  border: none;
   margin-bottom: 20px;
-  display:flex;
+  display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
-  position:absolute;
-  top:4%;
+  position: absolute;
+  top: 4%;
 `;
 
 const Explanationinput = styled.textarea`
@@ -146,13 +176,13 @@ const Explanationinput = styled.textarea`
   padding: 15px;
   font-size: 18px;
   border-radius: 15px;
-  background:none;
-  border:none;
+  background: none;
+  border: none;
   resize: none;
-  outline: none; 
+  outline: none;
   position: absolute;
-  top:12%;
-  overflow:hidden;
+  top: 12%;
+  overflow: hidden;
 `;
 
 const ReadyButton = styled.button`
@@ -161,13 +191,13 @@ const ReadyButton = styled.button`
   padding: 10px 25px;
   font-size: 24px;
   font-weight: bold;
-  background-color: #FFCD1C;
-  color: #7766C2;
+  background-color: ${(props) => (props.isReady ? "#14AE59" : "#FFCD1C")};
+  color: ${(props) => (props.isReady ? "#FFFFFF" : "#7766C2")};
   border: none;
   border-radius: 15px;
   cursor: pointer;
   &:hover {
-    background-color: #E6B517;
+    background-color: ${(props) => (props.isReady ? "#14AE59" : "#E6B517")};
   }
 `;
 
@@ -176,17 +206,18 @@ const TimerBarContainer = styled.div`
   height: 25px;
   border-radius: 15px;
   overflow: hidden;
+  background-color: #eae8dc;
 `;
 
 const TimerBar = styled.div`
   height: 100%;
-  background-color: #EAE8DC;
+  background-color: #ef6125;
   width: ${({ width }) => width}%;
-  transition: width 0.5s linear;
+  transition: width 0.1s linear;
 `;
 
 const ReadyPlayersContainer = styled.div`
-  width:63%;
+  width: 63%;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -211,48 +242,141 @@ const characterColors = [
 ];
 
 // Game 컴포넌트
-const GameGuess = () => {
-  const lineColor = characterColors[0]; // [0] <=> [player.characterId - 1]
+const GameGuess = ({
+  sessionId,
+  currentImage,
+  currentGuess,
+  setCurrentGuess,
+  players,
+  totalPlayers,
+  readyPlayers,
+  promptTimeLimit,
+  submitGuess,
+}) => {
+  const [isReady, setIsReady] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+
+  useEffect(() => {
+    const interval = 100; // 타이머 업데이트 주기 (단위 : ms)
+    const timer = setInterval(() => {
+      setElapsedTime((prevTime) => {
+        const newTime = prevTime + interval / 1000;
+        if (newTime >= promptTimeLimit) {
+          clearInterval(timer); // 타이머가 끝나면 멈춤
+          return promptTimeLimit;
+        }
+        return newTime;
+      });
+    }, interval);
+
+    return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
+  }, [promptTimeLimit]);
+
+  const handleReadyClick = () => {
+    submitGuess(sessionId, currentGuess);
+    setIsReady(true);
+    setCurrentGuess("");
+  };
+
+  const renderStatusIcons = () => {
+    const statusIcons = [];
+    for (let i = 0; i < readyPlayers; i++) {
+      statusIcons.push(
+        <img
+          key={`ready-${i}`}
+          src="/game_플레이어준비완료.svg"
+          alt="Ready"
+          style={{ width: "20px", height: "20px", margin: "0 5px" }}
+        />
+      );
+    }
+    for (let i = 0; i < totalPlayers - readyPlayers; i++) {
+      statusIcons.push(
+        <img
+          key={`not-ready-${i}`}
+          src="/game_플레이어준비중.svg"
+          alt="Not Ready"
+          style={{ width: "20px", height: "20px", margin: "0 5px" }}
+        />
+      );
+    }
+    return statusIcons;
+  };
+
+  const player = players.find((p) => p.id === localStorage.getItem("playerId"));
+  // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
+  const bgColor = player ? characterColors[player.characterId - 1] : "#FFFFFF";
+
+  const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
+
+  const maxPlayers = 5;
+  const emptySlots = maxPlayers - totalPlayers;
+  const playerCharacter = player ? charactersIdx[player.characterId - 1] : "E";
 
   return (
     <>
-    <TopicContainer>
+      <TopicContainer>
         <TopicBoxStyled>
-          <TopicBoxline>
-            키워드
-          </TopicBoxline>
+          <TopicBoxline bgColor={bgColor}>맞춰주세요!</TopicBoxline>
         </TopicBoxStyled>
       </TopicContainer>
       <TotalBox>
         <LeftBox>
-          <UserProfile/>
+          {players.map((player, index) => (
+            <PlayerBox key={`${player.id}-${index}`}>
+              <ProfileContainer>
+                <ProfileImage
+                  src={`/room_${
+                    charactersIdx[player.characterId - 1]
+                  }프로필.svg`}
+                  alt={`${player.nickname} Profile`}
+                />
+                <NicknameBox>{player.nickname}</NicknameBox>
+              </ProfileContainer>
+            </PlayerBox>
+          ))}
+          {Array.from({ length: emptySlots }).map((_, index) => (
+            <PlayerBox key={`empty-${index}`} />
+          ))}
         </LeftBox>
         <RightBox>
           <RightInner>
             <Sketchbook>
-              <SketchbookSpring src="game_스프링.png" alt="스케치북스프링"/>
+              <SketchbookSpring src="/game_스프링.png" alt="스케치북스프링" />
+              <img
+                src={currentImage}
+                alt="Generated"
+                style={{ maxWidth: "70%" }}
+              />
             </Sketchbook>
             <ExplanationContainer>
-              <ExplanationBox lineColor={lineColor}>
-                <ExplanationImg src="/game_E말풍선.svg" alt="player 말풍선"/>
-                <Explanationinput placeholder="정답 맞추기..."
-              />
+              <ExplanationBox bgColor={bgColor}>
+                <ExplanationImg
+                  src={`/game_${playerCharacter}말풍선.svg`}
+                  alt="player 말풍선"
+                />
+                <Explanationinput
+                  placeholder="정답 맞추기..."
+                  value={isReady ? "제출 완료!!!" : currentGuess}
+                  onChange={(e) => setCurrentGuess(e.target.value)}
+                  disabled={isReady}
+                />
               </ExplanationBox>
-            <ReadyButton>준비</ReadyButton>
-              </ExplanationContainer>
+              <ReadyButton
+                onClick={handleReadyClick}
+                isReady={isReady}
+                disabled={isReady}
+              >
+                {isReady ? "다른 사람 기다리는 중...." : "이거다!"}
+              </ReadyButton>
+            </ExplanationContainer>
           </RightInner>
           <TimerBarContainer>
-            <TimerBar />
+            <TimerBar width={(elapsedTime / promptTimeLimit) * 100} />
           </TimerBarContainer>
         </RightBox>
       </TotalBox>
-      <ReadyPlayersContainer>
-        <ReadyPlayerIcon src="/game_플레이어준비완료.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-        <ReadyPlayerIcon src="/game_플레이어준비중.svg"/>
-      </ReadyPlayersContainer>
+      <ReadyPlayersContainer>{renderStatusIcons()}</ReadyPlayersContainer>
     </>
   );
 };
