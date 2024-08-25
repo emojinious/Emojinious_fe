@@ -8,6 +8,7 @@ import Lobby from "../components/Lobby";
 import Game1 from '../components/Game1';
 import Game2 from '../components/Game2';
 import Loading from "../components/Loading";
+import GameGuess from "../components/GameGuess";
 
 const HomeContainer = styled.div` 
   width: 100vw;
@@ -365,10 +366,11 @@ const connectAndSubscribe = useCallback(async () => {
                 />;
       case 2: // Description phase
         return (
-                <Game1
-                  keyword={currentKeyword}  // Game1에 필요한 props 전달
+                <Game1 // Game1에 필요한 props 전달
+                  keyword={currentKeyword} 
                   sessionId={sessionId}
-                  handleReady={handleReady}   // 모두 준비 완료 되면 handleReady 함수가 실행되도록 전달
+                  currentPrompt={currentPrompt}
+                  setCurrentPrompt={setCurrentPrompt}
                   promptTimeLimit={promptTimeLimit}
                   totalPlayers={totalPlayers}
                   readyPlayers={readyPlayers}
@@ -388,17 +390,17 @@ const connectAndSubscribe = useCallback(async () => {
         );
       case 5: // Guessing phase
         return (
-          <div>
-            <p>Guess the keyword for this image:</p>
-            {currentImage && <img src={currentImage} alt="To guess" style={{maxWidth: '300px'}} />}
-            <input
-              type="text"
-              value={currentGuess}
-              onChange={(e) => setCurrentGuess(e.target.value)}
-              placeholder="Enter your guess"
-            />
-            <button onClick={handleSubmitGuess}>Submit Guess</button>
-          </div>
+                <GameGuess
+                  currentImage={currentImage}
+                  sessionId={sessionId}
+                  currentGuess={currentGuess}
+                  setCurrentGuess={setCurrentGuess}
+                  promptTimeLimit={promptTimeLimit}
+                  totalPlayers={totalPlayers}
+                  readyPlayers={readyPlayers}
+                  players={gameState.players}
+                  submitGuess={submitGuess}
+                />
         );
       default:
         return null;

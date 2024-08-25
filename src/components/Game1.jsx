@@ -194,10 +194,9 @@ const characterColors = [
 ];
 
 // Game 컴포넌트
-const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt}) => {
+const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt}) => {
   const [isReady, setIsReady] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [currentPrompt, setCurrentPrompt] = useState("");
 
   useEffect(() => {
     const interval = 100; // 타이머 업데이트 주기 (단위 : ms)
@@ -205,7 +204,6 @@ const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, tota
       setElapsedTime((prevTime) => {
         const newTime = prevTime + interval / 1000;
         if (newTime >= promptTimeLimit) {
-          handleReady();
           clearInterval(timer); // 타이머가 끝나면 멈춤
           return promptTimeLimit;
         }
@@ -247,9 +245,6 @@ const Game1 = ({ keyword, players, sessionId, handleReady, promptTimeLimit, tota
     return statusIcons;
   };
 
-  useEffect(() => {
-    
-  });
   // 현재 플레이어를 찾습니다.
   const player = players.find(p => p.id === localStorage.getItem('playerId'));
   // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
