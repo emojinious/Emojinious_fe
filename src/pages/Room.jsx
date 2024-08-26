@@ -18,6 +18,7 @@ import Loading from "../components/Loading";
 import GameGuess from "../components/GameGuess";
 import TotalScore from "../components/TotalScore";
 import InviteButton from "../components/InviteButton";
+import LoadingScore from "../components/LoadingScore";
 
 const HomeContainer = styled.div`
   width: 100vw;
@@ -452,7 +453,7 @@ const Room = () => {
           />
         );
       case 6: //score 분석 phase
-        return <Loading />;
+        return <LoadingScore />;
       default:
         return null;
     }

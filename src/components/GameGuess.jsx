@@ -260,6 +260,10 @@ const GameGuess = ({
   const [remainingTime, setRemainingTime] = useState(promptTimeLimit);
 
   useEffect(() => {
+    setIsReady(false);
+  }, [currentImage]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setRemainingTime((prevTime) => {
         if (prevTime <= 0) {
