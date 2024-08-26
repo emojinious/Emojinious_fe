@@ -178,13 +178,17 @@ const Explanationinput = styled.textarea`
   font-weight: bold;
   border-radius: 15px;
   background: none;
-  color: #EAE7DC;
+  color: #FFFFFF;
   border: none;
   resize: none;
   outline: none;
   position: absolute;
   top: 12%;
   overflow: hidden;
+
+  &::placeholder {
+    color: #EAE8DC;
+  }
 `;
 
 const ReadyButton = styled.button`
