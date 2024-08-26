@@ -175,8 +175,10 @@ const Explanationinput = styled.textarea`
   height: 20%;
   padding: 15px;
   font-size: 18px;
+  font-weight: bold;
   border-radius: 15px;
   background: none;
+  color: #EAE7DC;
   border: none;
   resize: none;
   outline: none;
@@ -255,27 +257,39 @@ const GameGuess = ({
   readyPlayers,
   promptTimeLimit,
   submitGuess,
+  remainingTime  // Current remaining time from server
 }) => {
   const [isReady, setIsReady] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(promptTimeLimit);
+  const [statusIcons, setStatusIcons] = useState([]);
+  const [percentageLeft, setPercentageLeft] = useState(100);
 
   useEffect(() => {
     setIsReady(false);
-  }, [currentImage]);
+    setPercentageLeft((remainingTime / promptTimeLimit) * 100);
+  }, [currentImage, remainingTime, promptTimeLimit]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prevTime - 1;
+      setPercentageLeft((prevPercentage) => {
+        const newPercentage = prevPercentage - (100 / promptTimeLimit);
+        return newPercentage > 0 ? newPercentage : 0;
       });
     }, 1000);
 
     return () => clearInterval(timer);
   }, [promptTimeLimit]);
+
+  useEffect(() => {
+    const newStatusIcons = Array(totalPlayers).fill(
+      <ReadyPlayerIcon src="/game_플레이어준비중.svg" alt="Not Ready" />
+    );
+    
+    for (let i = 0; i < readyPlayers; i++) {
+      newStatusIcons[i] = <ReadyPlayerIcon src="/game_플레이어준비완료.svg" alt="Ready" />;
+    }
+    
+    setStatusIcons(newStatusIcons);
+  }, [totalPlayers, readyPlayers]);
 
   const handleReadyClick = () => {
     submitGuess(sessionId, currentGuess);
@@ -283,42 +297,12 @@ const GameGuess = ({
     setCurrentGuess("");
   };
 
-  const renderStatusIcons = () => {
-    const statusIcons = [];
-    for (let i = 0; i < readyPlayers; i++) {
-      statusIcons.push(
-        <img
-          key={`ready-${i}`}
-          src="/game_플레이어준비완료.svg"
-          alt="Ready"
-          style={{ width: "20px", height: "20px", margin: "0 5px" }}
-        />
-      );
-    }
-    for (let i = 0; i < totalPlayers - readyPlayers; i++) {
-      statusIcons.push(
-        <img
-          key={`not-ready-${i}`}
-          src="/game_플레이어준비중.svg"
-          alt="Not Ready"
-          style={{ width: "20px", height: "20px", margin: "0 5px" }}
-        />
-      );
-    }
-    return statusIcons;
-  };
-
   const player = players.find((p) => p.id === localStorage.getItem("playerId"));
-  // 현재 플레이어의 characterId에 맞는 색상을 설정합니다.
   const bgColor = player ? characterColors[player.characterId - 1] : "#FFFFFF";
-
   const charactersIdx = ["E", "M", "O", "J", "I", "N", "U", "S"];
-
   const maxPlayers = 5;
   const emptySlots = maxPlayers - totalPlayers;
   const playerCharacter = player ? charactersIdx[player.characterId - 1] : "E";
-
-  const percentageLeft = (remainingTime / promptTimeLimit) * 100;
 
   return (
     <>
@@ -333,9 +317,7 @@ const GameGuess = ({
             <PlayerBox key={`${player.id}-${index}`}>
               <ProfileContainer>
                 <ProfileImage
-                  src={`/room_${
-                    charactersIdx[player.characterId - 1]
-                  }프로필.svg`}
+                  src={`/room_${charactersIdx[player.characterId - 1]}프로필.svg`}
                   alt={`${player.nickname} Profile`}
                 />
                 <NicknameBox>{player.nickname}</NicknameBox>
@@ -350,18 +332,11 @@ const GameGuess = ({
           <RightInner>
             <Sketchbook>
               <SketchbookSpring src="/game_스프링.png" alt="스케치북스프링" />
-              <img
-                src={currentImage}
-                alt="Generated"
-                style={{ maxWidth: "70%" }}
-              />
+              <img src={currentImage} alt="Generated" style={{ maxWidth: "70%" }} />
             </Sketchbook>
             <ExplanationContainer>
               <ExplanationBox bgColor={bgColor}>
-                <ExplanationImg
-                  src={`/game_${playerCharacter}말풍선.svg`}
-                  alt="player 말풍선"
-                />
+                <ExplanationImg src={`/game_${playerCharacter}말풍선.svg`} alt="player 말풍선" />
                 <Explanationinput
                   placeholder="정답 맞추기..."
                   value={isReady ? "제출 완료!!!" : currentGuess}
@@ -369,11 +344,7 @@ const GameGuess = ({
                   disabled={isReady}
                 />
               </ExplanationBox>
-              <ReadyButton
-                onClick={handleReadyClick}
-                isReady={isReady}
-                disabled={isReady}
-              >
+              <ReadyButton onClick={handleReadyClick} isReady={isReady} disabled={isReady}>
                 {isReady ? "다른 사람 기다리는 중...." : "이거다!"}
               </ReadyButton>
             </ExplanationContainer>
@@ -383,7 +354,7 @@ const GameGuess = ({
           </TimerBarContainer>
         </RightBox>
       </TotalBox>
-      <ReadyPlayersContainer>{renderStatusIcons()}</ReadyPlayersContainer>
+      <ReadyPlayersContainer>{statusIcons}</ReadyPlayersContainer>
     </>
   );
 };

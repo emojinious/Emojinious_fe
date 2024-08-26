@@ -169,7 +169,7 @@ const LoadingScore = () => {
         </LoadingDots>
       )} 
       <LoadingText>
-        {loadingComplete ? "측정 완료!" : "MOJI가 점수 측정 중"}
+        {loadingComplete ? "계산 완료!" : "MOJI가 점수 계산 중"}
         {!loadingComplete && (
           <>
             <TextDot delay={0}>.</TextDot>

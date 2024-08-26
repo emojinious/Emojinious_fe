@@ -33,6 +33,7 @@ const HomeContainer = styled.div`
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
+  user-select: none;
 `;
 
 const Room = () => {
@@ -450,6 +451,7 @@ const Room = () => {
             readyPlayers={readyPlayers}
             players={gameState.players}
             submitGuess={submitGuess}
+            remainingTime={remainingTime}
           />
         );
       case 6: //score 분석 phase

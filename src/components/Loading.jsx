@@ -147,7 +147,7 @@ const Loading = () => {
   const [loadingComplete, setLoadingComplete] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoadingComplete(true), 5000); // 5초 후 로딩 완료로 전환
+    const timer = setTimeout(() => setLoadingComplete(true), 6000); // 5초 후 로딩 완료로 전환
     return () => clearTimeout(timer);
   }, []);
 
@@ -169,7 +169,7 @@ const Loading = () => {
         </LoadingDots>
       )} 
       <LoadingText>
-        {loadingComplete ? "생성 완료!" : "MOJI가 그림 생성 중"}
+        {loadingComplete ? "그리기 완료!" : "MOJI가 그림 그리는 중"}
         {!loadingComplete && (
           <>
             <TextDot delay={0}>.</TextDot>
