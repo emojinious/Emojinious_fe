@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const TopicContainer = styled.div`
-  width:100vw;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,8 +24,8 @@ const TopicBoxStyled = styled.div`
 `;
 
 const TopicBoxline = styled.input`
-  width:95%;
-  height:70%;
+  width: 95%;
+  height: 70%;
   background: none;
   border-radius: 10px;
   border: 4px solid #2B9FE6;
@@ -43,40 +43,57 @@ const TopicBoxline = styled.input`
 `;
 
 const TopicBox = ({ isHost, gameState, handleUpdateTheme }) => {
-  const [topic, setTopic] = useState(gameState.settings.theme || 'RANDOM');
+  const [topic, setTopic] = useState(gameState.settings.theme || '무작위');
+  const [inputValue, setInputValue] = useState(gameState.settings.theme === '무작위' ? '' : gameState.settings.theme);
 
   useEffect(() => {
     setTopic(gameState.settings.theme);
+    setInputValue(gameState.settings.theme === '무작위' ? '' : gameState.settings.theme);
   }, [gameState]);
 
   const handleTopicChange = (e) => {
-    setTopic(e.target.value);
+    setInputValue(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (isHost) {
+      const newTopic = inputValue.trim() === '' ? '무작위' : inputValue;
+      if (newTopic !== topic) {
+        setTopic(newTopic);
+        handleUpdateTheme({ theme: newTopic });
+      }
+    }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && isHost) {
-      handleUpdateTheme({ theme: topic });
+    if (e.key === 'Enter') {
+      handleSubmit();
     }
   };
-  
+
+  const handleBlur = () => {
+    handleSubmit();
+  };
 
   return (
     <TopicContainer>
       <TopicBoxStyled>
       {isHost ? (
           <TopicBoxline
-          type="text"
-          value={topic === '무작위' ? '' : topic}
-          onChange={handleTopicChange}
-          onKeyDown={handleKeyDown}
-          placeholder="주제를 입력하세요.(미입력시 랜덤)"
-          />) : (
-            <TopicBoxline
+            type="text"
+            value={inputValue}
+            onChange={handleTopicChange}
+            onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
+            placeholder="무작위"
+          />
+        ) : (
+          <TopicBoxline
             type="text"
             value={topic}
             readOnly
-            />
-          )}
+          />
+        )}
       </TopicBoxStyled>
     </TopicContainer>
   );

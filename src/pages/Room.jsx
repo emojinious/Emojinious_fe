@@ -17,6 +17,7 @@ import Game2 from "../components/Game2";
 import Loading from "../components/Loading";
 import GameGuess from "../components/GameGuess";
 import TotalScore from "../components/TotalScore";
+import InviteButton from "../components/InviteButton";
 
 const HomeContainer = styled.div`
   width: 100vw;
@@ -288,15 +289,12 @@ const Room = () => {
   const handleInviteClick = () => {
     console.log("Invite button clicked");
     const inviteLink = generateInviteLink();
-    navigator.clipboard
-      .writeText(inviteLink)
-      .then(() => {
-        alert("Invite link copied to clipboard!");
-      })
+    navigator.clipboard.writeText(inviteLink)
       .catch((err) => {
         console.error("Failed to copy invite link: ", err);
       });
   };
+
   const generateInviteLink = () => {
     const baseUrl = window.location.origin;
     return `${baseUrl}/join?sessionId=${sessionId}`;
@@ -374,6 +372,7 @@ const Room = () => {
             handleTabChange={handleTabChange}
             activeTab={activeTab}
             keywordloading={keywordloading}
+            InviteButton={InviteButton}
           />
         );
       case "IN_PROGRESS":

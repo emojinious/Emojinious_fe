@@ -154,6 +154,7 @@ const Lobby = ({
   handleTabChange,
   activeTab,
   keywordloading,
+  InviteButton,
 }) => {
   return (
     <>
@@ -186,13 +187,11 @@ const Lobby = ({
               />
             )}
             <ButtonsContainer>
-              <Button
+              <InviteButton
                 onClick={handleInviteClick}
                 color="#7766C2"
                 activeColor="#6456A5"
-              >
-                초대
-              </Button>
+              />
               <Button
                 onClick={handleStartClick}
                 color="#FFCD1C"
