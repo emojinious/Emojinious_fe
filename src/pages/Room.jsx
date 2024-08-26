@@ -61,6 +61,7 @@ const Room = () => {
   const [totalPlayers, setTotalPlayers] = useState(1);
   const [readyPlayers, setReadyPlayers] = useState(1);
   const [keywordloading, setKeywordloading] = useState(false);
+  const [gameResult, setGameResult] = useState(null);
 
   const stompClientRef = useRef(null);
   const isConnectedRef = useRef(false);
@@ -160,6 +161,7 @@ const Room = () => {
           callback: handleProgress,
         }, // 추가: progress 구독
         { topic: `/topic/game/${sessionId}/phase`, callback: handlePhase },
+        { topic: `/topic/game/${sessionId}/result`, callback: handleGameResult },
       ];
 
       subscriptions.forEach(({ topic, callback }) => {
@@ -244,6 +246,11 @@ const Room = () => {
   const handlePhase = useCallback((phaseMessage) => {
     const phaseData = JSON.parse(phaseMessage.body);
     setMessage(phaseData.message);
+  }, []);
+
+  const handleGameResult = useCallback((result) => {
+    const newResult = JSON.parse(result.body);
+    setGameResult(newResult);
   }, []);
 
   useEffect(() => {
@@ -378,7 +385,7 @@ const Room = () => {
       case "IN_PROGRESS":
         return <>{renderPhaseContent()}</>;
       case "FINISHED":
-        return <TotalScore players={gameState.players} />;
+        return <TotalScore gameResult={gameResult} />;
       default:
         return null;
     }

@@ -162,9 +162,13 @@ const TimerBarContainer = styled.div`
 
 const TimerBar = styled.div`
   height: 100%;
-  background-color: #EF6125;
   width: ${({ width }) => width}%;
-  transition: width 0.1s linear;
+  transition: width 0.1s linear, background-color 0.3s ease;
+  background-color: ${({ percentageLeft }) => 
+    percentageLeft > 50 ? '#2B9FE6' :  // 파란 계열
+    percentageLeft > 20 ? '#FFCD1C' :  // 노란 계열
+    '#EF6125'  // 빨간 계열
+  };
 `;
 
 const ReadyPlayersContainer = styled.div`
@@ -181,6 +185,7 @@ const ReadyPlayerIcon = styled.img`
   margin: 0 5px;
 `;
 
+
 // 캐릭터에 따른 색상 설정
 const characterColors = [
   "#EF6125", //E
@@ -196,22 +201,20 @@ const characterColors = [
 // Game 컴포넌트
 const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt}) => {
   const [isReady, setIsReady] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(promptTimeLimit);
 
   useEffect(() => {
-    const interval = 100; // 타이머 업데이트 주기 (단위 : ms)
     const timer = setInterval(() => {
-      setElapsedTime((prevTime) => {
-        const newTime = prevTime + interval / 1000;
-        if (newTime >= promptTimeLimit) {
-          clearInterval(timer); // 타이머가 끝나면 멈춤
-          return promptTimeLimit;
+      setRemainingTime((prevTime) => {
+        if (prevTime <= 0) {
+          clearInterval(timer);
+          return 0;
         }
-        return newTime;
+        return prevTime - 1;
       });
-    }, interval);
+    }, 1000);
 
-    return () => clearInterval(timer); // 컴포넌트 언마운트 시 타이머 정리
+    return () => clearInterval(timer);
   }, [promptTimeLimit]);
 
   const handleReadyClick = () => {
@@ -219,6 +222,7 @@ const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, p
     setIsReady(true);
     setCurrentPrompt('');
   };
+
 
   const renderStatusIcons = () => {
     const statusIcons = [];
@@ -254,6 +258,7 @@ const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, p
 
   const maxPlayers = 5;
   const emptySlots = maxPlayers - totalPlayers;
+  const percentageLeft = (remainingTime / promptTimeLimit) * 100;
 
   return (
       <>
@@ -296,7 +301,7 @@ const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, p
             {isReady ? '완료!' : '준비'}
           </ReadyButton>
           <TimerBarContainer>
-            <TimerBar width={(elapsedTime / promptTimeLimit) * 100} />
+            <TimerBar width={percentageLeft} percentageLeft={percentageLeft} />
           </TimerBarContainer>
         </RightBox>
       </TotalBox>
