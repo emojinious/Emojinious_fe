@@ -199,23 +199,35 @@ const characterColors = [
 ];
 
 // Game 컴포넌트
-const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt}) => {
+const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, promptTimeLimit, totalPlayers, readyPlayers, submitPrompt, remainingTime}) => {
   const [isReady, setIsReady] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(promptTimeLimit);
+  const [percentageLeft, setPercentageLeft] = useState(100);
 
   useEffect(() => {
+    setIsReady(false);
+  }, [keyword])
+
+  useEffect(() => {
+    setPercentageLeft((remainingTime / promptTimeLimit) * 100);
+  }, [keyword, promptTimeLimit, remainingTime]);
+
+  useEffect(() => {
+    const updateInterval = 50;
+    const decrementPerInterval = (100 / promptTimeLimit) * (updateInterval / 1000);
+
     const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime <= 0) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prevTime - 1;
+      setPercentageLeft((prevPercentage) => {
+        const newPercentage = prevPercentage - decrementPerInterval;
+        return newPercentage > 0 ? newPercentage : 0;
       });
-    }, 1000);
+    }, updateInterval);
 
     return () => clearInterval(timer);
   }, [promptTimeLimit]);
+
+  useEffect(() => {
+    setPercentageLeft((remainingTime / promptTimeLimit) * 100);
+  }, [remainingTime, promptTimeLimit]);
 
   const handleReadyClick = () => {
     submitPrompt(sessionId, currentPrompt);
@@ -258,7 +270,6 @@ const Game1 = ({ keyword, players, sessionId, currentPrompt, setCurrentPrompt, p
 
   const maxPlayers = 5;
   const emptySlots = maxPlayers - totalPlayers;
-  const percentageLeft = (remainingTime / promptTimeLimit) * 100;
 
   return (
       <>

@@ -255,7 +255,7 @@ const GameGuess = ({
   players,
   totalPlayers,
   readyPlayers,
-  promptTimeLimit,
+  guessTimeLimit,
   submitGuess,
   remainingTime  // Current remaining time from server
 }) => {
@@ -265,19 +265,25 @@ const GameGuess = ({
 
   useEffect(() => {
     setIsReady(false);
-    setPercentageLeft((remainingTime / promptTimeLimit) * 100);
-  }, [currentImage, remainingTime, promptTimeLimit]);
+  }, [currentImage])
 
   useEffect(() => {
+    setPercentageLeft((remainingTime / guessTimeLimit) * 100);
+  }, [currentImage, remainingTime, guessTimeLimit]);
+
+  useEffect(() => {
+    const updateInterval = 50;
+    const decrementPerInterval = (100 / guessTimeLimit) * (updateInterval / 1000);
+
     const timer = setInterval(() => {
       setPercentageLeft((prevPercentage) => {
-        const newPercentage = prevPercentage - (100 / promptTimeLimit);
+        const newPercentage = prevPercentage - decrementPerInterval;
         return newPercentage > 0 ? newPercentage : 0;
       });
-    }, 1000);
+    }, updateInterval);
 
     return () => clearInterval(timer);
-  }, [promptTimeLimit]);
+  }, [guessTimeLimit]);
 
   useEffect(() => {
     const newStatusIcons = Array(totalPlayers).fill(
@@ -287,7 +293,6 @@ const GameGuess = ({
     for (let i = 0; i < readyPlayers; i++) {
       newStatusIcons[i] = <ReadyPlayerIcon src="/game_플레이어준비완료.svg" alt="Ready" />;
     }
-    
     setStatusIcons(newStatusIcons);
   }, [totalPlayers, readyPlayers]);
 

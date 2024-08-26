@@ -60,6 +60,7 @@ const Room = () => {
   const [message, setMessage] = useState("");
   const [isAllReady, setIsAllReady] = useState(false);
   const [promptTimeLimit, setPromptTimeLimit] = useState(null);
+  const [guessTimeLimit, setGuessTimeLimit] = useState(null);
   const [totalPlayers, setTotalPlayers] = useState(1);
   const [readyPlayers, setReadyPlayers] = useState(1);
   const [keywordloading, setKeywordloading] = useState(false);
@@ -353,6 +354,7 @@ const Room = () => {
   useEffect(() => {
     if (gameState && gameState.settings) {
       setPromptTimeLimit(gameState.settings.promptTimeLimit);
+      setGuessTimeLimit(gameState.settings.guessTimeLimit);
       setTotalPlayers(submissionProgress.total);
       setReadyPlayers(submissionProgress.submitted);
       console.log(submissionProgress);
@@ -427,6 +429,7 @@ const Room = () => {
             readyPlayers={readyPlayers}
             players={gameState.players}
             submitPrompt={submitPrompt}
+            remainingTime={remainingTime}
           />
         );
       case 3: // Generation phase
@@ -446,7 +449,7 @@ const Room = () => {
             sessionId={sessionId}
             currentGuess={currentGuess}
             setCurrentGuess={setCurrentGuess}
-            promptTimeLimit={promptTimeLimit}
+            guessTimeLimit={guessTimeLimit}
             totalPlayers={totalPlayers}
             readyPlayers={readyPlayers}
             players={gameState.players}
