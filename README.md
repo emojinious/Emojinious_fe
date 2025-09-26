@@ -1,9 +1,40 @@
-# 니가그린기린그림
+# 🎉 Emojinious (이모지니어스)
 
-Note: Please ensure you have installed <code><a href="https://nodejs.org/en/download/">nodejs</a></code>
+AI를 활용해 즐기는 **이모지 기반 파티 게임** 🎮  
+갈틱폰(Gartic Phone)에서 영감을 받아, 그림 대신 **이모지 조합과 AI 해석**으로 진행되는 새로운 방식의 게임입니다.  
 
-To preview and run the project on your device:
+---
 
-1. Open project folder in <a href="https://code.visualstudio.com/download">Visual Studio Code</a>
-2. In the terminal, run `npm install`
-3. Run `npm start` to view project in browser
+## 📌 프로젝트 개요
+- **서비스명**: Emojineus (이모지니어스)  
+- **목적**:  
+  - 단순한 그림 그리기 게임을 넘어, **AI가 해석하는 이모지 조합**을 통해 창의력과 유머를 발휘하는 소셜 게임 제공  
+  - 누구나 쉽고 빠르게 참여할 수 있는 **밈(meme) 문화 기반의 엔터테인먼트** 실험
+
+---
+
+## 🛠️ 기술 스택
+- **Frontend**: React 
+
+---
+
+## 🚀 주요 기능
+- **이모지 기반 게임 플레이**
+  - 제시어를 보고 플레이어가 프롬프트에 입력, 모델은 이모지 생성
+  - 다음 사람이 이모지를 해석해 정답 제출  
+
+- **AI 해석 기능**
+  - 플레이어가 문장으로 작성한 이모지 설명을 AI가 이모지으로 자동 변환
+
+- **멀티플레이 지원**
+  - 방 생성 및 초대 기능  
+  - 실시간으로 진행되는 라운드 게임  
+
+---
+
+## 🎨 포스터
+서비스 소개 포스터:
+
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/9ff4754c-ce37-4f36-9f0d-c1c535fecd47" /> 
+
+---
